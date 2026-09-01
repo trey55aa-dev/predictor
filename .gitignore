@@ -1,0 +1,25 @@
+## Python
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+.pytest_cache/
+
+## Backend data / secrets
+backend/.env
+backend/football.db
+backend/*.db
+
+## Node / frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+## Claude Code local config
+.claude/settings.local.json
+
+## Routine logs
+backend/routine_log/
+
+## OS
+.DS_Store

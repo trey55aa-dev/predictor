@@ -1,0 +1,191 @@
+[
+  {
+    "id": "shanahan-kubiak-mcvay-wide-zone",
+    "side": "offense",
+    "name": "Shanahan/Kubiak/McVay Wide-Zone Tree",
+    "era": "2017-present",
+    "description": "The most widely copied offense in modern football. Built on outside/wide zone runs that stress defenses horizontally, with play-action and bootleg passing off identical run action, heavy pre-snap motion to diagnose coverage, condensed splits, and 11/21 personnel. Traces to Mike Shanahan's Denver staffs; Kyle Shanahan and Gary Kubiak carried it forward, and Sean McVay's branch (via Jon Gruden/Jay Gruden) converged on nearly the same principles independently.",
+    "core_concepts": ["Outside/wide zone run", "Play-action bootleg off zone action", "Pre-snap motion", "11/21 personnel", "Condensed splits", "Yankee/deep-crosser shot plays"],
+    "coaches": ["Kyle Shanahan", "Sean McVay", "Matt LaFleur", "Mike McDaniel", "Kevin O'Connell", "Zac Taylor", "Liam Coen", "Kevin Stefanski"]
+  },
+  {
+    "id": "reid-reich-philadelphia-west-coast",
+    "side": "offense",
+    "name": "Reid/Reich-Philadelphia West Coast Tree",
+    "era": "1999-present",
+    "description": "Andy Reid's West Coast passing game -- timing-based short/intermediate routes, spread shotgun run-pass options, heavy formation disguise, and structured but explosive shot plays off run-action. The Philadelphia branch (Frank Reich's staffs, then Nick Sirianni and Shane Steichen) descends from Reid's Eagles years and shares the same passing-game DNA even as each coach added his own wrinkles.",
+    "core_concepts": ["Spread shotgun RPO", "West Coast timing routes", "Formation disguise/motion", "Packaged plays", "Play-action deep shots"],
+    "coaches": ["Andy Reid", "Doug Pederson", "Matt Nagy", "Nick Sirianni", "Frank Reich", "Shane Steichen"]
+  },
+  {
+    "id": "air-raid",
+    "side": "offense",
+    "name": "Air Raid (Leach/Mumme) Tree",
+    "era": "1989-present",
+    "description": "The Hal Mumme/Mike Leach spread-passing system: four- and five-receiver spread formations, tempo, and a small package of quick-timing route concepts (mesh, four verticals, Y-cross) run at high volume rather than a large playbook. Kliff Kingsbury, a Leach quarterback and disciple, brought a direct version of it to Arizona.",
+    "core_concepts": ["Spread formations", "Mesh/four verticals/Y-cross", "No-huddle tempo", "Quick timing passing", "Minimal run game variety"],
+    "coaches": ["Kliff Kingsbury"]
+  },
+  {
+    "id": "payton-air-coryell-vertical",
+    "side": "offense",
+    "name": "Payton Air-Coryell Vertical Tree",
+    "era": "2006-present",
+    "description": "Sean Payton's system blends Air Coryell vertical route concepts (numbered routes stretching the field deep) with pistol/shotgun spread formations and situational, scripted play-calling. Emphasizes explosive pass plays and a physical run game to set up shot plays downfield.",
+    "core_concepts": ["Numbered vertical route concepts", "Scripted opening sequences", "Pistol/shotgun spread", "Downfield shot plays", "Zone-man run blend"],
+    "coaches": ["Sean Payton"]
+  },
+  {
+    "id": "erhardt-perkins-belichick-multiple",
+    "side": "offense",
+    "name": "Erhardt-Perkins/Belichick Multiple Tree",
+    "era": "1975-present",
+    "description": "The Patriots' concept-based system (plays are named for route concepts, not individual receiver assignments, so the same call means the same thing from any formation/personnel). Built for weekly game-plan flexibility, heavy use of the TE/H-back, and disguised protections. Bill Belichick's staffs (Josh McDaniels, Brian Daboll) carried it to their own head-coaching jobs.",
+    "core_concepts": ["Concept-based route naming", "TE/H-back usage", "Disguised protections", "Weekly game-plan-specific installs", "Multiple personnel groupings"],
+    "coaches": ["Bill Belichick", "Josh McDaniels", "Brian Daboll"]
+  },
+  {
+    "id": "ravens-pistol-rpo",
+    "side": "offense",
+    "name": "Ravens Pistol-RPO System",
+    "era": "2019-present",
+    "description": "A run-first system built around a dual-threat quarterback: pistol/shotgun zone-read and RPOs, an unusually heavy run-play rate, and play-action off the threat of the QB run game. Distinctive enough, and consistent enough across coordinator changes (Greg Roman, then Todd Monken), that it is treated as its own family under John Harbaugh's program.",
+    "core_concepts": ["Pistol zone-read", "Run-pass options", "QB-designed runs", "Heavy run-play rate", "Play-action off run threat"],
+    "coaches": ["John Harbaugh"]
+  },
+  {
+    "id": "arians-vertical",
+    "side": "offense",
+    "name": "Arians \"No Risk It, No Biscuit\" Vertical Tree",
+    "era": "2007-2021",
+    "description": "Bruce Arians' downfield-first passing philosophy: aggressive shot plays on early downs, a preference for one-on-one matchups outside the numbers, and a willingness to live with turnovers in exchange for explosive plays.",
+    "core_concepts": ["Early-down shot plays", "Outside one-on-one matchups", "Aggressive down-the-field passing", "Under-center play-action"],
+    "coaches": ["Bruce Arians"]
+  },
+  {
+    "id": "campbell-power-gap",
+    "side": "offense",
+    "name": "Campbell Power-Gap Physical Run Tree",
+    "era": "2021-present",
+    "description": "Detroit's identity under Dan Campbell: a gap/power/duo run scheme with pulling linemen and physical double teams (rather than the zone-run families above), paired with an aggressive 4th-down and red-zone philosophy that is itself part of the offensive identity.",
+    "core_concepts": ["Gap/power/duo run blocking", "Pulling linemen", "Heavy personnel red-zone packages", "Aggressive 4th-down philosophy"],
+    "coaches": ["Dan Campbell"]
+  },
+  {
+    "id": "canales-seattle-quick-game",
+    "side": "offense",
+    "name": "Seattle/Bucs Quick-Game West Coast (Canales Branch)",
+    "era": "2024-present",
+    "description": "Dave Canales' system, shaped by his years as a Seahawks and Buccaneers quarterbacks coach: a quick-timing West Coast passing game with under-center play-action and an emphasis on getting the ball out of the QB's hand fast on early downs.",
+    "core_concepts": ["Quick-timing West Coast passing", "Under-center play-action", "Fast time-to-throw on early downs"],
+    "coaches": ["Dave Canales"]
+  },
+  {
+    "id": "moore-tempo-vertical",
+    "side": "offense",
+    "name": "Kellen Moore Tempo-Vertical Spread",
+    "era": "2019-present",
+    "description": "Kellen Moore's system (built across Cowboys and Chargers coordinator stops): shotgun-spread formations, uptempo pacing, and a heavier vertical-passing shot-play rate than most modern spread systems.",
+    "core_concepts": ["Shotgun spread", "Uptempo pacing", "Vertical shot plays", "Motion-heavy pre-snap picture"],
+    "coaches": ["Kellen Moore"]
+  },
+  {
+    "id": "independent-offense",
+    "side": "offense",
+    "name": "Independent / Coordinator-Directed Offense",
+    "era": "2021-present",
+    "description": "Free NFL data only identifies the head coach per team-season, not the offensive coordinator who often actually calls the plays. For head coaches whose own background and public reputation is not a well-documented offensive system (most are defensive-minded HCs), we don't guess at an uncredited coordinator's scheme lineage -- their team's offense is tracked here instead of forced into a tree it may not really belong to.",
+    "core_concepts": [],
+    "coaches": []
+  },
+  {
+    "id": "fangio-match-quarters",
+    "side": "defense",
+    "name": "Fangio Match-Quarters Tree",
+    "era": "2015-present",
+    "description": "Vic Fangio's two-high shell defense: predominantly split-safety zone coverage (quarters/pattern-match) that disguises pre-snap and simulates pressure with four-man rushes instead of heavy blitzing, trading big-play prevention for tougher-to-defend third-and-medium. The single most influential defensive coaching tree in the league over the last decade -- this family includes both direct staff disciples and coaches whose systems are publicly documented as closely modeled on Fangio's principles.",
+    "core_concepts": ["Two-high safety shell", "Pattern-match/quarters coverage", "Simulated pressure, four-man rush", "Pre-snap disguise", "Bend-don't-break on early downs"],
+    "coaches": ["Vic Fangio", "Brandon Staley", "Robert Saleh", "DeMeco Ryans", "Mike Macdonald", "Aaron Glenn", "Jonathan Gannon"]
+  },
+  {
+    "id": "seattle-carroll-cover3",
+    "side": "defense",
+    "name": "Seattle/Carroll Cover-3 Tree",
+    "era": "1994-present",
+    "description": "Pete Carroll's single-high Cover 3 system, built on size and speed at cornerback and safety to defend deep thirds with fewer defenders in coverage, freeing up the box for physical run defense. The scheme behind Seattle's \"Legion of Boom\" era and carried forward by Carroll's own coordinators.",
+    "core_concepts": ["Single-high Cover 3", "Press-man corners", "Physical run-support safeties", "Simple, rep-heavy install"],
+    "coaches": ["Pete Carroll", "Dan Quinn"]
+  },
+  {
+    "id": "tampa-2",
+    "side": "defense",
+    "name": "Tampa-2 (Kiffin/Dungy/Smith) Tree",
+    "era": "1996-present",
+    "description": "The Tony Dungy/Monte Kiffin Cover 2 variant with a middle linebacker dropping deep into the middle third -- built to limit explosive plays and force offenses to sustain long drives underneath. Lovie Smith is a direct originator-generation member; Matt Eberflus (whose \"H.I.T.S.\" principle traces to Kiffin/Rod Marinelli) is a documented modern disciple.",
+    "core_concepts": ["Cover 2 with MLB deep-middle drop", "Under-tackle penetration", "Takeaway-focused (H.I.T.S. principle)", "Limiting explosive plays over sustained drives"],
+    "coaches": ["Lovie Smith", "Matt Eberflus"]
+  },
+  {
+    "id": "lebeau-blitzburgh",
+    "side": "defense",
+    "name": "LeBeau/Blitzburgh 3-4 Zone-Blitz Tree",
+    "era": "1992-present",
+    "description": "Dick LeBeau's Pittsburgh zone-blitz system: a 3-4 front that disguises which four (or five, or six) rushers are coming and drops unexpected defenders into coverage, generating pressure without pure man-beating one-on-ones. Mike Tomlin inherited and has maintained this identity in Pittsburgh for nearly two decades.",
+    "core_concepts": ["3-4 zone blitz", "Disguised rush packages", "Odd-man front", "Coverage droppers replacing rushers"],
+    "coaches": ["Mike Tomlin"]
+  },
+  {
+    "id": "parcells-belichick-multiple-pressure",
+    "side": "defense",
+    "name": "Parcells/Belichick Multiple-Pressure Tree",
+    "era": "1983-present",
+    "description": "A base 3-4 that shifts fronts and coverages week to week specifically to attack that opponent's protection scheme, rather than running one static system. Emphasizes situational multiplicity over a single identity. Belichick's Patriots defenses and Todd Bowles' aggressive pressure packages both descend from the Parcells coaching lineage.",
+    "core_concepts": ["Multiple fronts (odd/even)", "Opponent-specific weekly gameplan", "Aggressive pressure packages", "Matchup-based coverage calls"],
+    "coaches": ["Bill Belichick", "Todd Bowles", "Jerod Mayo"]
+  },
+  {
+    "id": "mcdermott-pattern-match",
+    "side": "defense",
+    "name": "McDermott/Buffalo Pattern-Match Tree",
+    "era": "2017-present",
+    "description": "Sean McDermott's two-high pattern-match defense (developed under Jim Johnson and Andy Reid's Philadelphia staffs), frequently compared to the Fangio family for its shared reliance on disguised coverage over heavy pressure, but tracked separately given McDermott's distinct coaching lineage.",
+    "core_concepts": ["Two-high pattern-match coverage", "Disguise over pressure volume", "Situational sub-package defense"],
+    "coaches": ["Sean McDermott"]
+  },
+  {
+    "id": "fangio-adjacent-rams-branch",
+    "side": "defense",
+    "name": "Fangio-Adjacent Match-Quarters (Rams Branch)",
+    "era": "2021-present",
+    "description": "Raheem Morris' modern defenses, shaped by his run as Los Angeles Rams DC (2021, 2022-23) alongside the Fangio-branch coaching staff there, blending his earlier Tampa-2/Monte Kiffin background with the match-quarters principles that staff ran.",
+    "core_concepts": ["Two-high match coverage", "Blended Tampa-2 run-support principles", "Situational pressure packages"],
+    "coaches": ["Raheem Morris"]
+  },
+  {
+    "id": "ravens-attacking-pressure",
+    "side": "defense",
+    "name": "Ravens Attacking-Pressure Tree (Martindale/Orr Lineage)",
+    "era": "2018-present",
+    "description": "Baltimore's defensive identity under John Harbaugh has been one of the league's most consistently blitz-heavy, disguised-pressure systems for years, spanning multiple coordinators (Wink Martindale, then Mike Macdonald, then Zach Orr) without losing its attacking character -- distinct enough from the more conservative two-high Fangio family to track separately.",
+    "core_concepts": ["High blitz rate", "Disguised pressure looks", "Man coverage behind pressure", "Aggressive down-and-distance calls"],
+    "coaches": ["John Harbaugh"]
+  },
+  {
+    "id": "attacking-multiple-front",
+    "side": "defense",
+    "name": "Attacking Multiple-Front Tree",
+    "era": "2004-present",
+    "description": "A looser grouping for long-tenured defensive coordinators-turned-HCs whose systems are well documented as multiple/attacking fronts but don't trace to one of the more specific named trees above.",
+    "core_concepts": ["Multiple fronts", "Attacking, penetration-first run defense", "Frequent sub-package rotation"],
+    "coaches": ["Dennis Allen", "Steve Wilks"]
+  },
+  {
+    "id": "independent-defense",
+    "side": "defense",
+    "name": "Independent / Coordinator-Directed Defense",
+    "era": "2021-present",
+    "description": "The defensive-side counterpart to Independent Offense: head coaches whose own background and public reputation is not a well-documented defensive system (most are offensive-minded HCs) are tracked here rather than having their team's defense attributed to an uncredited, unverified coordinator.",
+    "core_concepts": [],
+    "coaches": []
+  }
+]
