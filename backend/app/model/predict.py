@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from app.config import settings
 from app.model.elo import expected_win_prob, latest_rating
 from app.model.market import blend_line, blend_win_prob, market_home_win_prob
+from app.model.recalibration import get_tuned_value
 from app.model.scoring import matchup_expected_total
 from app.model.weather_adjust import total_points_adjustment
 from app.models import Game, OddsSnapshot, Prediction, WeatherSnapshot
@@ -51,16 +52,20 @@ def predict_game(db: Session, game: Game) -> Prediction:
         market_spread = odds.spread_line
         market_total = odds.total_line
 
-    home_win_prob = blend_win_prob(elo_home_prob, market_prob)
+    tuned_blend_weight = get_tuned_value(db, "market_blend_weight", settings.market_blend_weight)
+    home_win_prob = blend_win_prob(elo_home_prob, market_prob, weight=tuned_blend_weight)
 
     market_margin = -market_spread if market_spread is not None else None  # spread is from home's perspective (negative = favored)
-    predicted_margin = blend_line(elo_margin, market_margin)
+    predicted_margin = blend_line(elo_margin, market_margin, weight=tuned_blend_weight)
 
     scoring_expected_total = matchup_expected_total(db, game.home_team, game.away_team, game.season, game.week)
-    predicted_total = blend_line(scoring_expected_total, market_total)
+    predicted_total = blend_line(scoring_expected_total, market_total, weight=tuned_blend_weight)
 
     weather_adjustment, weather_note = total_points_adjustment(weather)
     predicted_total = max(predicted_total - weather_adjustment, 20.0)
+
+    tuned_margin_std = get_tuned_value(db, "margin_std_default", settings.margin_std_default)
+    tuned_total_std = get_tuned_value(db, "total_std_default", settings.total_std_default)
 
     predicted_home_score = (predicted_total + predicted_margin) / 2
     predicted_away_score = (predicted_total - predicted_margin) / 2
@@ -74,14 +79,16 @@ def predict_game(db: Session, game: Game) -> Prediction:
         home_elo=home_elo,
         away_elo=away_elo,
         home_win_prob=home_win_prob,
+        elo_win_prob=elo_home_prob,
+        market_win_prob=market_prob,
         predicted_home_score=predicted_home_score,
         predicted_away_score=predicted_away_score,
         predicted_margin=predicted_margin,
         predicted_total=predicted_total,
-        margin_range_low=predicted_margin - settings.margin_std_default,
-        margin_range_high=predicted_margin + settings.margin_std_default,
-        total_range_low=predicted_total - settings.total_std_default,
-        total_range_high=predicted_total + settings.total_std_default,
+        margin_range_low=predicted_margin - tuned_margin_std,
+        margin_range_high=predicted_margin + tuned_margin_std,
+        total_range_low=predicted_total - tuned_total_std,
+        total_range_high=predicted_total + tuned_total_std,
         weather_note=weather_note,
     )
     db.add(prediction)

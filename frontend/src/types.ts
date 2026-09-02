@@ -44,6 +44,15 @@ export interface Performance {
   avg_abs_total_error: number | null;
 }
 
+export interface CalibrationAdjustment {
+  parameter_name: string;
+  old_value: number;
+  new_value: number;
+  evidence: string;
+  sample_size: number;
+  created_at: string;
+}
+
 export interface SchemeFamily {
   id: string;
   side: "offense" | "defense";

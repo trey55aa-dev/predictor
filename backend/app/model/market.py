@@ -25,21 +25,25 @@ def market_home_win_prob(home_moneyline: float, away_moneyline: float) -> float:
     return home_fair
 
 
-def blend_win_prob(elo_prob: float, market_prob: float | None) -> float:
+def blend_win_prob(elo_prob: float, market_prob: float | None, weight: float | None = None) -> float:
     """Regresses the Elo model's win probability toward the market's, when available.
 
     Blending toward the market is a well-known cheap way to improve a simple
     power-rating model -- the market aggregates information (injuries, weather,
     public/sharp money) the Elo model doesn't see.
+
+    `weight` overrides the static config default -- callers that want the
+    live, auto-tuned value (see model/recalibration.py) pass it explicitly
+    rather than this function reaching for settings itself.
     """
     if market_prob is None:
         return elo_prob
-    w = settings.market_blend_weight
+    w = weight if weight is not None else settings.market_blend_weight
     return w * elo_prob + (1 - w) * market_prob
 
 
-def blend_line(elo_value: float, market_value: float | None) -> float:
+def blend_line(elo_value: float, market_value: float | None, weight: float | None = None) -> float:
     if market_value is None:
         return elo_value
-    w = settings.market_blend_weight
+    w = weight if weight is not None else settings.market_blend_weight
     return w * elo_value + (1 - w) * market_value

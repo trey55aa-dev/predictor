@@ -77,6 +77,16 @@ fi
     NEEDS_CLAUDE=1
     REASON="test failure"
   fi
+  if [ "$PIPELINE_EXIT" -ne 0 ]; then
+    # run-routine's own best-effort steps (odds/injuries/etc.) already catch
+    # their own errors and log a skip note without a nonzero exit -- a
+    # nonzero exit here means something genuinely uncaught crashed (e.g. a
+    # network timeout pulling reference data). Could be transient, could be
+    # real; either way it's not something to silently swallow the way this
+    # actually happened once already before this check existed.
+    NEEDS_CLAUDE=1
+    REASON="${REASON:+$REASON, }pipeline crashed (exit $PIPELINE_EXIT)"
+  fi
   if echo "$PIPELINE_OUTPUT" | grep -qE "Generated [1-9][0-9]* predictions"; then
     HAS_PREDICTIONS=1
     if [ ! -f "$ANALYZED_TODAY_FLAG" ]; then
@@ -105,8 +115,13 @@ $TEST_OUTPUT
 ### run-routine -- exit $PIPELINE_EXIT
 $PIPELINE_OUTPUT
 "
+    # Explicit disallow here, layered on top of .claude/settings.local.json --
+    # that shared file also governs interactive use of this project (e.g. an
+    # explicit "commit this" request), so it can't be the only thing keeping
+    # the *unattended* routine from ever committing or pushing on its own.
     claude -p "$PROMPT" \
       --allowedTools "Bash,Read,Write,Edit,Glob,Grep" \
+      --disallowedTools "Bash(git commit*),Bash(git push*),Bash(git reset*),Bash(git clean*)" \
       --permission-mode acceptEdits
     CLAUDE_EXIT=$?
 

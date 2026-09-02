@@ -1,4 +1,5 @@
 import type {
+  CalibrationAdjustment,
   GamePlan,
   GamePrediction,
   ParlaysResponse,
@@ -45,4 +46,8 @@ export function fetchParlays(season: number, week: number, legs = 3): Promise<Pa
 
 export function fetchPlayerProjections(gameId: string): Promise<PlayerProjectionsResponse> {
   return get(`/api/predictions/game/${gameId}/players`);
+}
+
+export function fetchCalibrationHistory(): Promise<CalibrationAdjustment[]> {
+  return get(`/api/model/calibration-history`);
 }

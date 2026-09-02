@@ -117,6 +117,11 @@ class Prediction(Base):
     home_elo: Mapped[float] = mapped_column(Float)
     away_elo: Mapped[float] = mapped_column(Float)
     home_win_prob: Mapped[float] = mapped_column(Float)
+    # Raw, unblended components -- kept so calibration can retroactively ask
+    # "would a different blend weight have scored better," not just the
+    # final blended number.
+    elo_win_prob: Mapped[float | None] = mapped_column(Float, nullable=True)
+    market_win_prob: Mapped[float | None] = mapped_column(Float, nullable=True)
 
     predicted_home_score: Mapped[float] = mapped_column(Float)
     predicted_away_score: Mapped[float] = mapped_column(Float)
@@ -334,3 +339,19 @@ class PlayerProjection(Base):
     actual_passing_yards: Mapped[float | None] = mapped_column(Float, nullable=True)
     actual_tds: Mapped[int | None] = mapped_column(Integer, nullable=True)
     graded_at: Mapped[dt.datetime | None] = mapped_column(DateTime, nullable=True)
+
+
+class CalibrationAdjustment(Base):
+    """Audit log of every time a model constant was auto-tuned -- also the
+    source of truth for its *current* value (latest row per parameter_name);
+    config.py's constant is only the pre-any-tuning default."""
+
+    __tablename__ = "calibration_adjustments"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    parameter_name: Mapped[str] = mapped_column(String)
+    old_value: Mapped[float] = mapped_column(Float)
+    new_value: Mapped[float] = mapped_column(Float)
+    evidence: Mapped[str] = mapped_column(String)
+    sample_size: Mapped[int] = mapped_column(Integer)
+    created_at: Mapped[dt.datetime] = mapped_column(DateTime)

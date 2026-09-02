@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchPerformance, fetchPredictionsForWeek } from "../api/client";
+import CalibrationHistory from "../components/CalibrationHistory";
 import GameList from "../components/GameList";
 import WeekSelector from "../components/WeekSelector";
 import type { GamePrediction, Performance } from "../types";
@@ -55,6 +56,8 @@ export default function Dashboard() {
           accuracy, Brier {performance.avg_brier_score?.toFixed(3) ?? "—"}
         </div>
       )}
+
+      <CalibrationHistory />
 
       {loading && <p className="loading-state">Loading predictions…</p>}
       {error && <p className="error-state">Couldn't load predictions: {error}</p>}

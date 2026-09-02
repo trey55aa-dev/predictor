@@ -80,6 +80,31 @@ uv run python -m app.cli ingest-player-stats --seasons 2021 2022 2023 2024 2025
 uv run python -m app.cli project-players --season 2026 --week 1
 ```
 
+## Self-recalibration
+
+Team strength (Elo) has always updated automatically from results. Everything
+else -- the Elo/market blend weight, the confidence-range widths -- used to
+be a fixed constant in `config.py` that never moved, even though grading
+already computed the evidence needed to correct it. `app/model/recalibration.py`
+closes that gap: it grid-searches the blend weight against real Brier scores
+and nudges it (capped step, gradual) toward whatever the evidence supports,
+and sets the confidence-range widths directly to the observed error std-dev.
+Every change is logged (`CalibrationAdjustment`, `GET /api/model/calibration-history`,
+visible on the dashboard under "self-correction history") with the before/
+after numbers -- an auditable trail, not a black box. Gated by a 30-graded-
+prediction minimum so a small early streak can't swing it. Elo's own
+internals (K-factor, home-field advantage, season regression) are
+deliberately NOT auto-tuned -- they're baked into every historical Elo
+snapshot, so changing them needs a full `build-history` rebuild, not a live
+nudge.
+
+```bash
+uv run python -m app.cli recalibrate
+```
+
+Also runs automatically as part of `run-routine`, after grading, every time
+it fires.
+
 Anytime-TD legs are also eligible for the **Safest** parlay (tagged
 `anytime_td` vs `game_winner` in the API and UI) -- at most one leg per game
 is ever selected, since a team-win leg and that team's own player-TD leg are

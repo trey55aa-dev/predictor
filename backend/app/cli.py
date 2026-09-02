@@ -19,6 +19,7 @@ from app.model.player_projection import (
     project_week,
 )
 from app.model.predict import predict_week
+from app.model.recalibration import recalibrate
 from app.model.schedule_context import current_or_next_week, current_season, should_run_dense_cadence
 from app.models import Game
 
@@ -197,6 +198,26 @@ def performance(season: int | None = None, week: int | None = None) -> None:
         db.close()
 
 
+@app.command(name="recalibrate")
+def recalibrate_cmd() -> None:
+    """Looks at accumulated grading evidence and nudges tunable model
+    constants (market blend weight, confidence-range widths) toward what
+    the evidence supports, when there's enough of it to trust. Logs every
+    change made -- most runs find nothing worth changing."""
+    db = SessionLocal()
+    try:
+        changes = recalibrate(db)
+        if not changes:
+            typer.echo("No calibration changes this pass.")
+        for change in changes:
+            typer.echo(
+                f"Tuned {change['parameter']}: {change['old_value']} -> {change['new_value']} "
+                f"({change['evidence']})"
+            )
+    finally:
+        db.close()
+
+
 @app.command(name="is-game-day")
 def is_game_day_cmd() -> None:
     """Exits 0 on a 'dense' day (4x/day: unconditionally during the
@@ -291,6 +312,16 @@ def run_routine_cmd() -> None:
                 # week's actuals may not be ingested yet.
                 grade_player_projections(db, season, past_week)
             typer.echo(f"Graded {graded_this_run} newly-final predictions across weeks 1-{week}.")
+
+            calibration_changes = recalibrate(db)
+            if calibration_changes:
+                for change in calibration_changes:
+                    typer.echo(
+                        f"Recalibrated {change['parameter']}: {change['old_value']} -> "
+                        f"{change['new_value']} ({change['evidence']})"
+                    )
+            else:
+                typer.echo("Recalibration: no changes this pass.")
 
         perf = performance_summary(db)
         parlay_perf = parlay_performance_summary(db)

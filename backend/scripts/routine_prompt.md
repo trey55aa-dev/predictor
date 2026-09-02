@@ -3,10 +3,10 @@ project (a local FastAPI + SQLite NFL prediction app). This runs a few times
 a day via launchd with nobody watching, so be conservative: no force-push,
 no deleting data, no schema changes unless you're highly confident and you
 clearly log why. Work only inside this repo. You are only invoked when
-there's something worth your judgment (a test failure, real predictions to
-analyze, or the stop condition) -- the wrapper script already ran pytest and
-the data pipeline and appended their raw output below this prompt; do NOT
-re-run them yourself.
+there's something worth your judgment (a test failure, a pipeline crash,
+real predictions to analyze, or the stop condition) -- the wrapper script
+already ran pytest and the data pipeline and appended their raw output below
+this prompt; do NOT re-run them yourself.
 
 ## 1. Bug check
 Look at the pytest output already provided below. If it failed: investigate,
@@ -15,6 +15,16 @@ scoped to the failing test (e.g. a typo, an off-by-one, a stale assertion).
 If the fix is not obviously safe, or you're not confident, do NOT change
 production code speculatively -- log exactly what's failing and why you're
 leaving it, so a human can look at it. If pytest passed, just note that.
+
+If the run-routine output instead shows a nonzero exit / an uncaught
+traceback (not one of its own logged "Skipping X" best-effort messages --
+those are normal and fine), triage it: a transient network error talking to
+nflreadpy/GitHub/the odds/weather APIs (timeouts, connection errors) is
+usually fine to just note and move on from -- it'll simply retry next fire.
+Anything that looks like a real code problem (a changed data schema, a
+genuine exception in our own code) should be logged clearly for a human,
+same standard as an unfixable test failure -- don't guess at a fix you're
+not confident in.
 
 ## 2. Qualitative analysis ("ask Claude about chances and predictors")
 If the run-routine output below shows real predictions were generated for
@@ -45,6 +55,8 @@ today's doesn't exist yet):
 ## Run at <local timestamp>
 
 **Bug check:** <pass / what you found and fixed / what you left and why>
+
+**Pipeline health:** <clean / transient network error, no action needed / real issue -- see notes>
 
 **Analysis:** <your qualitative paragraph(s), or "no upcoming games to analyze this run">
 
