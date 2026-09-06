@@ -1,0 +1,19 @@
+services:
+  - name: football-predictor-api
+    type: web
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install uv && uv sync --frozen
+    startCommand: uv run uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      # Set these in the Render dashboard when connecting the repo --
+      # "sync: false" means Render prompts for a value instead of reading
+      # one from this file (so no secret ever needs to be committed).
+      - key: DATABASE_URL
+        sync: false
+      - key: ODDS_API_KEY
+        sync: false
+      - key: CORS_ALLOWED_ORIGINS
+        sync: false
+      - key: PYTHON_VERSION
+        value: "3.11.16"

@@ -208,3 +208,63 @@ routine can't predict preseason games; it just monitors until Week 1 enters
 range each year. Also: the "best money move" parlay leg of the stop
 condition needs live market odds (`ODDS_API_KEY` in `backend/.env`) --
 without one, that half of the 90% target can never be satisfied.
+
+## Deploying publicly (free tier)
+
+Everything above runs on `localhost` only. To get a real, public URL on
+free-tier hosting:
+
+**Architecture**: [Render](https://render.com) (backend, free web service --
+sleeps after 15 min idle, ~30-60s to wake on the next request) +
+[Neon](https://neon.tech) (Postgres, permanent free tier, 0.5GB) +
+[Vercel](https://vercel.com) (frontend, free static hosting, no sleep) +
+GitHub Actions (the cloud routine, genuinely free -- Render's own cron costs
+money, so the routine lives here instead, running against the same Neon
+database). The existing local `launchd` routine keeps serving local dev
+against local SQLite unchanged; this is a separate, independent production
+setup, not a replacement for it.
+
+**Setup** (each of these is an account/dashboard step only you can do --
+I can't create accounts or enter payment/signup details on your behalf):
+
+1. **GitHub repo**: create an empty one at github.com/new, give me the URL,
+   and tell me explicitly to push -- I won't push without being asked.
+2. **Neon**: create a free account + project, copy its connection string
+   (starts with `postgresql://` -- paste it as-is, it's normalized to the
+   right driver automatically, see `app/db.py`).
+3. **Render**: create a free account, connect the GitHub repo (it reads
+   `backend/render.yaml` automatically), and set `DATABASE_URL` (the Neon
+   string from step 2), `ODDS_API_KEY`, and `CORS_ALLOWED_ORIGINS` in its
+   dashboard (not committed to git).
+4. **Vercel**: create a free account, connect the same repo with root
+   directory `frontend/`, set `VITE_API_BASE_URL` to the Render URL from
+   step 3.
+5. **GitHub Actions secrets**: in the repo's Settings → Secrets and
+   variables → Actions, add `DATABASE_URL` (same Neon value) and
+   `ODDS_API_KEY` so `.github/workflows/routine.yml` can reach them.
+6. Tell me once 2-5 are done -- I'll run the migration commands below
+   against the real `DATABASE_URL` and verify the deployed site end-to-end.
+
+**Data migration** (once you have a real Neon `DATABASE_URL`, run against
+it -- e.g. `DATABASE_URL=postgresql://... uv run python -m app.cli ...` --
+rather than copying the SQLite file; everything is reproducible from real
+data sources, so this proves the Postgres path actually works):
+
+```bash
+uv run python -m app.cli init-db
+uv run python -m app.cli build-history
+uv run python -m app.cli build-scheme-mapping
+uv run python -m app.cli ingest-plays
+uv run python -m app.cli ingest-player-stats --seasons 2021 2022 2023 2024 2025
+uv run python -m app.cli ingest-all --season 2026 --week 1
+uv run python -m app.cli predict-week --season 2026 --week 1
+```
+
+**Cloud routine scope boundary**: `.github/workflows/routine.yml` keeps
+production data fresh (ingest/predict/grade/recalibrate/parlay-log) on the
+same cadence as the local routine (3x/day, 4x on game days -- reuses
+`is-game-day`), but does NOT include the Claude-invoked qualitative
+analysis or self-disable steps -- those need the `claude` CLI and an auth
+token, a meaningfully bigger lift to run unattended in Actions (the token
+would need to be a repo secret exposed to every run). That stays a
+local-Mac-only feature for now.
