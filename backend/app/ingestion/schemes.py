@@ -32,6 +32,15 @@ def seed_scheme_families(db: Session) -> None:
         existing.description = family["description"]
         existing.core_concepts = json.dumps(family["core_concepts"])
 
+    # Flush the scheme_families rows before inserting scheme_coaches, which
+    # references them by foreign key. SQLAlchemy has no declared relationship
+    # between the two (only a raw FK column), so without this flush it can
+    # batch the coach inserts ahead of the family inserts within the same
+    # commit -- SQLite silently tolerates that (FK enforcement is off by
+    # default), but Postgres correctly rejects it.
+    db.flush()
+
+    for family in families:
         for coach_name in family["coaches"]:
             db.add(SchemeCoach(scheme_family_id=family["id"], coach_name=coach_name))
 

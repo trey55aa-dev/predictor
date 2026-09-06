@@ -28,5 +28,21 @@
   "SFO01": {"name": "Levi's Stadium", "lat": 37.4032, "lon": -121.9698, "roof_type": "outdoor", "teams": ["SF"]},
   "TAM00": {"name": "Raymond James Stadium", "lat": 27.9759, "lon": -82.5033, "roof_type": "outdoor", "teams": ["TB"]},
   "NAS00": {"name": "Nissan Stadium", "lat": 36.1665, "lon": -86.7713, "roof_type": "outdoor", "teams": ["TEN"]},
-  "WAS00": {"name": "FedExField", "lat": 38.9077, "lon": -76.8645, "roof_type": "outdoor", "teams": ["WAS"]}
+  "WAS00": {"name": "FedExField", "lat": 38.9077, "lon": -76.8645, "roof_type": "outdoor", "teams": ["WAS"]},
+
+  "OAK00": {"name": "Oakland-Alameda County Coliseum", "lat": 37.7516, "lon": -122.2005, "roof_type": "outdoor", "teams": []},
+  "LAX99": {"name": "Los Angeles Memorial Coliseum", "lat": 34.0141, "lon": -118.2879, "roof_type": "outdoor", "teams": []},
+  "LAX97": {"name": "StubHub Center", "lat": 33.8644, "lon": -118.2611, "roof_type": "outdoor", "teams": []},
+
+  "LON00": {"name": "Wembley Stadium", "lat": 51.5560, "lon": -0.2795, "roof_type": "outdoor", "teams": []},
+  "LON02": {"name": "Tottenham Hotspur Stadium", "lat": 51.6043, "lon": -0.0665, "roof_type": "outdoor", "teams": []},
+  "FRA00": {"name": "Deutsche Bank Park", "lat": 50.0685, "lon": 8.6455, "roof_type": "retractable", "teams": []},
+  "GER00": {"name": "Allianz Arena (Munich)", "lat": 48.2188, "lon": 11.6247, "roof_type": "dome", "teams": []},
+  "MUN01": {"name": "Allianz Arena (Munich)", "lat": 48.2188, "lon": 11.6247, "roof_type": "dome", "teams": []},
+  "MAD01": {"name": "Santiago Bernabeu", "lat": 40.4531, "lon": -3.6883, "roof_type": "retractable", "teams": []},
+  "PAR00": {"name": "Stade de France", "lat": 48.9244, "lon": 2.3601, "roof_type": "outdoor", "teams": []},
+  "MEX00": {"name": "Estadio Azteca", "lat": 19.3029, "lon": -99.1505, "roof_type": "outdoor", "teams": []},
+  "SAO00": {"name": "Arena Corinthians (Neo Quimica Arena)", "lat": -23.5453, "lon": -46.4731, "roof_type": "outdoor", "teams": []},
+  "RIO00": {"name": "Maracana Stadium", "lat": -22.9121, "lon": -43.2302, "roof_type": "outdoor", "teams": []},
+  "MEL00": {"name": "Melbourne Cricket Ground", "lat": -37.8199, "lon": 144.9834, "roof_type": "outdoor", "teams": []}
 }
