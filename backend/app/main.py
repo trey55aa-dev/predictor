@@ -2,13 +2,14 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api import games, gameplan, health, parlays, performance, players, predictions, systems
+from app.config import settings
 from app.db import create_all
 
 app = FastAPI(title="Football Predictor API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=[origin.strip() for origin in settings.cors_allowed_origins.split(",") if origin.strip()],
     allow_methods=["*"],
     allow_headers=["*"],
 )

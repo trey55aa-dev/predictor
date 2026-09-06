@@ -7,6 +7,11 @@ class Settings(BaseSettings):
     database_url: str = "sqlite:///./football.db"
     odds_api_key: str = ""
 
+    # Comma-separated list of allowed frontend origins. Defaults cover local
+    # dev; a deployed frontend's URL is added via the CORS_ALLOWED_ORIGINS
+    # env var (e.g. on Render), not by editing this default.
+    cors_allowed_origins: str = "http://localhost:5173,http://127.0.0.1:5173"
+
     # Prediction model tuning constants.
     elo_k_factor: float = 20.0
     elo_home_field_advantage: float = 60.0

@@ -1,0 +1,68 @@
+name: Football Predictor cloud routine
+
+# Same cadence intent as the local launchd routine (backend/scripts/run_routine_headless.sh):
+# 8am/1pm/6pm ET always, 11pm ET only on a game day or its eve. GitHub Actions
+# cron is UTC-only and does NOT adjust for daylight saving -- these times are
+# pinned to EDT (UTC-4); expect a 1-hour drift during EST (roughly
+# early-Nov to mid-March, outside the regular season anyway). Update the
+# offsets if that ever matters.
+#
+# Scope boundary (see the deployment plan): this cloud routine keeps data
+# fresh (ingest/predict/grade/recalibrate/parlay-log) against the production
+# Postgres database. It does NOT run the Claude-invoked qualitative analysis
+# or self-disable steps the local routine has -- that needs the `claude` CLI
+# and an auth token, which isn't set up to run unattended here.
+
+on:
+  schedule:
+    - cron: "0 12 * * *" # 8am EDT
+    - cron: "0 17 * * *" # 1pm EDT
+    - cron: "0 22 * * *" # 6pm EDT
+    - cron: "0 3 * * *" # 11pm EDT (3am UTC next day) -- gated below
+  workflow_dispatch: {} # allows manually triggering a run from the Actions tab
+
+jobs:
+  run-routine:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # astral-sh/setup-uv only installs the uv tool itself -- `uv sync`
+      # below is what actually installs project dependencies. If this step
+      # fails on the action version, check astral-sh/setup-uv on GitHub for
+      # the current major version tag (this was accurate as of writing).
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "latest"
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Decide whether this is the late-night (gated) slot
+        id: gate
+        run: |
+          HOUR_UTC="$(date -u +%H)"
+          if [ "$HOUR_UTC" = "03" ]; then
+            if uv run python -m app.cli is-game-day; then
+              echo "run=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "run=false" >> "$GITHUB_OUTPUT"
+              echo "Quiet day -- skipping the late-night slot."
+            fi
+          else
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run the pipeline
+        if: steps.gate.outputs.run == 'true'
+        run: |
+          uv run pytest -q
+          uv run python -m app.cli run-routine
