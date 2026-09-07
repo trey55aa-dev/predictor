@@ -9,11 +9,17 @@ __pycache__/
 backend/.env
 backend/football.db
 backend/*.db
+# Also catch a stray DB created by running the server from the repo root:
+# DATABASE_URL defaults to the relative path sqlite:///./football.db, so the
+# wrong working directory silently creates an empty one here.
+/football.db
+*.db
 
 ## Node / frontend
 frontend/node_modules/
 frontend/dist/
 frontend/.vite/
+frontend/tsconfig.tsbuildinfo
 
 ## Claude Code local config
 .claude/settings.local.json

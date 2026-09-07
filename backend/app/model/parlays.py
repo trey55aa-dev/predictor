@@ -37,6 +37,12 @@ def _leg_candidate(db: Session, game: Game) -> dict | None:
     opponent = game.away_team if picked_home else game.home_team
     model_prob = prediction.home_win_prob if picked_home else 1 - prediction.home_win_prob
 
+    # The data-only model's own call, before the market blend, shown alongside
+    # the blended number so the disagreement is visible rather than implied.
+    elo_prob = None
+    if prediction.elo_win_prob is not None:
+        elo_prob = prediction.elo_win_prob if picked_home else 1 - prediction.elo_win_prob
+
     market_prob = None
     decimal_odds = None
     american_price = None
@@ -63,6 +69,7 @@ def _leg_candidate(db: Session, game: Game) -> dict | None:
         "player_id": None,
         "player_name": None,
         "model_prob": model_prob,
+        "elo_prob": elo_prob,
         "market_prob": market_prob,
         "american_price": american_price,
         "decimal_odds": decimal_odds,
@@ -92,6 +99,9 @@ def _anytime_td_candidates(db: Session, game: Game) -> list[dict]:
             "player_id": p.player_id,
             "player_name": p.player_name,
             "model_prob": p.anytime_td_prob,
+            # Player projections have no Elo/market split to separate -- the
+            # projection is already data-only.
+            "elo_prob": None,
             "market_prob": None,
             "american_price": None,
             "decimal_odds": None,

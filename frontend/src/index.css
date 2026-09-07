@@ -545,6 +545,165 @@ body {
   margin: 0;
 }
 
+/* --- stake / payout calculator --- */
+
+.stake-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1.25rem;
+  margin: 0.75rem 0 1.25rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card-bg);
+}
+
+.stake-control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.stake-control-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.stake-buttons {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.stake-button {
+  min-width: 3rem;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.stake-button:hover {
+  border-color: var(--accent);
+}
+
+.stake-button.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.boost-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.boost-input-wrap input {
+  width: 5rem;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.85rem;
+}
+
+.stake-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.payout-breakdown {
+  margin: 0.6rem 0 0.75rem;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.payout-headline {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 0.95rem;
+  margin-bottom: 0.3rem;
+}
+
+.payout-headline strong {
+  font-size: 1.05rem;
+  color: var(--accent);
+}
+
+.payout-detail {
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.45;
+  margin: 0.2rem 0 0;
+}
+
+.payout-risk {
+  border-top: 1px solid var(--border);
+  margin-top: 0.45rem;
+  padding-top: 0.4rem;
+}
+
+/* --- model accuracy scoreboard --- */
+
+.accuracy-note {
+  margin: 0.5rem 0 1rem;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card-bg);
+  font-size: 0.85rem;
+}
+
+.accuracy-note summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.accuracy-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.7rem 0 0.5rem;
+  font-size: 0.82rem;
+}
+
+.accuracy-table th,
+.accuracy-table td {
+  text-align: left;
+  padding: 0.35rem 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.accuracy-table th {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.accuracy-table .accuracy-best td {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.accuracy-caveat {
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.45;
+  margin: 0;
+}
+
 .dashboard-header h1 {
   margin-bottom: 0.25rem;
 }

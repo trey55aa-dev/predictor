@@ -76,3 +76,65 @@ def performance_summary(db: Session, season: int | None = None, week: int | None
         "avg_abs_margin_error": avg_margin_error,
         "avg_abs_total_error": avg_total_error,
     }
+
+
+def model_vs_market_comparison(db: Session) -> dict:
+    """Scores the three probability sources against each other on the exact
+    same graded games: the data-only Elo model, the market's de-vigged price,
+    and the blend that's actually served on the site.
+
+    This exists to keep the parlay page's "edge" numbers honest. An edge
+    measured against the market only means money if the model is the more
+    accurate of the two -- that is a claim to be measured, not assumed, and
+    on real NFL data the market usually wins. Whoever has the lower Brier
+    score here is the one worth believing when they disagree.
+    """
+    rows = (
+        db.query(Prediction, Game)
+        .join(Game, Prediction.game_id == Game.game_id)
+        .filter(
+            Prediction.graded_at.isnot(None),
+            Prediction.elo_win_prob.isnot(None),
+            Prediction.market_win_prob.isnot(None),
+            Game.home_score.isnot(None),
+            Game.away_score.isnot(None),
+        )
+        .all()
+    )
+
+    n = len(rows)
+    if n == 0:
+        return {"sample_size": 0, "sources": []}
+
+    outcomes = [1.0 if g.home_score > g.away_score else 0.0 for _, g in rows]
+
+    def score(probs: list[float], label: str, description: str) -> dict:
+        brier = sum((p - o) ** 2 for p, o in zip(probs, outcomes)) / n
+        accuracy = sum(1 for p, o in zip(probs, outcomes) if (p >= 0.5) == (o == 1.0)) / n
+        return {
+            "key": label,
+            "description": description,
+            "brier_score": brier,
+            "winner_accuracy": accuracy,
+        }
+
+    sources = [
+        score(
+            [p.elo_win_prob for p, _ in rows],
+            "elo_only",
+            "Data only -- Elo power ratings plus weather, no market input.",
+        ),
+        score(
+            [p.market_win_prob for p, _ in rows],
+            "market_only",
+            "The sportsbooks' own de-vigged probability.",
+        ),
+        score(
+            [p.home_win_prob for p, _ in rows],
+            "blend",
+            "The blend actually served on this site.",
+        ),
+    ]
+
+    best = min(sources, key=lambda s: s["brier_score"])
+    return {"sample_size": n, "sources": sources, "most_accurate": best["key"]}

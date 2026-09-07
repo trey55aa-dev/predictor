@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.db import get_db
-from app.model.grade import performance_summary
+from app.model.grade import model_vs_market_comparison, performance_summary
 from app.models import CalibrationAdjustment
 from app.schemas import PerformanceOut
 
@@ -15,6 +15,14 @@ def model_performance(
 ) -> PerformanceOut:
     summary = performance_summary(db, season=season, week=week)
     return PerformanceOut(**summary)
+
+
+@router.get("/model/accuracy-comparison")
+def accuracy_comparison(db: Session = Depends(get_db)) -> dict:
+    """How the data-only Elo model, the market, and the served blend actually
+    scored against each other on the same graded games. Backs the honesty
+    note on the parlay page -- see model/grade.py:model_vs_market_comparison."""
+    return model_vs_market_comparison(db)
 
 
 @router.get("/model/calibration-history")

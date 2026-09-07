@@ -1,4 +1,5 @@
 import type {
+  AccuracyComparison,
   CalibrationAdjustment,
   GamePlan,
   GamePrediction,
@@ -26,6 +27,10 @@ export function fetchPredictionsForWeek(season: number, week: number): Promise<G
 export function fetchPerformance(season?: number): Promise<Performance> {
   const query = season ? `?season=${season}` : "";
   return get(`/api/model/performance${query}`);
+}
+
+export function fetchAccuracyComparison(): Promise<AccuracyComparison> {
+  return get(`/api/model/accuracy-comparison`);
 }
 
 export function fetchSystems(): Promise<SchemeFamily[]> {

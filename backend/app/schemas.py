@@ -41,6 +41,10 @@ class GamePredictionOut(BaseModel):
     away_score: int | None
 
     home_win_prob: float | None = None
+    # The two inputs behind home_win_prob, exposed so the UI can show what the
+    # data-only model said before it was regressed toward the market.
+    elo_win_prob: float | None = None
+    market_win_prob: float | None = None
     predicted_home_score: float | None = None
     predicted_away_score: float | None = None
     predicted_margin: float | None = None

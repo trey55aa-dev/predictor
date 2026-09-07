@@ -18,6 +18,8 @@ export interface GamePrediction {
   away_score: number | null;
 
   home_win_prob: number | null;
+  elo_win_prob: number | null;
+  market_win_prob: number | null;
   predicted_home_score: number | null;
   predicted_away_score: number | null;
   predicted_margin: number | null;
@@ -158,10 +160,25 @@ export interface ParlayLeg {
   player_id: string | null;
   player_name: string | null;
   model_prob: number;
+  /** The data-only Elo call, before the market blend. Null for player props. */
+  elo_prob: number | null;
   market_prob: number | null;
   american_price: number | null;
   decimal_odds: number | null;
   edge: number | null;
+}
+
+export interface AccuracySource {
+  key: "elo_only" | "market_only" | "blend";
+  description: string;
+  brier_score: number;
+  winner_accuracy: number;
+}
+
+export interface AccuracyComparison {
+  sample_size: number;
+  sources: AccuracySource[];
+  most_accurate?: "elo_only" | "market_only" | "blend";
 }
 
 export interface PlayerProjection {

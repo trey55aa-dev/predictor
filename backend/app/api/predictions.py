@@ -56,6 +56,8 @@ def _to_out(db: Session, game: Game) -> GamePredictionOut:
         home_score=game.home_score,
         away_score=game.away_score,
         home_win_prob=prediction.home_win_prob if prediction else None,
+        elo_win_prob=prediction.elo_win_prob if prediction else None,
+        market_win_prob=prediction.market_win_prob if prediction else None,
         predicted_home_score=prediction.predicted_home_score if prediction else None,
         predicted_away_score=prediction.predicted_away_score if prediction else None,
         predicted_margin=prediction.predicted_margin if prediction else None,

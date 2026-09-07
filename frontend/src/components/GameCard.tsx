@@ -28,6 +28,8 @@ export default function GameCard({ prediction }: { prediction: GamePrediction })
     home_score,
     away_score,
     home_win_prob,
+    elo_win_prob,
+    market_win_prob,
     predicted_home_score,
     predicted_away_score,
     predicted_total,
@@ -106,6 +108,14 @@ export default function GameCard({ prediction }: { prediction: GamePrediction })
             {market_total_line !== null ? `, market: ${round1(market_total_line)}` : ""})
           </span>
         </div>
+        {elo_win_prob != null && market_win_prob != null && (
+          <div className="detail-row">
+            <span className="label">Win prob: data-only vs. market</span>
+            <span>
+              Elo {Math.round(elo_win_prob * 100)}% · market {Math.round(market_win_prob * 100)}% ({home_team})
+            </span>
+          </div>
+        )}
         <div className="detail-row">
           <span className="label">Margin range</span>
           <span>

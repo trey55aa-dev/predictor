@@ -6,6 +6,13 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["--prefix", "frontend", "run", "dev"],
       "port": 5173
+    },
+    {
+      "name": "backend",
+      "//": "Must run with backend/ as the working directory -- DATABASE_URL's default is the relative path sqlite:///./football.db, which silently creates an empty DB if the CWD is wrong.",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": ["-c", "cd backend && exec uv run uvicorn app.main:app --port 8000"],
+      "port": 8000
     }
   ]
 }
