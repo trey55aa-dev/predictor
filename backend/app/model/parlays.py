@@ -46,7 +46,12 @@ def _leg_candidate(db: Session, game: Game) -> dict | None:
         home_fair = market_home_win_prob(odds.home_moneyline, odds.away_moneyline)
         market_prob = home_fair if picked_home else 1 - home_fair
         american_price = odds.home_moneyline if picked_home else odds.away_moneyline
+        # Payout math uses the unrounded consensus price; the displayed price is
+        # rounded because odds.home_moneyline/away_moneyline are a mean across
+        # sportsbooks (see ingestion/odds.py), and a mean of integers lands on
+        # values like -539.333 that no book would ever actually post.
         decimal_odds = american_to_decimal(american_price)
+        american_price = round(american_price)
 
     edge = (model_prob - market_prob) if market_prob is not None else None
 

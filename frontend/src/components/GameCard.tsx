@@ -103,7 +103,7 @@ export default function GameCard({ prediction }: { prediction: GamePrediction })
           <span className="label">Total range</span>
           <span>
             {round1(total_range_low)}–{round1(total_range_high)} (model: {round1(predicted_total)}
-            {market_total_line !== null ? `, market: ${market_total_line}` : ""})
+            {market_total_line !== null ? `, market: ${round1(market_total_line)}` : ""})
           </span>
         </div>
         <div className="detail-row">
