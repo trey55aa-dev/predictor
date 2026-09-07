@@ -34,6 +34,11 @@ export interface GamePrediction {
 
   correct_winner: boolean | null;
   model_version: string | null;
+
+  is_upset_alert: boolean;
+  upset_note: string | null;
+  over_under_lean: string | null;
+  over_under_note: string | null;
 }
 
 export interface Performance {
