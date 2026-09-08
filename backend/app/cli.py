@@ -353,5 +353,146 @@ def run_routine_cmd() -> None:
         db.close()
 
 
+@app.command(name="backfill-historical-odds")
+def backfill_historical_odds_cmd(seasons: list[int] = HISTORY_SEASONS) -> None:
+    """Materialise OddsSnapshot rows from the closing lines already stored on
+    historical games.
+
+    `build-history` ingests each game's real closing moneyline/spread/total
+    from nflverse, but nothing consumed them: `predict-week` reads market
+    numbers only from OddsSnapshot, so backtested predictions had no market
+    probability at all. Without this, the model-vs-market comparison and the
+    self-recalibration grid search have no market evidence to work with on
+    any game older than the live odds feed.
+
+    Marked with its own source/bookmaker so a closing line is never mistaken
+    for a live pre-game quote. Safe to re-run: it skips games that already
+    have a snapshot from this source.
+    """
+    from app.models import OddsSnapshot
+
+    db = SessionLocal()
+    try:
+        existing = {
+            row.game_id
+            for row in db.query(OddsSnapshot.game_id)
+            .filter(OddsSnapshot.source == "nflverse-closing-line")
+            .distinct()
+        }
+        games = (
+            db.query(Game)
+            .filter(Game.season.in_(seasons), Game.close_home_moneyline.isnot(None))
+            .all()
+        )
+        created = 0
+        for game in games:
+            if game.game_id in existing:
+                continue
+            kickoff = game.gametime_utc or dt.datetime.utcnow()
+            db.add(
+                OddsSnapshot(
+                    game_id=game.game_id,
+                    fetched_at=kickoff,
+                    bookmaker="closing-line",
+                    home_moneyline=game.close_home_moneyline,
+                    away_moneyline=game.close_away_moneyline,
+                    spread_line=game.close_spread_line,
+                    total_line=game.close_total_line,
+                    source="nflverse-closing-line",
+                )
+            )
+            created += 1
+        db.commit()
+        typer.echo(f"Created {created} closing-line odds snapshots (skipped {len(games) - created} existing).")
+    finally:
+        db.close()
+
+
+@app.command(name="build-sim-params")
+def build_sim_params_cmd(seasons: list[int] = HISTORY_SEASONS) -> None:
+    """Measure the simulator's drive-structure inputs (fourth-down behaviour,
+    field goals, punts, drive starts, clock burn) from real play-by-play."""
+    from app.model.sim_params import build_sim_params
+
+    db = SessionLocal()
+    try:
+        sizes = build_sim_params(db, seasons)
+        for key, n in sizes.items():
+            typer.echo(f"{key}: built from {n} plays/drives")
+    finally:
+        db.close()
+
+
+@app.command(name="simulate-game")
+def simulate_game_cmd(
+    home_team: str,
+    away_team: str,
+    n_sims: int = 10000,
+    seasons: list[int] = HISTORY_SEASONS,
+    seed: int = 0,
+) -> None:
+    """Run the Monte Carlo simulator for one matchup and print the outcome
+    distribution."""
+    from app.model.simulation import simulate_matchup
+
+    db = SessionLocal()
+    try:
+        summary = simulate_matchup(
+            db, home_team, away_team, seasons, n_sims=n_sims, seed=seed or None
+        )
+        typer.echo(
+            f"{summary['away_team']} @ {summary['home_team']}  ({summary['n_sims']} sims)"
+        )
+        typer.echo(
+            f"  win prob : {summary['home_team']} {summary['home_win_prob']:.1%}"
+        )
+        typer.echo(
+            f"  mean     : {summary['home_team']} {summary['mean_home_score']:.1f}"
+            f" - {summary['away_team']} {summary['mean_away_score']:.1f}"
+        )
+        typer.echo(
+            f"  total    : p10 {summary['total_p10']:.0f} | p50 {summary['total_p50']:.0f}"
+            f" | p90 {summary['total_p90']:.0f}  (mean {summary['mean_total']:.1f})"
+        )
+        typer.echo(
+            f"  margin   : p10 {summary['margin_p10']:+.0f} | p50 {summary['margin_p50']:+.0f}"
+            f" | p90 {summary['margin_p90']:+.0f}"
+        )
+        typer.echo("  most likely scores:")
+        for s in summary["most_likely_scores"]:
+            typer.echo(
+                f"    {summary['home_team']} {s['home_score']}-{s['away_score']}"
+                f" {summary['away_team']}  ({s['probability']:.2%})"
+            )
+    finally:
+        db.close()
+
+
+@app.command(name="validate-simulator")
+def validate_simulator_cmd(
+    test_seasons: list[int] = [2024, 2025],
+    n_sims: int = 400,
+    limit_per_season: int = 0,
+) -> None:
+    """Backtest the simulator against real completed games, using only plays
+    from seasons before each game (no lookahead)."""
+    import json as _json
+
+    from app.model.sim_validation import validate_simulator
+
+    db = SessionLocal()
+    try:
+        report = validate_simulator(
+            db,
+            test_seasons=test_seasons,
+            history_seasons=HISTORY_SEASONS,
+            n_sims=n_sims,
+            limit_per_season=limit_per_season or None,
+        )
+        typer.echo(_json.dumps(report, indent=2))
+    finally:
+        db.close()
+
+
 if __name__ == "__main__":
     app()

@@ -341,6 +341,28 @@ class PlayerProjection(Base):
     graded_at: Mapped[dt.datetime | None] = mapped_column(DateTime, nullable=True)
 
 
+class SimulationParam(Base):
+    """Empirically-derived inputs for the game simulator, each a JSON blob.
+
+    The `plays` table only holds run/pass plays (it exists to power the scheme
+    catalog, and punts/kicks would distort those per-formation splits), but a
+    drive simulation also needs to know how drives *end*: field goals, punts,
+    fourth-down decisions, drive start positions, clock burn. Those are
+    low-dimensional aggregates rather than per-play rows, so they live here
+    instead of bloating `plays` -- see model/sim_params.py for how each is
+    computed, and note every one is measured from real play-by-play, not
+    assumed.
+    """
+
+    __tablename__ = "simulation_params"
+
+    key: Mapped[str] = mapped_column(String, primary_key=True)
+    value_json: Mapped[str] = mapped_column(String)
+    seasons: Mapped[str] = mapped_column(String)
+    sample_size: Mapped[int] = mapped_column(Integer)
+    created_at: Mapped[dt.datetime] = mapped_column(DateTime)
+
+
 class CalibrationAdjustment(Base):
     """Audit log of every time a model constant was auto-tuned -- also the
     source of truth for its *current* value (latest row per parameter_name);
