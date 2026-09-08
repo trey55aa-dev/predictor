@@ -426,3 +426,38 @@ def simulate_matchup(
 ) -> dict:
     sim = GameSimulator(db, home_team, away_team, seasons, seed=seed)
     return sim.simulate(n_sims).summary()
+
+
+def distribution_for_display(summary: dict, model_total: float | None) -> dict:
+    """Picks the better centre for each quantity, then hangs the simulator's
+    spread off it.
+
+    This split is not a preference, it is what the backtest said (544 games,
+    `validate-simulator`):
+
+      * Totals -- the simulator runs about 2.4 points hot, and the model's
+        total is the more accurate central estimate (MAE 9.77 vs 10.75).
+        Re-centring the simulated spread on the model's total moves interval
+        coverage from 77.8% to 81.3% against an 80% target.
+      * Margin -- the opposite. The simulator's own margin is *more* accurate
+        than the model's (MAE 10.90 vs 11.92), and anchoring it to the model
+        drags coverage down from 80.5% to 75.8%. So the simulated margin keeps
+        its own centre.
+
+    In both cases the *width* comes from the simulation, which is the part it
+    is demonstrably good at. Win probability is deliberately not produced here
+    -- the simulator's Brier (0.245) is the worst of the four sources, so the
+    headline stays with the measured-best one.
+    """
+    out = dict(summary)
+    out["margin_center_source"] = "simulation"
+    out["total_center_source"] = "simulation"
+
+    if model_total is not None:
+        shift = model_total - summary["mean_total"]
+        for key in ("total_p10", "total_p25", "total_p50", "total_p75", "total_p90"):
+            out[key] = summary[key] + shift
+        out["mean_total"] = model_total
+        out["total_center_source"] = "model"
+
+    return out

@@ -101,6 +101,14 @@ def validate_simulator(
                     "sim_total": summary["mean_total"],
                     "margin_in_band": summary["margin_p10"] <= actual_margin <= summary["margin_p90"],
                     "total_in_band": summary["total_p10"] <= actual_total <= summary["total_p90"],
+                    # Percentile offsets around the simulator's own mean. These
+                    # are the *shape* of the distribution, independent of where
+                    # it is centred -- what gets reused when the band is
+                    # re-anchored to the model's central estimate.
+                    "margin_off_lo": summary["margin_p10"] - summary["mean_margin"],
+                    "margin_off_hi": summary["margin_p90"] - summary["mean_margin"],
+                    "total_off_lo": summary["total_p10"] - summary["mean_total"],
+                    "total_off_hi": summary["total_p90"] - summary["mean_total"],
                     "actual_margin": actual_margin,
                     "actual_total": actual_total,
                     "home_won": home_won,
@@ -155,4 +163,33 @@ def validate_simulator(
             "sim_total_minus_actual": sum(r["sim_total"] - r["actual_total"] for r in records) / n,
             "sim_margin_minus_actual": sum(r["sim_margin"] - r["actual_margin"] for r in records) / n,
         },
+        # The simulator's spread re-centred on the model's central estimate --
+        # the arrangement the app actually uses, since the model is the more
+        # accurate centre and the simulator is the honest width. Worth checking
+        # separately: a band can be correctly *shaped* and still miss because
+        # it is centred in the wrong place.
+        "anchored_interval_coverage": _anchored_coverage(records),
+    }
+
+
+def _anchored_coverage(records: list[dict]) -> dict:
+    margin_hits = margin_n = total_hits = total_n = 0
+
+    for r in records:
+        if r.get("model_margin") is not None:
+            lo = r["model_margin"] + r["margin_off_lo"]
+            hi = r["model_margin"] + r["margin_off_hi"]
+            margin_n += 1
+            margin_hits += 1 if lo <= r["actual_margin"] <= hi else 0
+        if r.get("model_total") is not None:
+            lo = r["model_total"] + r["total_off_lo"]
+            hi = r["model_total"] + r["total_off_hi"]
+            total_n += 1
+            total_hits += 1 if lo <= r["actual_total"] <= hi else 0
+
+    return {
+        "margin": (margin_hits / margin_n) if margin_n else None,
+        "total": (total_hits / total_n) if total_n else None,
+        "games_with_model_estimate": max(margin_n, total_n),
+        "target": 0.80,
     }

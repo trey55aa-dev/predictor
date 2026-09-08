@@ -140,3 +140,33 @@ def test_simulator_refuses_to_run_without_measured_parameters():
         assert "build-sim-params" in str(err)
     else:
         raise AssertionError("expected a RuntimeError when parameters are missing")
+
+
+def test_display_distribution_recentres_total_on_the_model_but_not_margin():
+    """Backtested behaviour: the model's total is the better centre, the
+    simulator's margin is. Only the total should move."""
+    from app.model.simulation import distribution_for_display
+
+    summary = _result([(24, 21), (17, 20), (30, 24)]).summary()
+    original_margin_p10 = summary["margin_p10"]
+    sim_total_spread = summary["total_p90"] - summary["total_p10"]
+
+    out = distribution_for_display(summary, model_total=41.0)
+
+    assert out["mean_total"] == 41.0
+    assert out["total_center_source"] == "model"
+    # The width is the simulator's; only the centre moved.
+    assert out["total_p90"] - out["total_p10"] == sim_total_spread
+    # Margin is untouched.
+    assert out["margin_p10"] == original_margin_p10
+    assert out["margin_center_source"] == "simulation"
+
+
+def test_display_distribution_keeps_simulated_total_when_no_model_estimate():
+    from app.model.simulation import distribution_for_display
+
+    summary = _result([(24, 21), (17, 20)]).summary()
+    out = distribution_for_display(summary, model_total=None)
+
+    assert out["mean_total"] == summary["mean_total"]
+    assert out["total_center_source"] == "simulation"
