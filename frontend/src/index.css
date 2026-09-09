@@ -28,6 +28,7 @@ body {
 
 .tab-nav {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
   padding: 1.25rem 1.25rem 0;
 }
@@ -702,6 +703,89 @@ body {
   color: var(--muted);
   line-height: 1.45;
   margin: 0;
+}
+
+/* --- slip checker --- */
+
+.slip-add-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 1rem 0;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card-bg);
+}
+
+.slip-form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+.slip-form-row label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+  min-width: 160px;
+  flex: 1;
+}
+
+.slip-form-row select,
+.slip-form-row input {
+  padding: 0.4rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.85rem;
+}
+
+.slip-leg-list {
+  margin: 1rem 0;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.slip-leg-list ul {
+  list-style: none;
+  margin: 0.5rem 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.slip-leg-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.85rem;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.slip-leg-row span:first-child {
+  flex: 1;
+}
+
+.slip-leg-odds {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.slip-remove-btn {
+  background: none;
+  border: none;
+  color: var(--bad);
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0 0.3rem;
 }
 
 .dashboard-header h1 {

@@ -7,6 +7,8 @@ import type {
   Performance,
   PlayerProjectionsResponse,
   SimPlayerPropsResponse,
+  SlipEvaluation,
+  SlipLegInput,
   SchemeDetail,
   SchemeFamily,
 } from "../types";
@@ -48,6 +50,20 @@ export function fetchGamePlan(gameId: string): Promise<GamePlan> {
 
 export function fetchSimPlayerProps(gameId: string): Promise<SimPlayerPropsResponse> {
   return get(`/api/predictions/game/${gameId}/sim-player-props`);
+}
+
+export async function evaluateSlip(legs: SlipLegInput[]): Promise<SlipEvaluation> {
+  const res = await fetch(`${BASE_URL}/api/slip/evaluate`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      legs: legs.map(({ key: _key, ...rest }) => rest),
+    }),
+  });
+  if (!res.ok) {
+    throw new Error(`Request to /api/slip/evaluate failed: ${res.status}`);
+  }
+  return res.json() as Promise<SlipEvaluation>;
 }
 
 export function fetchParlays(season: number, week: number, legs = 3): Promise<ParlaysResponse> {

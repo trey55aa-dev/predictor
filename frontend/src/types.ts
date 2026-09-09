@@ -243,3 +243,38 @@ export interface ParlaysResponse {
   best_money_move: ParlaySummary | null;
   best_money_move_note?: string;
 }
+
+export type SlipLegType = "game_winner" | "anytime_td" | "player_yards";
+
+export interface SlipLegInput {
+  /** Client-side only, for React keys / removing a leg before submitting. */
+  key: string;
+  leg_type: SlipLegType;
+  game_id: string;
+  team?: string;
+  player_id?: string;
+  player_name?: string;
+  stat?: "rushing" | "receiving";
+  side?: "over" | "under";
+  line?: number;
+  american_odds?: number;
+}
+
+export interface SlipLegResult {
+  leg_type: SlipLegType | null;
+  description: string | null;
+  model_prob: number | null;
+  elo_prob: number | null;
+  market_prob: number | null;
+  approximated: boolean | null;
+  american_odds: number | null;
+  decimal_odds: number | null;
+  error: string | null;
+}
+
+export interface SlipEvaluation {
+  legs: SlipLegResult[];
+  combined_probability: number | null;
+  combined_decimal_payout: number | null;
+  caveat: string;
+}
