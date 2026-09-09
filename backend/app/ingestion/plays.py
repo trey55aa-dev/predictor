@@ -47,6 +47,8 @@ def _load_season_frame(season: int) -> pl.DataFrame:
         "down", "ydstogo", "yardline_100", "desc", "yards_gained", "epa", "success",
         "touchdown", "interception", "fumble_lost", "sack", "shotgun", "no_huddle",
         "run_location", "run_gap", "pass_length", "pass_location",
+        "rusher_player_id", "rusher_player_name", "receiver_player_id", "receiver_player_name",
+        "passer_player_id", "passer_player_name", "pass_touchdown", "rush_touchdown",
     ]
     pbp = pbp.select([c for c in pbp_cols if c in pbp.columns])
 
@@ -142,6 +144,14 @@ def ingest_plays(db: Session, seasons: list[int]) -> int:
                     "n_pass_rushers": row.get("n_pass_rushers"),
                     "offense_scheme_id": offense_scheme_id,
                     "defense_scheme_id": defense_scheme_id,
+                    "rusher_player_id": row.get("rusher_player_id"),
+                    "rusher_player_name": row.get("rusher_player_name"),
+                    "receiver_player_id": row.get("receiver_player_id"),
+                    "receiver_player_name": row.get("receiver_player_name"),
+                    "passer_player_id": row.get("passer_player_id"),
+                    "passer_player_name": row.get("passer_player_name"),
+                    "pass_touchdown": bool(row.get("pass_touchdown")) if row.get("pass_touchdown") is not None else None,
+                    "rush_touchdown": bool(row.get("rush_touchdown")) if row.get("rush_touchdown") is not None else None,
                 }
             )
 

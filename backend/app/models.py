@@ -250,6 +250,22 @@ class Play(Base):
     offense_scheme_id: Mapped[str | None] = mapped_column(ForeignKey("scheme_families.id"), nullable=True)
     defense_scheme_id: Mapped[str | None] = mapped_column(ForeignKey("scheme_families.id"), nullable=True)
 
+    # Player attribution -- who touched the ball. Added specifically to let the
+    # simulator attribute simulated yards to real players by usage share
+    # (see model/player_sim.py) rather than only producing team-level output.
+    # rusher/receiver ids are per-play targets: receiver_player_id is set on
+    # both completions and incompletions (yards_gained is already 0 on an
+    # incompletion in nflverse's own convention, so no extra "did it complete"
+    # flag is needed to accumulate receiving yards correctly).
+    rusher_player_id: Mapped[str | None] = mapped_column(String, nullable=True)
+    rusher_player_name: Mapped[str | None] = mapped_column(String, nullable=True)
+    receiver_player_id: Mapped[str | None] = mapped_column(String, nullable=True)
+    receiver_player_name: Mapped[str | None] = mapped_column(String, nullable=True)
+    passer_player_id: Mapped[str | None] = mapped_column(String, nullable=True)
+    passer_player_name: Mapped[str | None] = mapped_column(String, nullable=True)
+    pass_touchdown: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
+    rush_touchdown: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
+
 
 class ParlayPick(Base):
     __tablename__ = "parlay_picks"
@@ -309,6 +325,62 @@ class PlayerGameStat(Base):
     passing_tds: Mapped[float | None] = mapped_column(Float, nullable=True)
     target_share: Mapped[float | None] = mapped_column(Float, nullable=True)
     air_yards_share: Mapped[float | None] = mapped_column(Float, nullable=True)
+
+
+class SnapCount(Base):
+    """Real per-player-per-game snap share (nflverse). The load-management
+    signal: a player's snap share can move well before their box-score
+    average does -- a receiver's role can shrink for weeks before it shows up
+    in a yards-per-game trailing average. Trailing SNAP share, not just
+    trailing yardage, is what usage-share sampling in the simulator draws on
+    (see model/player_sim.py)."""
+
+    __tablename__ = "snap_counts"
+    __table_args__ = (UniqueConstraint("player_id", "season", "week", "game_id", name="uq_snap_player_game"),)
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    game_id: Mapped[str] = mapped_column(String)
+    season: Mapped[int] = mapped_column(Integer)
+    week: Mapped[int] = mapped_column(Integer)
+    # GSIS id, matching PlayerGameStat.player_id -- mapped from nflverse's own
+    # PFR-keyed snap-count data via load_ff_playerids() at ingest time (see
+    # ingestion/snap_counts.py) so this table joins the same way every other
+    # player table does.
+    player_id: Mapped[str] = mapped_column(String)
+    # False for the small number of players load_ff_playerids() doesn't cover
+    # (mostly replacement-level/historical) -- player_id falls back to the raw
+    # PFR id for those, which won't join to PlayerGameStat.player_id, but the
+    # row is kept so it still counts toward team-snap totals.
+    id_mapped: Mapped[bool] = mapped_column(Boolean, default=True)
+    player_name: Mapped[str] = mapped_column(String)
+    position: Mapped[str | None] = mapped_column(String, nullable=True)
+    team: Mapped[str] = mapped_column(String)
+    opponent: Mapped[str | None] = mapped_column(String, nullable=True)
+    offense_snaps: Mapped[float | None] = mapped_column(Float, nullable=True)
+    offense_pct: Mapped[float | None] = mapped_column(Float, nullable=True)
+
+
+class TeamRosterMembership(Base):
+    """Which players were actually on which team's roster in a given season
+    (nflverse weekly rosters, deduped to season+team+player). Exists to gate
+    the simulator's usage-share pools -- without it, a team's recent-play
+    history has zero way to know a departed player left or a free-agent
+    signing arrived, and confidently attributes yardage to whoever last
+    played there, sometimes seasons after they moved on. Deliberately
+    season-level, not week-level: a mid-season trade means a player can
+    legitimately appear on both teams' rows for that season, which is a
+    safe approximation (it never wrongly excludes someone), just not
+    week-precise."""
+
+    __tablename__ = "team_roster_memberships"
+    __table_args__ = (UniqueConstraint("season", "team", "player_id", name="uq_roster_season_team_player"),)
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    season: Mapped[int] = mapped_column(Integer)
+    team: Mapped[str] = mapped_column(String)
+    player_id: Mapped[str] = mapped_column(String)
+    player_name: Mapped[str] = mapped_column(String)
+    position: Mapped[str | None] = mapped_column(String, nullable=True)
 
 
 class PlayerProjection(Base):

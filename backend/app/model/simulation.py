@@ -59,6 +59,12 @@ class PlayOutcome:
     touchdown: bool
     turnover: bool
     play_type: str
+    # Whether the real historical play this was sampled from had a recorded
+    # target (receiver_player_id). False on sacks/no-target pass plays --
+    # those get zero player-level attribution (no passer/receiver credit),
+    # matching how official passing yards exclude sack yardage. Meaningless
+    # for run plays (always True there).
+    has_target: bool = True
 
 
 @dataclass
@@ -166,6 +172,7 @@ class PlayLibrary:
                 Play.posteam, Play.defteam, Play.play_type, Play.down, Play.ydstogo,
                 Play.yardline_100, Play.yards_gained, Play.touchdown, Play.interception,
                 Play.fumble_lost, Play.offense_scheme_id, Play.defense_scheme_id,
+                Play.receiver_player_id,
                 Game.home_team,
             )
             .join(Game, Play.game_id == Game.game_id)
@@ -184,6 +191,7 @@ class PlayLibrary:
                 touchdown=bool(r.touchdown),
                 turnover=bool(r.interception or r.fumble_lost),
                 play_type=r.play_type or "run",
+                has_target=bool(r.play_type != "pass" or r.receiver_player_id is not None),
             )
             key = situation_key(int(r.down), float(r.ydstogo or 10), float(r.yardline_100))
             self.league.setdefault(key, []).append(outcome)
@@ -327,7 +335,11 @@ class GameSimulator:
     # --- the drive itself ---
 
     def _simulate_drive(
-        self, offense: str, start_yardline: float, time_remaining: float
+        self,
+        offense: str,
+        start_yardline: float,
+        time_remaining: float,
+        on_play=None,
     ) -> tuple[int, int, str, float, float]:
         """Returns (offense_points, defense_points, drive_result, elapsed, next_start).
 
@@ -335,6 +347,15 @@ class GameSimulator:
         clock ends scoreless: roughly 7.4% of real drives end that way, and a
         simulator without halves instead lets them play out and score at the
         normal rate, which inflated totals by about six points a game.
+
+        `on_play`, if given, is called as `on_play(offense, outcome, scored)`
+        once for every real down-play sampled (not on the FG/punt actions
+        themselves) -- `scored` reflects whether *this* play produced the
+        drive's touchdown, which can differ from `outcome.touchdown` because a
+        real historical play's yardage is being replayed from a different
+        starting field position than where it actually happened. This is how
+        model/player_sim.py attributes simulated yards to specific players
+        without touching the play-outcome sampling that was already validated.
         """
         pools = self.pools[offense]
         yardline = start_yardline
@@ -360,13 +381,18 @@ class GameSimulator:
             elapsed += self._seconds(outcome.play_type)
 
             if outcome.turnover:
+                if on_play:
+                    on_play(offense, outcome, False)
                 td_rate = self.params.get("clock_and_scoring", {}).get("turnover_return_td_rate", 0.0)
                 if self.rng.random() < td_rate:
                     return 0, self._touchdown_points(), "TURNOVER_TD", elapsed, self._drive_start("TOUCHDOWN")
                 return 0, 0, "TURNOVER", elapsed, 100.0 - yardline
 
             yardline -= outcome.yards
-            if yardline <= 0 or outcome.touchdown:
+            scored = yardline <= 0 or outcome.touchdown
+            if on_play:
+                on_play(offense, outcome, scored)
+            if scored:
                 return self._touchdown_points(), 0, "TOUCHDOWN", elapsed, self._drive_start("TOUCHDOWN")
             if yardline >= 100:
                 return 0, 2, "SAFETY", elapsed, 65.0
@@ -381,15 +407,22 @@ class GameSimulator:
 
         return 0, 0, "DOWNS", elapsed, 100.0 - yardline
 
-    def simulate(self, n_sims: int = 10000) -> SimulationResult:
+    def simulate(self, n_sims: int = 10000, on_play=None) -> SimulationResult:
+        """`on_play`, if given, is called as `on_play(sim_index, offense,
+        outcome, scored)` for every real down-play across every simulated
+        game -- `sim_index` (0..n_sims-1) is what lets a caller (see
+        model/player_sim.py) accumulate one total per player *per simulated
+        game*, which is what produces a real distribution instead of a single
+        running sum."""
         result = SimulationResult(self.home_team, self.away_team, n_sims)
 
-        for _ in range(n_sims):
+        for sim_index in range(n_sims):
             score = {self.home_team: 0, self.away_team: 0}
             # Coin toss decides who receives the opening kickoff; the other team
             # receives to start the second half. Halves are simulated separately
             # so the clock can actually kill a drive, as it does in real games.
             first_receiver = self.rng.choice([self.home_team, self.away_team])
+            per_play = (lambda off, outcome, scored: on_play(sim_index, off, outcome, scored)) if on_play else None
 
             for half in (0, 1):
                 clock = float(GAME_SECONDS) / 2
@@ -401,7 +434,7 @@ class GameSimulator:
                 while clock > 0:
                     defense = self.away_team if offense == self.home_team else self.home_team
                     off_pts, def_pts, drive_result, elapsed, next_start = self._simulate_drive(
-                        offense, next_start, clock
+                        offense, next_start, clock, on_play=per_play
                     )
                     score[offense] += off_pts
                     score[defense] += def_pts

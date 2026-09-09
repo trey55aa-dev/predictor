@@ -7,6 +7,8 @@ from app.ingestion.injuries import NoInjuryDataError, ingest_injuries
 from app.ingestion.odds import ingest_odds
 from app.ingestion.player_stats import ingest_player_stats
 from app.ingestion.plays import ingest_plays
+from app.ingestion.snap_counts import ingest_snap_counts
+from app.ingestion.rosters import ingest_rosters
 from app.ingestion.schedules import ingest_schedules, seed_reference_data
 from app.ingestion.schemes import build_team_season_schemes, seed_scheme_families
 from app.ingestion.weather import ingest_weather_for_games
@@ -184,6 +186,30 @@ def ingest_plays_cmd(seasons: list[int] = HISTORY_SEASONS) -> None:
     try:
         n = ingest_plays(db, seasons)
         typer.echo(f"Ingested {n} plays across seasons {seasons}.")
+    finally:
+        db.close()
+
+
+@app.command(name="ingest-rosters")
+def ingest_rosters_cmd(seasons: list[int] = HISTORY_SEASONS) -> None:
+    """Ingest real season+team roster membership -- gates the simulator's
+    usage-share pools against who was actually on the roster that season."""
+    db = SessionLocal()
+    try:
+        n = ingest_rosters(db, seasons)
+        typer.echo(f"Ingested {n} roster-membership rows across seasons {seasons}.")
+    finally:
+        db.close()
+
+
+@app.command(name="ingest-snap-counts")
+def ingest_snap_counts_cmd(seasons: list[int] = HISTORY_SEASONS) -> None:
+    """Ingest real per-player-per-game snap shares -- the load-management
+    signal for player projections and simulation-based props."""
+    db = SessionLocal()
+    try:
+        n = ingest_snap_counts(db, seasons)
+        typer.echo(f"Ingested {n} snap-count rows across seasons {seasons}.")
     finally:
         db.close()
 
@@ -468,6 +494,43 @@ def simulate_game_cmd(
         db.close()
 
 
+@app.command(name="simulate-player-props")
+def simulate_player_props_cmd(
+    home_team: str,
+    away_team: str,
+    season: int,
+    week: int,
+    n_sims: int = 3000,
+    seasons: list[int] = HISTORY_SEASONS,
+    seed: int = 0,
+) -> None:
+    """Run the player-attributed simulator for one matchup and print each
+    team's projected skill players."""
+    from app.model.player_sim import PlayerPropsSimulator
+
+    db = SessionLocal()
+    try:
+        sim = PlayerPropsSimulator(db, home_team, away_team, season, week, seasons, seed=seed or None)
+        result = sim.simulate(n_sims)
+        typer.echo(f"{away_team} @ {home_team} -- player props ({n_sims} sims)")
+        for side_key, team in (("home", home_team), ("away", away_team)):
+            typer.echo(f"\n{team}:")
+            for p in result["players"][side_key][:6]:
+                bits = []
+                if p["rushing"]:
+                    r = p["rushing"]
+                    bits.append(f"rush {r['mean_yards']:.1f} yds (p10-p90 {r['yards_p10']:.0f}-{r['yards_p90']:.0f})")
+                if p["receiving"]:
+                    r = p["receiving"]
+                    bits.append(f"rec {r['mean_yards']:.1f} yds (p10-p90 {r['yards_p10']:.0f}-{r['yards_p90']:.0f})")
+                if p["passing"]:
+                    r = p["passing"]
+                    bits.append(f"pass {r['mean_yards']:.1f} yds (p10-p90 {r['yards_p10']:.0f}-{r['yards_p90']:.0f})")
+                typer.echo(f"  {p['player_name']:<22} anytime-TD {p['anytime_td_probability']:.1%}  " + " | ".join(bits))
+    finally:
+        db.close()
+
+
 @app.command(name="validate-simulator")
 def validate_simulator_cmd(
     test_seasons: list[int] = [2024, 2025],
@@ -488,6 +551,29 @@ def validate_simulator_cmd(
             history_seasons=HISTORY_SEASONS,
             n_sims=n_sims,
             limit_per_season=limit_per_season or None,
+        )
+        typer.echo(_json.dumps(report, indent=2))
+    finally:
+        db.close()
+
+
+@app.command(name="validate-player-props")
+def validate_player_props_cmd(
+    test_seasons: list[int] = [2024, 2025],
+    n_sims: int = 500,
+    limit_per_season: int = 20,
+) -> None:
+    """Backtest simulation-based player props against real box scores and
+    against the existing trailing-average projection system, no lookahead."""
+    import json as _json
+
+    from app.model.player_sim_validation import validate_player_props
+
+    db = SessionLocal()
+    try:
+        report = validate_player_props(
+            db, test_seasons=test_seasons, history_seasons=HISTORY_SEASONS,
+            n_sims=n_sims, limit_per_season=limit_per_season or None,
         )
         typer.echo(_json.dumps(report, indent=2))
     finally:
