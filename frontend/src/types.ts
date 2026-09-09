@@ -203,6 +203,31 @@ export interface PlayerProjectionsResponse {
   away: PlayerProjection[];
 }
 
+export interface SimPropStat {
+  mean_yards: number;
+  p10: number;
+  p90: number;
+  td_probability: number;
+}
+
+export interface SimPlayerProp {
+  player_id: string;
+  player_name: string;
+  team: string;
+  /** Null when this player has no validated rushing role -- see SimPlayerProjection's
+   * backend docstring. Not every player has both. */
+  rushing: SimPropStat | null;
+  receiving: SimPropStat | null;
+  anytime_td_probability: number;
+}
+
+export interface SimPlayerPropsResponse {
+  game_id: string;
+  n_sims: number | null;
+  home: SimPlayerProp[];
+  away: SimPlayerProp[];
+}
+
 export interface ParlaySummary {
   legs: ParlayLeg[];
   combined_probability: number;

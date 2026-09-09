@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchGamePlan, fetchPlayerProjections } from "../api/client";
+import { fetchGamePlan, fetchPlayerProjections, fetchSimPlayerProps } from "../api/client";
 import type {
   DefensiveTendencies,
   GamePlan,
@@ -7,6 +7,8 @@ import type {
   PlayerProjection,
   PlayerProjectionsResponse,
   SchemeMatchupStats,
+  SimPlayerProp,
+  SimPlayerPropsResponse,
 } from "../types";
 
 function pct(p: number | null | undefined): string {
@@ -66,6 +68,44 @@ function MatchupLine({ label, stats }: { label: string; stats: SchemeMatchupStat
   );
 }
 
+function SimPropColumn({ players, team }: { players: SimPlayerProp[]; team: string }) {
+  if (players.length === 0) {
+    return (
+      <div className="injury-column">
+        <h4>{team}</h4>
+        <p className="empty-note">Not enough current-roster data to simulate yet.</p>
+      </div>
+    );
+  }
+  return (
+    <div className="injury-column">
+      <h4>{team}</h4>
+      <ul className="player-projection-list">
+        {players.map((p) => (
+          <li key={p.player_id}>
+            <div className="player-projection-row">
+              <strong>{p.player_name}</strong>
+            </div>
+            <div className="player-projection-stats">
+              {p.rushing && (
+                <span>
+                  {p.rushing.mean_yards.toFixed(0)} rush yds ({p.rushing.p10.toFixed(0)}-{p.rushing.p90.toFixed(0)})
+                </span>
+              )}
+              {p.receiving && (
+                <span>
+                  {p.receiving.mean_yards.toFixed(0)} rec yds ({p.receiving.p10.toFixed(0)}-{p.receiving.p90.toFixed(0)})
+                </span>
+              )}
+              <span className="player-td-prob">{pct(p.anytime_td_probability)} anytime TD</span>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 function PlayerColumn({ players, team }: { players: PlayerProjection[]; team: string }) {
   if (players.length === 0) {
     return (
@@ -103,6 +143,7 @@ export default function GamePlanPanel({ gameId }: { gameId: string }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [players, setPlayers] = useState<PlayerProjectionsResponse | null>(null);
+  const [simProps, setSimProps] = useState<SimPlayerPropsResponse | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -122,6 +163,13 @@ export default function GamePlanPanel({ gameId }: { gameId: string }) {
       })
       .catch(() => {
         if (!cancelled) setPlayers(null);
+      });
+    fetchSimPlayerProps(gameId)
+      .then((p) => {
+        if (!cancelled) setSimProps(p);
+      })
+      .catch(() => {
+        if (!cancelled) setSimProps(null);
       });
     return () => {
       cancelled = true;
@@ -151,6 +199,24 @@ export default function GamePlanPanel({ gameId }: { gameId: string }) {
           <div className="injury-columns">
             <PlayerColumn players={players.home} team={plan.home_team} />
             <PlayerColumn players={players.away} team={plan.away_team} />
+          </div>
+        </section>
+      )}
+
+      {simProps && (simProps.home.length > 0 || simProps.away.length > 0) && (
+        <section>
+          <h4 className="plan-section-title">
+            Simulated rushing/receiving ({simProps.n_sims?.toLocaleString()} sims)
+          </h4>
+          <p className="plan-note">
+            From the game simulator, conditioned on the real scheme matchup -- validated against real box scores
+            and shown here only for rushing/receiving, which measured competitive with or better than the
+            trailing-average projections above. Range shown is the 10th-90th percentile across simulated games,
+            not a guarantee.
+          </p>
+          <div className="injury-columns">
+            <SimPropColumn players={simProps.home} team={plan.home_team} />
+            <SimPropColumn players={simProps.away} team={plan.away_team} />
           </div>
         </section>
       )}

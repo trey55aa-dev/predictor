@@ -435,6 +435,46 @@ class SimulationParam(Base):
     created_at: Mapped[dt.datetime] = mapped_column(DateTime)
 
 
+class SimPlayerProjection(Base):
+    """Simulation-based player prop distributions -- rushing and receiving
+    only. Deliberately excludes passing: after extensive validation
+    (model/player_sim_validation.py, six real bugs found and fixed) it still
+    underperforms the trailing-average system in PlayerProjection, mostly on
+    in-game QB injuries/changes that have no data to learn from. Shipping
+    only what measured better, per the project's validate-before-trusting
+    principle -- see model/player_sim.py and model/player_usage.py.
+
+    Precomputed and stored rather than served live: a Monte Carlo run takes
+    several seconds to tens of seconds per game, far too slow for a live API
+    request, unlike PlayerProjection's cheap trailing-average model.
+    """
+
+    __tablename__ = "sim_player_projections"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    game_id: Mapped[str] = mapped_column(ForeignKey("games.game_id"))
+    player_id: Mapped[str] = mapped_column(String)
+    player_name: Mapped[str] = mapped_column(String)
+    team: Mapped[str] = mapped_column(String)
+    season: Mapped[int] = mapped_column(Integer)
+    week: Mapped[int] = mapped_column(Integer)
+    model_version: Mapped[str] = mapped_column(String)
+    n_sims: Mapped[int] = mapped_column(Integer)
+    created_at: Mapped[dt.datetime] = mapped_column(DateTime)
+
+    rushing_mean_yards: Mapped[float | None] = mapped_column(Float, nullable=True)
+    rushing_p10: Mapped[float | None] = mapped_column(Float, nullable=True)
+    rushing_p90: Mapped[float | None] = mapped_column(Float, nullable=True)
+    rushing_td_prob: Mapped[float | None] = mapped_column(Float, nullable=True)
+
+    receiving_mean_yards: Mapped[float | None] = mapped_column(Float, nullable=True)
+    receiving_p10: Mapped[float | None] = mapped_column(Float, nullable=True)
+    receiving_p90: Mapped[float | None] = mapped_column(Float, nullable=True)
+    receiving_td_prob: Mapped[float | None] = mapped_column(Float, nullable=True)
+
+    anytime_td_probability: Mapped[float] = mapped_column(Float)
+
+
 class CalibrationAdjustment(Base):
     """Audit log of every time a model constant was auto-tuned -- also the
     source of truth for its *current* value (latest row per parameter_name);

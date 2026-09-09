@@ -531,6 +531,26 @@ def simulate_player_props_cmd(
         db.close()
 
 
+@app.command(name="simulate-player-props-week")
+def simulate_player_props_week_cmd(
+    season: int,
+    week: int,
+    n_sims: int = 3000,
+    seasons: list[int] = HISTORY_SEASONS,
+) -> None:
+    """Precompute and store simulation-based rushing/receiving player props
+    for every game in a week. Passing is deliberately not included -- see
+    SimPlayerProjection's docstring."""
+    from app.model.player_sim import store_week_player_props
+
+    db = SessionLocal()
+    try:
+        n = store_week_player_props(db, season, week, seasons, n_sims=n_sims)
+        typer.echo(f"Stored {n} simulated player props for {season} week {week}.")
+    finally:
+        db.close()
+
+
 @app.command(name="validate-simulator")
 def validate_simulator_cmd(
     test_seasons: list[int] = [2024, 2025],

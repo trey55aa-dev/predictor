@@ -19,6 +19,7 @@ too, so this is the accurate box-score convention, not a simplification.
 """
 
 import bisect
+import datetime as dt
 import random
 from collections import defaultdict
 
@@ -220,3 +221,78 @@ class PlayerPropsSimulator:
         ids.update(self.target_samplers[team].player_ids)
         ids.update(self.passer_samplers[team].player_ids)
         return ids
+
+
+MODEL_VERSION = "player-sim-v1"
+# Rushing and receiving only -- see SimPlayerProjection's docstring for why
+# passing is deliberately left out.
+DEFAULT_N_SIMS = 3000
+TOP_N_PER_TEAM = 8  # store only the most-involved players, matching player_projection.py's own cap
+
+
+def store_game_player_props(db: Session, game, seasons: list[int], n_sims: int = DEFAULT_N_SIMS) -> int:
+    """Runs the simulator for one game and upserts SimPlayerProjection rows
+    for its most-involved players (rushing/receiving only). Re-running mid-
+    week (as rosters/usage update) replaces the prior rows for this game
+    rather than accumulating duplicates."""
+    from app.models import SimPlayerProjection
+
+    try:
+        sim = PlayerPropsSimulator(db, game.home_team, game.away_team, game.season, game.week, seasons)
+    except RuntimeError:
+        return 0
+
+    result = sim.simulate(n_sims)
+    now = dt.datetime.utcnow()
+
+    db.query(SimPlayerProjection).filter(SimPlayerProjection.game_id == game.game_id).delete(
+        synchronize_session=False
+    )
+
+    stored = 0
+    for side_key, team in (("home", game.home_team), ("away", game.away_team)):
+        for p in result["players"][side_key][:TOP_N_PER_TEAM]:
+            rushing = p["rushing"]
+            receiving = p["receiving"]
+            if rushing is None and receiving is None:
+                continue  # passing-only player (a QB with no rush/target share) -- nothing validated to store
+            db.add(
+                SimPlayerProjection(
+                    game_id=game.game_id,
+                    player_id=p["player_id"],
+                    player_name=p["player_name"],
+                    team=team,
+                    season=game.season,
+                    week=game.week,
+                    model_version=MODEL_VERSION,
+                    n_sims=n_sims,
+                    created_at=now,
+                    rushing_mean_yards=rushing["mean_yards"] if rushing else None,
+                    rushing_p10=rushing["yards_p10"] if rushing else None,
+                    rushing_p90=rushing["yards_p90"] if rushing else None,
+                    rushing_td_prob=rushing["td_probability"] if rushing else None,
+                    receiving_mean_yards=receiving["mean_yards"] if receiving else None,
+                    receiving_p10=receiving["yards_p10"] if receiving else None,
+                    receiving_p90=receiving["yards_p90"] if receiving else None,
+                    receiving_td_prob=receiving["td_probability"] if receiving else None,
+                    anytime_td_probability=p["anytime_td_probability"],
+                )
+            )
+            stored += 1
+
+    db.commit()
+    return stored
+
+
+def store_week_player_props(db: Session, season: int, week: int, seasons: list[int], n_sims: int = DEFAULT_N_SIMS) -> int:
+    from app.models import Game
+
+    games = (
+        db.query(Game)
+        .filter(Game.season == season, Game.week == week, Game.game_type == "REG")
+        .all()
+    )
+    total = 0
+    for game in games:
+        total += store_game_player_props(db, game, seasons, n_sims=n_sims)
+    return total

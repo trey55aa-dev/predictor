@@ -6,6 +6,7 @@ import type {
   ParlaysResponse,
   Performance,
   PlayerProjectionsResponse,
+  SimPlayerPropsResponse,
   SchemeDetail,
   SchemeFamily,
 } from "../types";
@@ -43,6 +44,10 @@ export function fetchSystemDetail(id: string): Promise<SchemeDetail> {
 
 export function fetchGamePlan(gameId: string): Promise<GamePlan> {
   return get(`/api/predictions/game/${gameId}/gameplan`);
+}
+
+export function fetchSimPlayerProps(gameId: string): Promise<SimPlayerPropsResponse> {
+  return get(`/api/predictions/game/${gameId}/sim-player-props`);
 }
 
 export function fetchParlays(season: number, week: number, legs = 3): Promise<ParlaysResponse> {
