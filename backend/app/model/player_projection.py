@@ -7,10 +7,9 @@ crossing logic as team_scoring_averages.
 import datetime as dt
 import math
 
-from sqlalchemy import func
 from sqlalchemy.orm import Session
 
-from app.models import Game, PlayerGameStat, PlayerProjection
+from app.models import Game, PlayerGameStat, PlayerProjection, TeamRosterMembership
 
 LOOKBACK_GAMES = 10
 MIN_GAMES_TO_PROJECT = 2  # need at least a couple of real games to trust a rate
@@ -159,26 +158,25 @@ def project_player(db: Session, player_id: str, player_name: str, position: str,
     }
 
 
-def _current_roster(db: Session, team: str) -> list[PlayerGameStat]:
-    """Each skill-position player's single most recent stat row, filtered to
-    those whose most recent team is `team` -- a proxy for 'currently on this
-    team' without needing a separate roster-ingestion pipeline."""
-    latest = (
-        db.query(
-            PlayerGameStat.player_id,
-            func.max(PlayerGameStat.season * 100 + PlayerGameStat.week).label("latest_key"),
-        )
-        .filter(PlayerGameStat.position.in_(SKILL_POSITIONS))
-        .group_by(PlayerGameStat.player_id)
-        .subquery()
-    )
+def _current_roster(db: Session, team: str, season: int) -> list[TeamRosterMembership]:
+    """Real, current roster membership for this team+season -- NOT inferred
+    from each player's last stat row.
+
+    That was the original approach here, and it has a real blind spot: a
+    player's "most recent team" by stat row only updates once they've
+    actually played (and had stats ingested) for their new team, so a
+    trade or a free-agent signing left them listed under their OLD team for
+    the entire gap in between -- confirmed live: Kenneth Walker III, traded
+    to KC for 2026, was still shown as a Seahawk here because his most
+    recent PlayerGameStat row was still a 2025 Seattle game. Real roster
+    data (TeamRosterMembership, the same table model/player_usage.py's
+    simulator was already fixed to use for exactly this reason) is the
+    source of truth for "who's on this team now" instead.
+    """
     return (
-        db.query(PlayerGameStat)
-        .join(latest, PlayerGameStat.player_id == latest.c.player_id)
-        .filter(
-            (PlayerGameStat.season * 100 + PlayerGameStat.week) == latest.c.latest_key,
-            PlayerGameStat.team == team,
-        )
+        db.query(TeamRosterMembership)
+        .filter(TeamRosterMembership.team == team, TeamRosterMembership.season == season)
+        .filter(TeamRosterMembership.position.in_(SKILL_POSITIONS))
         .all()
     )
 
@@ -188,7 +186,7 @@ def project_game_players(db: Session, game: Game) -> dict:
     most-involved skill players' projections for this matchup."""
     result = {}
     for side_team, opponent in ((game.home_team, game.away_team), (game.away_team, game.home_team)):
-        roster = _current_roster(db, side_team)
+        roster = _current_roster(db, side_team, game.season)
         projections = []
         for player in roster:
             proj = project_player(

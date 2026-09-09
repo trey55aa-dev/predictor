@@ -9,7 +9,7 @@ from app.model.player_projection import (
     project_game_players,
     project_player,
 )
-from app.models import Base, Game, PlayerGameStat
+from app.models import Base, Game, PlayerGameStat, TeamRosterMembership
 
 
 @pytest.fixture()
@@ -114,6 +114,10 @@ def test_project_game_players_splits_home_and_away(db):
     _stat(db, "kc_rb", "KC Back", "RB", "KC", 2025, 4, rushing_yards=70, rushing_tds=0, carries=15)
     _stat(db, "den_wr", "Den Wideout", "WR", "DEN", 2025, 3, receiving_yards=75, targets=9)
     _stat(db, "den_wr", "Den Wideout", "WR", "DEN", 2025, 4, receiving_yards=55, targets=7)
+    # Roster membership is now the source of truth for "who's on this team",
+    # not each player's last stat row -- see _current_roster's docstring.
+    db.add(TeamRosterMembership(season=2025, team="KC", player_id="kc_rb", player_name="KC Back", position="RB"))
+    db.add(TeamRosterMembership(season=2025, team="DEN", player_id="den_wr", player_name="Den Wideout", position="WR"))
     db.commit()
 
     game = db.query(Game).filter(Game.game_id == "g1").first()
@@ -122,3 +126,27 @@ def test_project_game_players_splits_home_and_away(db):
     assert any(p["player_id"] == "kc_rb" for p in result["home"])
     assert any(p["player_id"] == "den_wr" for p in result["away"])
     assert not any(p["player_id"] == "den_wr" for p in result["home"])
+
+
+def test_project_game_players_uses_real_roster_not_last_stat_row(db):
+    """The bug this guards against: a player traded to a new team kept
+    showing up under their OLD team here, because 'current team' was
+    inferred from their last PlayerGameStat row, which only updates once
+    they've actually played (and had stats ingested) for the new team.
+    Confirmed live with Kenneth Walker III, traded to KC for 2026 but still
+    shown as a Seahawk since his most recent stat row was a 2025 SEA game.
+    """
+    _game(db, "g1", "KC", "DEN", season=2026, week=1)
+    # All of this player's real stat history is with SEA -- exactly the
+    # traded-player shape.
+    _stat(db, "rb1", "Traded Back", "RB", "SEA", 2025, 3, rushing_yards=90, rushing_tds=1, carries=18)
+    _stat(db, "rb1", "Traded Back", "RB", "SEA", 2025, 4, rushing_yards=70, rushing_tds=0, carries=15)
+    # But the real roster says they're on KC now.
+    db.add(TeamRosterMembership(season=2026, team="KC", player_id="rb1", player_name="Traded Back", position="RB"))
+    db.commit()
+
+    game = db.query(Game).filter(Game.game_id == "g1").first()
+    result = project_game_players(db, game)
+
+    assert any(p["player_id"] == "rb1" for p in result["home"])  # KC is home
+    assert not any(p["player_id"] == "rb1" for p in result["away"])
