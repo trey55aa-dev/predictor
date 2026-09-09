@@ -64,6 +64,22 @@ def _team_injuries(db: Session, team_abbr: str, season: int, week: int) -> list[
     ]
 
 
+def _injury_data_available(db: Session, season: int) -> bool:
+    """Whether the injury data SOURCE has any rows at all for this season --
+    distinct from a team's own list being empty.
+
+    Real gap this closes: nflverse's injury feed has zero rows for a season
+    until partway into it (confirmed live -- `nfl.load_injuries` raises
+    "Season must be between 2009 and 2025" for the 2026 season entirely, not
+    yet available at all), so every team's injury list reads as empty right
+    now. Without this flag, "empty list" is indistinguishable from "checked,
+    genuinely clean" -- which is a real, misleading honesty gap: the panel
+    would say "No notable injuries reported" with exactly the same words
+    whether that's actually true or we simply have no data source yet.
+    """
+    return db.query(Injury.id).filter(Injury.season == season).first() is not None
+
+
 def _team_scheme(db: Session, team_abbr: str, season: int) -> TeamSeasonScheme | None:
     return (
         db.query(TeamSeasonScheme)
@@ -110,6 +126,7 @@ def build_gameplan(db: Session, game: Game) -> dict:
         "injuries": {
             "home": _team_injuries(db, game.home_team, game.season, game.week),
             "away": _team_injuries(db, game.away_team, game.season, game.week),
+            "data_available": _injury_data_available(db, game.season),
         },
         "play_styles": {
             "home_offense": top_offensive_concepts(db, game.home_team, game.season),

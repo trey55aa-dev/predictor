@@ -139,7 +139,7 @@ export interface GamePlan {
   upset_alert: { is_upset_alert: boolean; note: string | null };
   over_under: { lean: string | null; edge: number | null; note: string | null };
   weather_note: string | null;
-  injuries: { home: InjuryEntry[]; away: InjuryEntry[] };
+  injuries: { home: InjuryEntry[]; away: InjuryEntry[]; data_available: boolean };
   play_styles: {
     home_offense: PlayConcept[];
     away_offense: PlayConcept[];

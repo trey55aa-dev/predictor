@@ -15,12 +15,27 @@ function pct(p: number | null | undefined): string {
   return p === null || p === undefined ? "—" : `${Math.round(p * 100)}%`;
 }
 
-function InjuryList({ injuries, team }: { injuries: InjuryEntry[]; team: string }) {
+function InjuryList({
+  injuries,
+  team,
+  dataAvailable,
+}: {
+  injuries: InjuryEntry[];
+  team: string;
+  dataAvailable: boolean;
+}) {
   if (injuries.length === 0) {
     return (
       <div className="injury-column">
         <h4>{team}</h4>
-        <p className="empty-note">No notable injuries reported.</p>
+        {dataAvailable ? (
+          <p className="empty-note">No notable injuries reported.</p>
+        ) : (
+          <p className="empty-note">
+            ⚠️ No injury data source available yet for this season -- this isn't a clean bill of health, it's an
+            unknown.
+          </p>
+        )}
       </div>
     );
   }
@@ -196,8 +211,8 @@ export default function GamePlanPanel({ gameId }: { gameId: string }) {
       <section>
         <h4 className="plan-section-title">Injuries</h4>
         <div className="injury-columns">
-          <InjuryList injuries={plan.injuries.home} team={plan.home_team} />
-          <InjuryList injuries={plan.injuries.away} team={plan.away_team} />
+          <InjuryList injuries={plan.injuries.home} team={plan.home_team} dataAvailable={plan.injuries.data_available} />
+          <InjuryList injuries={plan.injuries.away} team={plan.away_team} dataAvailable={plan.injuries.data_available} />
         </div>
       </section>
 
