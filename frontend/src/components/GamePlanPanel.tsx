@@ -157,14 +157,22 @@ export default function GamePlanPanel({ gameId }: { gameId: string }) {
       .finally(() => {
         if (!cancelled) setLoading(false);
       });
+    // Sequenced, not fired concurrently: the free-tier backend runs a
+    // single worker, and two simultaneous player-data requests to it were
+    // observed to intermittently fail one of them with what Chrome reports
+    // as a CORS error (really a connection reset before headers arrive,
+    // which looks identical to a missing CORS header from the browser's
+    // side) -- confirmed reproducible, and confirmed each endpoint works
+    // cleanly in isolation. Sequencing keeps this panel to one in-flight
+    // request at a time, same as before this feature added a second one.
     fetchPlayerProjections(gameId)
       .then((p) => {
         if (!cancelled) setPlayers(p);
       })
       .catch(() => {
         if (!cancelled) setPlayers(null);
-      });
-    fetchSimPlayerProps(gameId)
+      })
+      .then(() => fetchSimPlayerProps(gameId))
       .then((p) => {
         if (!cancelled) setSimProps(p);
       })
