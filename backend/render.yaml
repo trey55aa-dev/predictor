@@ -4,7 +4,15 @@ services:
     runtime: python
     rootDir: backend
     buildCommand: pip install uv && uv sync --frozen
-    startCommand: uv run uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    # --workers 2: default (1 worker) fully serializes requests -- confirmed
+    # by measurement, 4 concurrent requests to the same endpoint each took
+    # ~10s instead of the ~0.3s a single request takes alone, which is long
+    # enough to trip client-side/proxy timeouts (they surface in the browser
+    # as a CORS error, since a connection reset before headers arrive looks
+    # identical to a missing CORS header). Kept modest given the free tier's
+    # limited memory -- not a fix for arbitrary load, just enough headroom
+    # for a few real concurrent page-load requests instead of none.
+    startCommand: uv run uvicorn app.main:app --host 0.0.0.0 --port $PORT --workers 2
     envVars:
       # Set these in the Render dashboard when connecting the repo --
       # "sync: false" means Render prompts for a value instead of reading
