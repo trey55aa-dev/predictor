@@ -45,7 +45,7 @@ function InjuryList({
       <ul className="injury-list">
         {injuries.map((inj) => (
           <li key={inj.player_name}>
-            <span className={`status-dot ${inj.report_status.toLowerCase()}`} />
+            <span className={`status-dot ${inj.report_status.toLowerCase().replace(/\s+/g, "-")}`} />
             <strong>{inj.player_name}</strong> ({inj.position}
             {inj.is_starter ? ", starter" : ""}) — {inj.report_status}
             {inj.primary_injury ? `, ${inj.primary_injury}` : ""}

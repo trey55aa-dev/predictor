@@ -10,7 +10,11 @@ from app.model.matchup import defensive_tendencies, scheme_matchup_history, top_
 from app.models import Game, Injury, OddsSnapshot, Prediction, TeamSeasonScheme, WeatherSnapshot
 
 UPSET_ALERT_THRESHOLD = 0.40
-_SEVERITY_RANK = {"Out": 0, "Doubtful": 1, "Questionable": 2}
+# "Injured Reserve" ranks above "Out" -- it means out for weeks, a stronger
+# signal than a single-week "Out" designation. Both appear now that the ESPN
+# source is live (see ingestion/espn_injuries.py); nflverse's own feed, when
+# it has data, only ever used Out/Doubtful/Questionable.
+_SEVERITY_RANK = {"Injured Reserve": -1, "Out": 0, "Doubtful": 1, "Questionable": 2, "Probable": 3}
 
 
 def _latest_prediction(db: Session, game_id: str) -> Prediction | None:

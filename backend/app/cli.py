@@ -3,6 +3,7 @@ import datetime as dt
 import typer
 
 from app.db import SessionLocal, create_all
+from app.ingestion.espn_injuries import ingest_espn_injuries
 from app.ingestion.injuries import NoInjuryDataError, ingest_injuries
 from app.ingestion.odds import ingest_odds
 from app.ingestion.player_stats import ingest_player_stats
@@ -97,20 +98,29 @@ def ingest_all(season: int, week: int) -> None:
             n_injuries = ingest_injuries(db, season, week)
             typer.echo(f"Ingested {n_injuries} injury reports.")
         except NoInjuryDataError as e:
-            typer.echo(f"Skipping injury ingestion: {e}")
+            typer.echo(f"nflverse injury data unavailable ({e}); falling back to ESPN's live roster feed.")
+            try:
+                n_espn = ingest_espn_injuries(db, season, week)
+                typer.echo(f"Ingested {n_espn} injury reports from ESPN.")
+            except Exception as espn_e:  # noqa: BLE001 -- an external API hiccup shouldn't crash the pipeline
+                typer.echo(f"ESPN injury fallback also failed: {espn_e}")
     finally:
         db.close()
 
 
 @app.command(name="ingest-injuries")
 def ingest_injuries_cmd(season: int, week: int) -> None:
-    """Ingest one week's injury reports (ranked by starter status)."""
+    """Ingest one week's injury reports (ranked by starter status). Falls
+    back to ESPN's live roster feed when nflverse has no data for this
+    season (currently true for the whole 2026 season)."""
     db = SessionLocal()
     try:
         n = ingest_injuries(db, season, week)
         typer.echo(f"Ingested {n} injury reports for {season} week {week}.")
     except NoInjuryDataError as e:
-        typer.echo(f"No injury data available: {e}")
+        typer.echo(f"nflverse injury data unavailable ({e}); falling back to ESPN's live roster feed.")
+        n_espn = ingest_espn_injuries(db, season, week)
+        typer.echo(f"Ingested {n_espn} injury reports from ESPN for {season} week {week}.")
     finally:
         db.close()
 
@@ -317,7 +327,12 @@ def run_routine_cmd() -> None:
                 n_injuries = ingest_injuries(db, season, week)
                 typer.echo(f"Ingested {n_injuries} injury reports for week {week}.")
             except NoInjuryDataError as e:
-                typer.echo(f"Skipping injury ingestion: {e}")
+                typer.echo(f"nflverse injury data unavailable ({e}); falling back to ESPN's live roster feed.")
+                try:
+                    n_espn = ingest_espn_injuries(db, season, week)
+                    typer.echo(f"Ingested {n_espn} injury reports from ESPN for week {week}.")
+                except Exception as espn_e:  # noqa: BLE001
+                    typer.echo(f"ESPN injury fallback also failed: {espn_e}")
 
             predictions = predict_week(db, season, week)
             typer.echo(f"Generated {len(predictions)} predictions for week {week}.")

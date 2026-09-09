@@ -398,6 +398,14 @@ body {
   background: #eab308;
 }
 
+.status-dot.injured-reserve {
+  background: #7f1d1d;
+}
+
+.status-dot.probable {
+  background: var(--good);
+}
+
 .empty-note {
   font-size: 0.8rem;
   color: var(--muted);
