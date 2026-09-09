@@ -28,6 +28,14 @@ from app.models import Game
 app = typer.Typer()
 
 HISTORY_SEASONS = [2021, 2022, 2023, 2024, 2025]
+# NOTE: intentionally does NOT include the current in-progress season.
+# nflreadpy's load_pbp() rejects any season beyond its own notion of
+# "current season" (a season needs to be complete, or nearly so, before
+# full play-by-play is available) -- confirmed by a real ValueError running
+# build-sim-params against 2026 mid-season. load_rosters() and
+# load_snap_counts() DO support the in-progress season, which is why
+# ingest-rosters/ingest-snap-counts were called with an explicit
+# --seasons list including 2026 rather than relying on this default.
 
 # Stop-condition thresholds. Small early samples can spuriously read 90%+;
 # these guard against declaring victory on a lucky streak.
