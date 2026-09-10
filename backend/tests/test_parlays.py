@@ -1,16 +1,44 @@
 import datetime as dt
 
 import pytest
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker
 
 from app.model.parlays import build_parlays, grade_parlays, log_parlays
-from app.models import Base, Game, OddsSnapshot, ParlayPick, PlayerGameStat, PlayerProjection, Prediction
+from app.models import (
+    Base,
+    Game,
+    OddsSnapshot,
+    ParlayPick,
+    ParlayPickLeg,
+    PlayerGameStat,
+    PlayerProjection,
+    Prediction,
+    Team,
+)
 
 
 @pytest.fixture()
 def db():
     engine = create_engine("sqlite:///:memory:")
+    Base.metadata.create_all(bind=engine)
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    yield session
+    session.close()
+
+
+@pytest.fixture()
+def db_with_fk_enforcement():
+    """SQLite doesn't enforce foreign keys unless told to; production
+    Postgres always does. Real bug this reproduces: a bulk .delete() on
+    ParlayPick doesn't cascade to ParlayPickLeg (no ORM cascade fires on a
+    bulk delete, and the FK itself has no ON DELETE CASCADE), so re-running
+    log_parlays while the prior pick was still ungraded raised a live
+    ForeignKeyViolation in production -- invisible on a plain sqlite test
+    engine until FK enforcement is switched on here to match."""
+    engine = create_engine("sqlite:///:memory:")
+    event.listen(engine, "connect", lambda conn, _: conn.execute("PRAGMA foreign_keys=ON"))
     Base.metadata.create_all(bind=engine)
     Session = sessionmaker(bind=engine)
     session = Session()
@@ -212,3 +240,32 @@ def test_grade_anytime_td_leg_miss_when_no_stat_line(db):
 
     pick = db.query(ParlayPick).filter(ParlayPick.parlay_type == "safest").first()
     assert pick.all_legs_hit is False
+
+
+def test_log_parlays_replaces_an_already_logged_ungraded_pick_without_crashing(db_with_fk_enforcement):
+    """The bug this guards against: production has real foreign-key
+    enforcement (SQLite doesn't, by default), so deleting a ParlayPick row
+    while its ParlayPickLeg children still reference it raised
+    IntegrityError/ForeignKeyViolation the second time log_parlays ran for
+    the same still-ungraded week -- confirmed live in the GitHub Actions
+    cloud routine."""
+    db = db_with_fk_enforcement
+    db.add(Team(team_abbr="KC", name="Kansas City Chiefs"))
+    db.add(Team(team_abbr="DEN", name="Denver Broncos"))
+    db.flush()  # teams are seeded well before any game in the real pipeline; match that here
+    _game(db, "g1", "KC", "DEN")
+    _prediction(db, "g1", 0.7)
+    db.commit()
+
+    log_parlays(db, 2024, 1, legs=1)
+    first_pick_id = db.query(ParlayPick).filter(ParlayPick.parlay_type == "safest").first().id
+
+    # Re-running before the first pick is ever graded is the exact
+    # production scenario (a routine run earlier the same day already
+    # logged this week's pick; nothing has kicked off/finished yet).
+    log_parlays(db, 2024, 1, legs=1)
+
+    picks = db.query(ParlayPick).filter(ParlayPick.parlay_type == "safest").all()
+    assert len(picks) == 1  # replaced, not duplicated
+    assert db.query(ParlayPickLeg).filter(ParlayPickLeg.parlay_pick_id == first_pick_id).count() > 0
+    assert db.query(ParlayPickLeg).count() == len(picks[0].legs)  # no orphaned legs left behind

@@ -195,12 +195,29 @@ def log_parlays(db: Session, season: int, week: int, legs: int = 3) -> int:
         if not summary:
             continue
 
-        db.query(ParlayPick).filter(
-            ParlayPick.season == season,
-            ParlayPick.week == week,
-            ParlayPick.parlay_type == parlay_type,
-            ParlayPick.graded_at.is_(None),
-        ).delete(synchronize_session=False)
+        # Bulk .delete() bypasses the ORM relationship cascade entirely, and
+        # the FK has no ON DELETE CASCADE at the DB level -- deleting a
+        # not-yet-graded ParlayPick that already has legs raised a real
+        # ForeignKeyViolation in production the first time this ran twice
+        # in the same still-ungraded week (confirmed live: a Wednesday
+        # routine run's parlay pick still had no graded_at by the time a
+        # later same-day run replaced it). Delete the children first.
+        stale_pick_ids = [
+            pid
+            for (pid,) in db.query(ParlayPick.id)
+            .filter(
+                ParlayPick.season == season,
+                ParlayPick.week == week,
+                ParlayPick.parlay_type == parlay_type,
+                ParlayPick.graded_at.is_(None),
+            )
+            .all()
+        ]
+        if stale_pick_ids:
+            db.query(ParlayPickLeg).filter(ParlayPickLeg.parlay_pick_id.in_(stale_pick_ids)).delete(
+                synchronize_session=False
+            )
+            db.query(ParlayPick).filter(ParlayPick.id.in_(stale_pick_ids)).delete(synchronize_session=False)
 
         pick = ParlayPick(
             season=season,
