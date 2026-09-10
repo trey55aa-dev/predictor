@@ -23,25 +23,37 @@ class NoInjuryDataError(Exception):
 
 
 def ingest_injuries(db: Session, season: int, week: int) -> int:
+    # Wraps the whole function, not just the initial load calls: nflverse's
+    # own injury/depth-chart pipeline has been independently confirmed
+    # broken for the current season (a real, acknowledged upstream issue,
+    # not specific to this app) -- the load calls themselves can succeed
+    # while returning a DataFrame with a changed/missing schema (confirmed
+    # live: load_depth_charts(seasons=[2026]) returned data with no "week"
+    # column at all, raising deep inside the filter below). Any failure
+    # anywhere in this pipeline gets the same treatment: report it as
+    # unavailable and let the caller's ESPN fallback (see
+    # ingestion/espn_injuries.py) take over, rather than crashing.
     try:
         injuries = nfl.load_injuries(seasons=[season])
         depth_charts = nfl.load_depth_charts(seasons=[season])
+
+        week_injuries = injuries.filter(
+            (pl.col("week") == week) & pl.col("report_status").is_in(list(REPORTABLE_STATUSES))
+        )
+        if week_injuries.height == 0:
+            return 0
+
+        starters = (
+            depth_charts.filter(pl.col("week") == week)
+            .with_columns(pl.col("depth_team").cast(pl.Int32, strict=False))
+            .group_by("gsis_id")
+            .agg(pl.col("depth_team").min().alias("best_depth"))
+        )
+        starter_ids = set(starters.filter(pl.col("best_depth") == 1)["gsis_id"].to_list())
+    except NoInjuryDataError:
+        raise
     except Exception as e:
-        raise NoInjuryDataError(f"Injury data not available for season {season}: {e}") from e
-
-    week_injuries = injuries.filter(
-        (pl.col("week") == week) & pl.col("report_status").is_in(list(REPORTABLE_STATUSES))
-    )
-    if week_injuries.height == 0:
-        return 0
-
-    starters = (
-        depth_charts.filter(pl.col("week") == week)
-        .with_columns(pl.col("depth_team").cast(pl.Int32, strict=False))
-        .group_by("gsis_id")
-        .agg(pl.col("depth_team").min().alias("best_depth"))
-    )
-    starter_ids = set(starters.filter(pl.col("best_depth") == 1)["gsis_id"].to_list())
+        raise NoInjuryDataError(f"Injury data not usable for season {season}: {e}") from e
 
     db.query(Injury).filter(Injury.season == season, Injury.week == week).delete(synchronize_session=False)
 
