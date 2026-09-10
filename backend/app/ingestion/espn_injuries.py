@@ -36,7 +36,19 @@ ESPN_ROSTER_URL = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/te
 # ESPN's abbreviation differs from ours for exactly one current franchise
 # (confirmed by diffing the full 32-team list against our own Team table --
 # every other code matches).
-OUR_ABBR_TO_ESPN = {"WAS": "WSH"}
+OUR_ABBR_TO_ESPN = {"WAS": "WSH", "LA": "LAR"}
+
+# Our own Team table carries a real duplicate for exactly one franchise --
+# "LA" and "LAR" are both "Los Angeles Rams" rows, a leftover from an
+# earlier schema/ingestion pass. "LA" is the one actually used everywhere
+# else in this app (112 real games reference it; zero reference "LAR").
+# Left unexcluded, "LAR" independently string-matches ESPN's own
+# abbreviation (which is literally "LAR"), silently soaking up the Rams'
+# real injury data under a team code nothing else in the app ever queries
+# -- confirmed live: every Rams injury landed under "LAR" while "LA" (what
+# today's actual schedule/game-plan lookups use) showed zero, on a day the
+# Rams were playing.
+UNUSED_DUPLICATE_TEAM_ABBRS = {"LAR"}
 
 # A player's most recent real snap share is used as the "is this a starter"
 # signal (matching the field gameplan.py's severity sort already uses) --
@@ -48,10 +60,12 @@ REQUEST_TIMEOUT = 20.0
 
 
 def _espn_team_ids(db: Session) -> dict[str, str]:
-    """{our team_abbr: espn team id}, current 32 franchises only -- skips any
-    historical/relocated codes in our own Team table (LA/OAK/SD/STL) that
-    ESPN's live team list naturally doesn't carry."""
-    our_teams = {t.team_abbr for t in db.query(Team).all()}
+    """{our team_abbr: espn team id}, current 32 franchises only -- skips
+    historical/relocated codes in our own Team table (OAK/SD/STL) that
+    ESPN's live team list naturally doesn't carry, and the one confirmed
+    unused duplicate (see UNUSED_DUPLICATE_TEAM_ABBRS) that would otherwise
+    silently collide with a real team's data."""
+    our_teams = {t.team_abbr for t in db.query(Team).all()} - UNUSED_DUPLICATE_TEAM_ABBRS
     resp = httpx.get(ESPN_TEAMS_URL, timeout=REQUEST_TIMEOUT)
     resp.raise_for_status()
     espn_teams = resp.json()["sports"][0]["leagues"][0]["teams"]

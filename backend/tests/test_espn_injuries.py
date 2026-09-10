@@ -71,6 +71,26 @@ def test_espn_team_ids_maps_was_to_wsh(db, monkeypatch):
     assert result == {"WAS": "28", "SEA": "26"}  # KC excluded -- not one of our teams
 
 
+def test_espn_team_ids_prefers_the_real_team_code_over_an_unused_duplicate(db, monkeypatch):
+    """The bug this guards against: our Team table has both "LA" (used by
+    every real game) and a stale duplicate "LAR" row for the same
+    franchise. "LAR" also happens to be ESPN's own abbreviation, so without
+    an explicit exclusion it silently wins the string match and the Rams'
+    real injury data lands under a team code nothing else in the app
+    queries -- confirmed live, on a day the Rams were actually playing."""
+    db.add(Team(team_abbr="LA", name="Los Angeles Rams"))
+    db.add(Team(team_abbr="LAR", name="Los Angeles Rams"))
+    db.commit()
+
+    monkeypatch.setattr(
+        espn_injuries.httpx, "get", lambda *a, **k: FakeResponse(_fake_teams_payload([("LAR", "14")]))
+    )
+
+    result = espn_injuries._espn_team_ids(db)
+
+    assert result == {"LA": "14"}
+
+
 def test_starter_ids_uses_most_recent_snap_share_only(db):
     # Player crossed the starter threshold long ago, but their most recent
     # game was a token appearance -- the most recent game should decide.
