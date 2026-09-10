@@ -351,6 +351,47 @@ body {
   margin: 0 0 0.4rem;
 }
 
+.plan-note-inline {
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-left: 0.5rem;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.key-stats-table-wrap {
+  overflow-x: auto;
+}
+
+.key-stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.key-stats-table th,
+.key-stats-table td {
+  text-align: left;
+  padding: 0.35rem 0.6rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.key-stats-table th:not(:first-child),
+.key-stats-table td:not(:first-child) {
+  text-align: right;
+}
+
+.key-winner {
+  color: var(--good);
+  font-weight: 700;
+}
+
+.key-no-signal {
+  color: var(--muted);
+  font-weight: 400;
+  font-size: 0.75rem;
+}
+
 .injury-columns {
   display: grid;
   grid-template-columns: 1fr 1fr;

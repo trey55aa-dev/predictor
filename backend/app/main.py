@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import games, gameplan, health, parlays, performance, players, predictions, slip, systems
+from app.api import breakdown, games, gameplan, health, parlays, performance, players, predictions, slip, systems
 from app.config import settings
 from app.db import create_all
 
@@ -29,3 +29,4 @@ app.include_router(gameplan.router, prefix="/api")
 app.include_router(parlays.router, prefix="/api")
 app.include_router(players.router, prefix="/api")
 app.include_router(slip.router, prefix="/api")
+app.include_router(breakdown.router, prefix="/api")

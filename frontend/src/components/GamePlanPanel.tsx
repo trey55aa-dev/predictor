@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { fetchGamePlan, fetchPlayerProjections, fetchSimPlayerProps } from "../api/client";
+import { fetchGameBreakdown, fetchGamePlan, fetchPlayerProjections, fetchSimPlayerProps } from "../api/client";
 import type {
   DefensiveTendencies,
+  GameBreakdown,
   GamePlan,
   InjuryEntry,
+  KeyToVictory,
   PlayerProjection,
   PlayerProjectionsResponse,
   SchemeMatchupStats,
@@ -153,12 +155,63 @@ function PlayerColumn({ players, team }: { players: PlayerProjection[]; team: st
   );
 }
 
+function fmtSigned(n: number): string {
+  return n > 0 ? `+${n}` : `${n}`;
+}
+
+function KeyRow({ k }: { k: KeyToVictory }) {
+  const isPct = k.key.endsWith("_pct");
+  const fmt = (v: number | null) => (v === null ? "—" : isPct ? pct(v) : k.key === "turnover_margin" ? fmtSigned(v) : v.toFixed(0));
+  return (
+    <tr>
+      <td>
+        {k.label}
+        {k.no_signal && <span className="key-no-signal" title="Didn't show real predictive signal in validation"> (no signal)</span>}
+      </td>
+      <td className={k.winner === "home" ? "key-winner" : undefined}>{fmt(k.home_value)}</td>
+      <td className={k.winner === "away" ? "key-winner" : undefined}>{fmt(k.away_value)}</td>
+    </tr>
+  );
+}
+
+function GameBreakdownSection({ breakdown }: { breakdown: GameBreakdown }) {
+  if (!breakdown.data_available || !breakdown.keys || !breakdown.home_stats || !breakdown.away_stats) return null;
+
+  return (
+    <section>
+      <h4 className="plan-section-title">
+        Post-game breakdown{" "}
+        {breakdown.correct_winner === true && <span className="plan-note-inline">✅ model got the winner right</span>}
+        {breakdown.correct_winner === false && <span className="plan-note-inline">❌ model missed the winner</span>}
+      </h4>
+      <p className="plan-note">{breakdown.narrative}</p>
+      <div className="key-stats-table-wrap">
+        <table className="key-stats-table">
+          <thead>
+            <tr>
+              <th>Key</th>
+              <th>{breakdown.home_team}</th>
+              <th>{breakdown.away_team}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {breakdown.keys.map((k) => (
+              <KeyRow key={k.key} k={k} />
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  );
+}
+
 export default function GamePlanPanel({ gameId }: { gameId: string }) {
   const [plan, setPlan] = useState<GamePlan | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [players, setPlayers] = useState<PlayerProjectionsResponse | null>(null);
   const [simProps, setSimProps] = useState<SimPlayerPropsResponse | null>(null);
+  const [breakdown, setBreakdown] = useState<GameBreakdown | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -193,6 +246,13 @@ export default function GamePlanPanel({ gameId }: { gameId: string }) {
       })
       .catch(() => {
         if (!cancelled) setSimProps(null);
+      })
+      .then(() => fetchGameBreakdown(gameId))
+      .then((b) => {
+        if (!cancelled) setBreakdown(b);
+      })
+      .catch(() => {
+        if (!cancelled) setBreakdown(null);
       });
     return () => {
       cancelled = true;
@@ -207,6 +267,8 @@ export default function GamePlanPanel({ gameId }: { gameId: string }) {
     <div className="game-plan-panel">
       {plan.upset_alert.note && <p className="plan-note upset">🚨 {plan.upset_alert.note}</p>}
       {plan.over_under.note && <p className="plan-note">{plan.over_under.note}</p>}
+
+      {breakdown && <GameBreakdownSection breakdown={breakdown} />}
 
       <section>
         <h4 className="plan-section-title">Injuries</h4>

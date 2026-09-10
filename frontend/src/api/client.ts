@@ -1,6 +1,7 @@
 import type {
   AccuracyComparison,
   CalibrationAdjustment,
+  GameBreakdown,
   GamePlan,
   GamePrediction,
   ParlaysResponse,
@@ -50,6 +51,10 @@ export function fetchGamePlan(gameId: string): Promise<GamePlan> {
 
 export function fetchSimPlayerProps(gameId: string): Promise<SimPlayerPropsResponse> {
   return get(`/api/predictions/game/${gameId}/sim-player-props`);
+}
+
+export function fetchGameBreakdown(gameId: string): Promise<GameBreakdown> {
+  return get(`/api/predictions/game/${gameId}/breakdown`);
 }
 
 export async function evaluateSlip(legs: SlipLegInput[]): Promise<SlipEvaluation> {

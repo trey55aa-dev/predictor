@@ -3,6 +3,7 @@ import datetime as dt
 import typer
 
 from app.db import SessionLocal, create_all
+from app.ingestion.current_plays import ingest_current_season_plays
 from app.ingestion.espn_injuries import ingest_espn_injuries
 from app.ingestion.injuries import NoInjuryDataError, ingest_injuries
 from app.ingestion.odds import ingest_odds
@@ -208,6 +209,21 @@ def ingest_plays_cmd(seasons: list[int] = HISTORY_SEASONS) -> None:
         db.close()
 
 
+@app.command(name="ingest-current-season-plays")
+def ingest_current_season_plays_cmd(season: int | None = None) -> None:
+    """Ingest real play-by-play for the current, in-progress season's
+    already-final games only -- powers the post-game 'keys to victory'
+    breakdown. Narrower than ingest-plays (see ingestion/current_plays.py
+    for why); run-routine already calls this automatically."""
+    db = SessionLocal()
+    try:
+        target_season = season if season is not None else current_season()
+        n = ingest_current_season_plays(db, target_season)
+        typer.echo(f"Ingested {n} play-by-play rows for {target_season}'s final games.")
+    finally:
+        db.close()
+
+
 @app.command(name="ingest-rosters")
 def ingest_rosters_cmd(seasons: list[int] = HISTORY_SEASONS) -> None:
     """Ingest real season+team roster membership -- gates the simulator's
@@ -350,6 +366,15 @@ def run_routine_cmd() -> None:
                 typer.echo(f"Refreshed {n_player_stats} player-game stat rows for {season}.")
             except Exception as e:  # nflreadpy raises plain exceptions for unsupported seasons
                 typer.echo(f"Skipping player-stats refresh: {e}")
+
+            # Real play-by-play for this season's already-final games, so
+            # the post-game "keys to victory" breakdown has real stats to
+            # show as soon as a game goes final (see model/keys_to_victory.py).
+            try:
+                n_current_plays = ingest_current_season_plays(db, season)
+                typer.echo(f"Ingested {n_current_plays} play-by-play rows for {season}'s final games.")
+            except Exception as e:  # nflreadpy raises plain exceptions for unsupported seasons
+                typer.echo(f"Skipping current-season play-by-play refresh: {e}")
 
             graded_this_run = 0
             for past_week in range(1, week + 1):

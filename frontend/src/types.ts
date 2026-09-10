@@ -152,6 +152,46 @@ export interface GamePlan {
   };
 }
 
+export interface KeyToVictory {
+  key: string;
+  label: string;
+  home_value: number | null;
+  away_value: number | null;
+  winner: "home" | "away" | null;
+  no_signal?: boolean;
+}
+
+export interface TeamKeyStats {
+  rushing_yards: number;
+  passing_yards: number;
+  turnovers: number;
+  third_down_attempts: number;
+  third_down_conversions: number;
+  third_down_pct: number | null;
+  fourth_down_attempts: number;
+  fourth_down_conversions: number;
+  fourth_down_pct: number | null;
+}
+
+export interface GameBreakdown {
+  game_id: string;
+  status: string;
+  home_team: string;
+  away_team: string;
+  home_score: number | null;
+  away_score: number | null;
+  predicted_winner: string | null;
+  predicted_home_win_prob: number | null;
+  data_available: boolean;
+  reason?: string;
+  actual_winner?: string | null;
+  correct_winner?: boolean | null;
+  home_stats?: TeamKeyStats;
+  away_stats?: TeamKeyStats;
+  keys?: KeyToVictory[];
+  narrative?: string;
+}
+
 export interface ParlayLeg {
   leg_type: "game_winner" | "anytime_td";
   game_id: string;
