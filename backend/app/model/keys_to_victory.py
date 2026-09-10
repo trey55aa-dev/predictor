@@ -118,9 +118,11 @@ def _narrative(game: Game, actual_winner: str | None, keys: list[dict], predicti
     winner_name = game.home_team if actual_winner == "home" else game.away_team
     loser_name = game.away_team if actual_winner == "home" else game.home_team
 
-    won_keys = [k["label"] for k in keys if k["key"] in SIGNAL_KEYS and k["winner"] == actual_winner]
+    won_keys = [k["label"].lower() for k in keys if k["key"] in SIGNAL_KEYS and k["winner"] == actual_winner]
     lost_keys = [
-        k["label"] for k in keys if k["key"] in SIGNAL_KEYS and k["winner"] is not None and k["winner"] != actual_winner
+        k["label"].lower()
+        for k in keys
+        if k["key"] in SIGNAL_KEYS and k["winner"] is not None and k["winner"] != actual_winner
     ]
 
     if won_keys and lost_keys:
