@@ -81,10 +81,15 @@ jobs:
         if: steps.gate.outputs.run == 'true'
         working-directory: . # override the job default (backend/) -- the snapshot lives at repo root
         run: |
-          if ! git diff --quiet -- review/model_state.json; then
+          # `git diff` alone never flags a brand-new untracked file (it only
+          # compares tracked content) -- confirmed live: the snapshot's very
+          # first write was silently skipped this way. `git add` first, then
+          # diff the index against HEAD, so both a new file and a changed
+          # one are caught.
+          git add review/model_state.json
+          if ! git diff --cached --quiet; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add review/model_state.json
             git commit -m "Update review snapshot [skip ci]"
             git push
           else
