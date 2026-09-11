@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-09-11T16:10:21.908333",
+  "generated_at": "2026-09-11T19:22:06.778965",
   "season": 2026,
   "rolling_performance": {
-    "graded_predictions": 2835,
-    "winner_accuracy": 0.6416225749559082,
-    "avg_brier_score": 0.22201588493671234,
-    "avg_abs_margin_error": 11.15460165635911,
-    "avg_abs_total_error": 10.569695941382653
+    "graded_predictions": 2837,
+    "winner_accuracy": 0.6415227352837505,
+    "avg_brier_score": 0.2220549490170479,
+    "avg_abs_margin_error": 11.155562663837912,
+    "avg_abs_total_error": 10.574828683190688
   },
   "recent_calibrations": [
     {
@@ -116,7 +116,7 @@
         }
       ],
       "narrative": "SF beat LA: SF won turnover margin, rushing yards, passing yards, and 3rd down conversion rate. The model favored LA (65%) and got the winner wrong here.",
-      "computed_at": "2026-09-11T16:10:21.750673",
+      "computed_at": "2026-09-11T19:22:06.535504",
       "home_injuries": [
         {
           "player_name": "Davis Allen",
@@ -357,7 +357,7 @@
         }
       ],
       "narrative": "SEA beat NE: SEA won turnover margin, and passing yards, despite losing rushing yards, and 3rd down conversion rate. The model correctly favored SEA to win (64%).",
-      "computed_at": "2026-09-11T16:10:21.864607",
+      "computed_at": "2026-09-11T19:22:06.696170",
       "home_injuries": [
         {
           "player_name": "Sam Darnold",
@@ -440,12 +440,6 @@
       ],
       "away_injuries": [
         {
-          "player_name": "A.J. Brown",
-          "position": "WR",
-          "report_status": "Questionable",
-          "is_starter": true
-        },
-        {
           "player_name": "Efton Chism III",
           "position": "WR",
           "report_status": "Out",
@@ -480,6 +474,12 @@
           "position": "P",
           "report_status": "Injured Reserve",
           "is_starter": false
+        },
+        {
+          "player_name": "A.J. Brown",
+          "position": "WR",
+          "report_status": "Injured Reserve",
+          "is_starter": true
         },
         {
           "player_name": "Julian Hill",
