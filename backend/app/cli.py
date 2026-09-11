@@ -1,4 +1,5 @@
 import datetime as dt
+from pathlib import Path
 
 import typer
 
@@ -24,10 +25,14 @@ from app.model.player_projection import (
 )
 from app.model.predict import predict_week
 from app.model.recalibration import recalibrate
+from app.model.review_export import export_review_snapshot
 from app.model.schedule_context import current_or_next_week, current_season, should_run_dense_cadence
 from app.models import Game
 
 app = typer.Typer()
+
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+REVIEW_SNAPSHOT_PATH = REPO_ROOT / "review" / "model_state.json"
 
 HISTORY_SEASONS = [2021, 2022, 2023, 2024, 2025]
 # NOTE: intentionally does NOT include the current in-progress season.
@@ -397,6 +402,16 @@ def run_routine_cmd() -> None:
             else:
                 typer.echo("Recalibration: no changes this pass.")
 
+            # Real snapshot for the cloud post-game reviewer, which runs in a
+            # network-restricted sandbox with no path to this API -- see
+            # model/review_export.py for why this is a file in the repo,
+            # not another endpoint.
+            snapshot = export_review_snapshot(db, REVIEW_SNAPSHOT_PATH)
+            typer.echo(
+                f"Wrote review snapshot to {REVIEW_SNAPSHOT_PATH} "
+                f"({len(snapshot['recent_games'])} recent final games)."
+            )
+
         perf = performance_summary(db)
         parlay_perf = parlay_performance_summary(db)
         player_perf = player_projection_performance_summary(db)
@@ -423,6 +438,20 @@ def run_routine_cmd() -> None:
             )
         )
         typer.echo(f"STOP_CONDITION_MET={stop_ready}")
+    finally:
+        db.close()
+
+
+@app.command(name="export-review-snapshot")
+def export_review_snapshot_cmd() -> None:
+    """Writes review/model_state.json -- rolling performance, recent
+    recalibrations, and every recently-final game's full post-game breakdown
+    plus that week's real injury reports. run-routine already calls this
+    automatically; this is for manual/backfill use."""
+    db = SessionLocal()
+    try:
+        snapshot = export_review_snapshot(db, REVIEW_SNAPSHOT_PATH)
+        typer.echo(f"Wrote review snapshot to {REVIEW_SNAPSHOT_PATH} ({len(snapshot['recent_games'])} games).")
     finally:
         db.close()
 

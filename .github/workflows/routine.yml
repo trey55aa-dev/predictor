@@ -21,6 +21,9 @@ on:
     - cron: "0 3 * * *" # 11pm EDT (3am UTC next day) -- gated below
   workflow_dispatch: {} # allows manually triggering a run from the Actions tab
 
+permissions:
+  contents: write # needed to commit review/model_state.json back to the repo
+
 jobs:
   run-routine:
     runs-on: ubuntu-latest
@@ -66,3 +69,24 @@ jobs:
         run: |
           uv run pytest -q
           uv run python -m app.cli run-routine
+
+      # run-routine writes ../review/model_state.json -- a real snapshot of
+      # rolling performance + every recently-final game's full breakdown,
+      # for the cloud post-game reviewer (a scheduled Claude Code routine)
+      # to read from its own git checkout. That sandbox's network egress is
+      # restricted and can't reach this project's own API directly (confirmed
+      # live), so this file is how it gets real data instead -- see
+      # backend/app/model/review_export.py.
+      - name: Commit the review snapshot if it changed
+        if: steps.gate.outputs.run == 'true'
+        working-directory: . # override the job default (backend/) -- the snapshot lives at repo root
+        run: |
+          if ! git diff --quiet -- review/model_state.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add review/model_state.json
+            git commit -m "Update review snapshot [skip ci]"
+            git push
+          else
+            echo "Review snapshot unchanged -- nothing to commit."
+          fi
