@@ -9,6 +9,7 @@ from app.model.elo import expected_win_prob, latest_rating
 from app.model.market import blend_line, blend_win_prob, market_home_win_prob
 from app.model.recalibration import get_tuned_value
 from app.model.scoring import matchup_expected_total
+from app.model.venue import is_true_home_game
 from app.model.weather_adjust import total_points_adjustment
 from app.models import Game, OddsSnapshot, Prediction, WeatherSnapshot
 
@@ -37,7 +38,8 @@ def predict_game(db: Session, game: Game) -> Prediction:
     home_elo = latest_rating(db, game.home_team, game.season, game.week)
     away_elo = latest_rating(db, game.away_team, game.season, game.week)
 
-    home_elo_adj = home_elo + settings.elo_home_field_advantage
+    home_field_bonus = settings.elo_home_field_advantage if is_true_home_game(db, game) else 0.0
+    home_elo_adj = home_elo + home_field_bonus
     elo_home_prob = expected_win_prob(home_elo_adj, away_elo)
     elo_margin = (home_elo_adj - away_elo) / ELO_POINTS_PER_ELO
 

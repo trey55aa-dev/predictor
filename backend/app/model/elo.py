@@ -11,6 +11,7 @@ import math
 from sqlalchemy.orm import Session
 
 from app.config import settings
+from app.model.venue import is_true_home_game
 from app.models import Game, TeamRating
 
 
@@ -58,7 +59,8 @@ def build_ratings(db: Session, seasons: list[int]) -> int:
         home_elo = ratings.setdefault(game.home_team, settings.elo_start_rating)
         away_elo = ratings.setdefault(game.away_team, settings.elo_start_rating)
 
-        home_elo_adj = home_elo + settings.elo_home_field_advantage
+        home_field_bonus = settings.elo_home_field_advantage if is_true_home_game(db, game) else 0.0
+        home_elo_adj = home_elo + home_field_bonus
         expected_home = expected_win_prob(home_elo_adj, away_elo)
 
         margin = game.home_score - game.away_score
