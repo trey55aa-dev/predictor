@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-09-12T07:51:58.410098",
+  "generated_at": "2026-09-12T18:52:07.896467",
   "season": 2026,
   "rolling_performance": {
-    "graded_predictions": 2839,
-    "winner_accuracy": 0.6414230362803804,
-    "avg_brier_score": 0.2220850346295903,
-    "avg_abs_margin_error": 11.156310975286452,
-    "avg_abs_total_error": 10.579954193238512
+    "graded_predictions": 2841,
+    "winner_accuracy": 0.6413234776487152,
+    "avg_brier_score": 0.22211507788294577,
+    "avg_abs_margin_error": 11.157058233146188,
+    "avg_abs_total_error": 10.585072486799119
   },
   "recent_calibrations": [
     {
@@ -116,7 +116,7 @@
         }
       ],
       "narrative": "SF beat LA: SF won turnover margin, rushing yards, passing yards, and 3rd down conversion rate. The model favored LA (63%) and got the winner wrong here.",
-      "computed_at": "2026-09-12T07:51:58.256778",
+      "computed_at": "2026-09-12T18:52:07.643807",
       "home_injuries": [
         {
           "player_name": "Davis Allen",
@@ -351,7 +351,7 @@
         }
       ],
       "narrative": "SEA beat NE: SEA won turnover margin, and passing yards, despite losing rushing yards, and 3rd down conversion rate. The model correctly favored SEA to win (64%).",
-      "computed_at": "2026-09-12T07:51:58.366527",
+      "computed_at": "2026-09-12T18:52:07.809042",
       "home_injuries": [
         {
           "player_name": "Sam Darnold",
