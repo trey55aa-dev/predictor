@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-13T15:53:52.218360",
+  "generated_at": "2026-09-13T19:03:14.363421",
   "season": 2026,
   "rolling_performance": {
     "graded_predictions": 2845,
@@ -116,7 +116,7 @@
         }
       ],
       "narrative": "SF beat LA: SF won turnover margin, rushing yards, passing yards, and 3rd down conversion rate. The model favored LA (63%) and got the winner wrong here.",
-      "computed_at": "2026-09-13T15:53:52.058455",
+      "computed_at": "2026-09-13T19:03:14.144230",
       "home_injuries": [
         {
           "player_name": "Davis Allen",
@@ -357,7 +357,7 @@
         }
       ],
       "narrative": "SEA beat NE: SEA won turnover margin, and passing yards, despite losing rushing yards, and 3rd down conversion rate. The model correctly favored SEA to win (64%).",
-      "computed_at": "2026-09-13T15:53:52.171449",
+      "computed_at": "2026-09-13T19:03:14.290469",
       "home_injuries": [
         {
           "player_name": "Sam Darnold",
