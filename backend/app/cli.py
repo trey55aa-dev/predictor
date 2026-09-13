@@ -392,6 +392,16 @@ def run_routine_cmd() -> None:
                 grade_player_projections(db, season, past_week)
             typer.echo(f"Graded {graded_this_run} newly-final predictions across weeks 1-{week}.")
 
+            # Elo "has always updated automatically from results" (README),
+            # but that only happens if build_ratings() actually runs for the
+            # live season -- HISTORY_SEASONS itself deliberately excludes it
+            # (see the note above; that's about nflreadpy's play-by-play feed
+            # rejecting in-progress seasons, which has nothing to do with
+            # Elo). Rebuild with the live season appended so this week's
+            # just-graded results move next week's ratings.
+            n_elo_games = build_ratings(db, HISTORY_SEASONS + [season])
+            typer.echo(f"Rebuilt Elo ratings ({n_elo_games} games processed, seasons {HISTORY_SEASONS + [season]}).")
+
             calibration_changes = recalibrate(db)
             if calibration_changes:
                 for change in calibration_changes:

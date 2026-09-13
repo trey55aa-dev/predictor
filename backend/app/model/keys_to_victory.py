@@ -32,7 +32,7 @@ def _latest_prediction(db: Session, game_id: str) -> Prediction | None:
     )
 
 
-def _team_stats(plays: list[Play], team: str) -> dict:
+def team_stats(plays: list[Play], team: str) -> dict:
     rushing_yards = sum(p.yards_gained or 0 for p in plays if p.posteam == team and p.play_type == "run")
     passing_yards = sum(
         p.yards_gained or 0 for p in plays if p.posteam == team and p.play_type == "pass" and not p.sack
@@ -66,7 +66,7 @@ def _key_winner(home_val, away_val, higher_is_better: bool = True) -> str | None
     return "home" if home_val < away_val else "away"
 
 
-def _build_keys(home_stats: dict, away_stats: dict) -> list[dict]:
+def build_keys(home_stats: dict, away_stats: dict) -> list[dict]:
     home_margin = away_stats["turnovers"] - home_stats["turnovers"]  # takeaways minus giveaways
     away_margin = home_stats["turnovers"] - away_stats["turnovers"]
 
@@ -197,9 +197,9 @@ def build_game_breakdown(db: Session, game: Game) -> dict:
         game.home_team if actual_winner_side == "home" else game.away_team if actual_winner_side == "away" else None
     )
 
-    home_stats = _team_stats(plays, game.home_team)
-    away_stats = _team_stats(plays, game.away_team)
-    keys = _build_keys(home_stats, away_stats)
+    home_stats = team_stats(plays, game.home_team)
+    away_stats = team_stats(plays, game.away_team)
+    keys = build_keys(home_stats, away_stats)
 
     correct_winner = (predicted_winner == actual_winner) if (predicted_winner and actual_winner) else None
 

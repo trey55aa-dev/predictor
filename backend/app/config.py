@@ -18,6 +18,7 @@ class Settings(BaseSettings):
     elo_start_rating: float = 1500.0
     elo_season_regression: float = 1.0 / 3.0
     market_blend_weight: float = 0.4  # weight given to the Elo model vs. the market
+    recent_form_max_adjustment: float = 0.03  # +/- cap on the last-game keys-to-victory nudge
 
     # Weather adjustment thresholds (outdoor games only).
     weather_wind_threshold_mph: float = 10.0
@@ -34,7 +35,7 @@ class Settings(BaseSettings):
     margin_std_default: float = 13.5
     total_std_default: float = 10.0
 
-    model_version: str = "elo-market-weather-v1"
+    model_version: str = "elo-market-weather-form-v1"
 
 
 settings = Settings()
