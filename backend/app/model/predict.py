@@ -107,9 +107,16 @@ def predict_game(db: Session, game: Game) -> Prediction:
 
 
 def predict_week(db: Session, season: int, week: int) -> list[Prediction]:
+    # Excludes games already final: a week stays "current" (see
+    # schedule_context.current_or_next_week) from its first kickoff until its
+    # last game finishes, so run-routine calls this repeatedly across the
+    # whole week. Re-predicting an already-decided game here would use Elo
+    # ratings that build_ratings() already rebuilt from that exact game's own
+    # result (a later run-routine step), silently overwriting its one real,
+    # locked-in pre-game prediction with a hindsight-leaked one.
     games = (
         db.query(Game)
-        .filter(Game.season == season, Game.week == week, Game.game_type == "REG")
+        .filter(Game.season == season, Game.week == week, Game.game_type == "REG", Game.status != "final")
         .all()
     )
     predictions = [predict_game(db, game) for game in games]
