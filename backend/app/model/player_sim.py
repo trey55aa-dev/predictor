@@ -296,3 +296,22 @@ def store_week_player_props(db: Session, season: int, week: int, seasons: list[i
     for game in games:
         total += store_game_player_props(db, game, seasons, n_sims=n_sims)
     return total
+
+
+def should_refresh_week_props(db: Session, season: int, week: int, today: dt.date | None = None) -> bool:
+    """True once per UTC day at most, so run-routine's Monte Carlo pass (real
+    wall-clock cost -- tens of seconds per game) doesn't re-simulate the same
+    week on every 3-4x/day cycle, while still refreshing daily as usage/
+    injury data changes through the week."""
+    from app.models import SimPlayerProjection
+
+    today = today or dt.datetime.utcnow().date()
+    latest = (
+        db.query(SimPlayerProjection.created_at)
+        .filter(SimPlayerProjection.season == season, SimPlayerProjection.week == week)
+        .order_by(SimPlayerProjection.created_at.desc())
+        .first()
+    )
+    if latest is None:
+        return True
+    return latest[0].date() < today

@@ -23,10 +23,12 @@ from app.model.player_projection import (
     player_projection_performance_summary,
     project_week,
 )
+from app.model.player_sim import DEFAULT_N_SIMS, should_refresh_week_props, store_week_player_props
 from app.model.predict import predict_week
 from app.model.recalibration import recalibrate
 from app.model.review_export import export_review_snapshot
 from app.model.schedule_context import current_or_next_week, current_season, should_run_dense_cadence
+from app.model.sim_params import build_sim_params, load_sim_params
 from app.models import Game
 
 app = typer.Typer()
@@ -381,6 +383,31 @@ def run_routine_cmd() -> None:
             except Exception as e:  # nflreadpy raises plain exceptions for unsupported seasons
                 typer.echo(f"Skipping current-season play-by-play refresh: {e}")
 
+            # Bootstrap the simulator's drive-structure inputs (fourth-down
+            # behaviour, field goals, punts, drive starts, clock burn) the
+            # first time this runs against a DB that's never had
+            # `build-sim-params` run -- without this, every simulated game
+            # below silently stores 0 props (GameSimulator raises, caught
+            # per-game). Historical seasons only: nflreadpy's load_pbp()
+            # rejects an in-progress season here (see HISTORY_SEASONS' own
+            # note above) -- this call doesn't touch our own `plays` table.
+            if not load_sim_params(db):
+                sizes = build_sim_params(db, HISTORY_SEASONS)
+                typer.echo(f"Bootstrapped simulation params (first run): {sizes}")
+
+            # Monte Carlo player-prop simulation for the upcoming week, using
+            # real film through last week (see model/simulation.py) -- gated
+            # to once/UTC day since a full pass costs real wall-clock time
+            # across ~16 games, and doesn't need to re-run on every 3-4x/day
+            # cycle to stay useful.
+            if should_refresh_week_props(db, season, week):
+                n_sim_props = store_week_player_props(
+                    db, season, week, HISTORY_SEASONS + [season], n_sims=DEFAULT_N_SIMS
+                )
+                typer.echo(f"Simulated and stored {n_sim_props} player props for week {week}.")
+            else:
+                typer.echo(f"Skipping player-prop simulation for week {week}: already refreshed today.")
+
             graded_this_run = 0
             for past_week in range(1, week + 1):
                 graded_this_run += grade_week(db, season, past_week)
@@ -541,17 +568,21 @@ def simulate_game_cmd(
     home_team: str,
     away_team: str,
     n_sims: int = 10000,
-    seasons: list[int] = HISTORY_SEASONS,
+    seasons: list[int] | None = None,
     seed: int = 0,
 ) -> None:
     """Run the Monte Carlo simulator for one matchup and print the outcome
-    distribution."""
+    distribution. `seasons` defaults to history plus the live season -- the
+    simulator reads real plays from our own `plays` table (not nflreadpy
+    directly), so unlike build-sim-params/build-history, an in-progress
+    season's already-final games are safe to include."""
     from app.model.simulation import simulate_matchup
 
     db = SessionLocal()
     try:
+        effective_seasons = seasons if seasons is not None else HISTORY_SEASONS + [current_season()]
         summary = simulate_matchup(
-            db, home_team, away_team, seasons, n_sims=n_sims, seed=seed or None
+            db, home_team, away_team, effective_seasons, n_sims=n_sims, seed=seed or None
         )
         typer.echo(
             f"{summary['away_team']} @ {summary['home_team']}  ({summary['n_sims']} sims)"
@@ -588,16 +619,18 @@ def simulate_player_props_cmd(
     season: int,
     week: int,
     n_sims: int = 3000,
-    seasons: list[int] = HISTORY_SEASONS,
+    seasons: list[int] | None = None,
     seed: int = 0,
 ) -> None:
     """Run the player-attributed simulator for one matchup and print each
-    team's projected skill players."""
+    team's projected skill players. `seasons` defaults to history plus the
+    live season -- see simulate-game's docstring for why that's safe here."""
     from app.model.player_sim import PlayerPropsSimulator
 
     db = SessionLocal()
     try:
-        sim = PlayerPropsSimulator(db, home_team, away_team, season, week, seasons, seed=seed or None)
+        effective_seasons = seasons if seasons is not None else HISTORY_SEASONS + [current_season()]
+        sim = PlayerPropsSimulator(db, home_team, away_team, season, week, effective_seasons, seed=seed or None)
         result = sim.simulate(n_sims)
         typer.echo(f"{away_team} @ {home_team} -- player props ({n_sims} sims)")
         for side_key, team in (("home", home_team), ("away", away_team)):
@@ -623,16 +656,16 @@ def simulate_player_props_week_cmd(
     season: int,
     week: int,
     n_sims: int = 3000,
-    seasons: list[int] = HISTORY_SEASONS,
+    seasons: list[int] | None = None,
 ) -> None:
     """Precompute and store simulation-based rushing/receiving player props
     for every game in a week. Passing is deliberately not included -- see
-    SimPlayerProjection's docstring."""
-    from app.model.player_sim import store_week_player_props
-
+    SimPlayerProjection's docstring. `seasons` defaults to history plus the
+    live season -- see simulate-game's docstring for why that's safe here."""
     db = SessionLocal()
     try:
-        n = store_week_player_props(db, season, week, seasons, n_sims=n_sims)
+        effective_seasons = seasons if seasons is not None else HISTORY_SEASONS + [current_season()]
+        n = store_week_player_props(db, season, week, effective_seasons, n_sims=n_sims)
         typer.echo(f"Stored {n} simulated player props for {season} week {week}.")
     finally:
         db.close()
