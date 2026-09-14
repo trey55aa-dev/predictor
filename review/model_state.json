@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-09-13T19:03:14.363421",
+  "generated_at": "2026-09-14T00:01:25.898011",
   "season": 2026,
   "rolling_performance": {
-    "graded_predictions": 2845,
-    "winner_accuracy": 0.6411247803163445,
-    "avg_brier_score": 0.22217503766943164,
-    "avg_abs_margin_error": 11.158549596987163,
-    "avg_abs_total_error": 10.59484460308633
+    "graded_predictions": 3073,
+    "winner_accuracy": 0.6521314676212171,
+    "avg_brier_score": 0.21991527407549355,
+    "avg_abs_margin_error": 11.15329616930393,
+    "avg_abs_total_error": 10.743963517489327
   },
   "recent_calibrations": [
     {
@@ -43,6 +43,2346 @@
     }
   ],
   "recent_games": [
+    {
+      "game_id": "2026_01_NYJ_TEN",
+      "status": "final",
+      "home_team": "TEN",
+      "away_team": "NYJ",
+      "home_score": 10,
+      "away_score": 23,
+      "predicted_winner": "NYJ",
+      "predicted_home_win_prob": 0.20058779750625305,
+      "data_available": true,
+      "actual_winner": "NYJ",
+      "correct_winner": true,
+      "home_stats": {
+        "rushing_yards": 68.0,
+        "passing_yards": 140.0,
+        "turnovers": 0,
+        "third_down_attempts": 12,
+        "third_down_conversions": 4,
+        "third_down_pct": 0.3333333333333333,
+        "fourth_down_attempts": 0,
+        "fourth_down_conversions": 0,
+        "fourth_down_pct": null
+      },
+      "away_stats": {
+        "rushing_yards": 155.0,
+        "passing_yards": 215.0,
+        "turnovers": 0,
+        "third_down_attempts": 11,
+        "third_down_conversions": 2,
+        "third_down_pct": 0.18181818181818182,
+        "fourth_down_attempts": 2,
+        "fourth_down_conversions": 2,
+        "fourth_down_pct": 1.0
+      },
+      "keys": [
+        {
+          "key": "turnover_margin",
+          "label": "Turnover margin",
+          "home_value": 0,
+          "away_value": 0,
+          "winner": null
+        },
+        {
+          "key": "rushing_yards",
+          "label": "Rushing yards",
+          "home_value": 68.0,
+          "away_value": 155.0,
+          "winner": "away"
+        },
+        {
+          "key": "passing_yards",
+          "label": "Passing yards",
+          "home_value": 140.0,
+          "away_value": 215.0,
+          "winner": "away"
+        },
+        {
+          "key": "third_down_pct",
+          "label": "3rd down conversion rate",
+          "home_value": 0.3333333333333333,
+          "away_value": 0.18181818181818182,
+          "winner": "home"
+        },
+        {
+          "key": "fourth_down_pct",
+          "label": "4th down conversion rate",
+          "home_value": null,
+          "away_value": 1.0,
+          "winner": null,
+          "no_signal": true
+        }
+      ],
+      "narrative": "NYJ beat TEN: NYJ won rushing yards, and passing yards, despite losing 3rd down conversion rate. The model correctly favored NYJ to win (80%).",
+      "computed_at": "2026-09-14T00:01:22.897636",
+      "home_injuries": [
+        {
+          "player_name": "Nicholas Singleton",
+          "position": "RB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Cedric Gray",
+          "position": "LB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Jackie Marshall",
+          "position": "DT",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Owen Pappoe",
+          "position": "LB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Kendell Brooks",
+          "position": "S",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Milo Eifler",
+          "position": "LB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Jaylen Harrell",
+          "position": "LB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Jaren Kanak",
+          "position": "TE",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Tanoh Kpassagnon",
+          "position": "DE",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Joshua Williams",
+          "position": "CB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        }
+      ],
+      "away_injuries": [
+        {
+          "player_name": "Omar Cooper Jr.",
+          "position": "WR",
+          "report_status": "Questionable",
+          "is_starter": false
+        },
+        {
+          "player_name": "Kene Nwangwu",
+          "position": "RB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Minkah Fitzpatrick",
+          "position": "S",
+          "report_status": "Doubtful",
+          "is_starter": false
+        },
+        {
+          "player_name": "Joseph Ossai",
+          "position": "DE",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "D'Angelo Ponds",
+          "position": "CB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Trevin Wallace",
+          "position": "LB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Blake Grupe",
+          "position": "PK",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Tyler Baron",
+          "position": "DE",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Tre Brown",
+          "position": "CB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Kingsley Jonathan",
+          "position": "DE",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Caullin Lacy",
+          "position": "WR",
+          "report_status": "Questionable",
+          "is_starter": false
+        },
+        {
+          "player_name": "Tim Patrick",
+          "position": "WR",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "VJ Payne",
+          "position": "S",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Chip Trayanum",
+          "position": "RB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        }
+      ]
+    },
+    {
+      "game_id": "2026_01_ATL_PIT",
+      "status": "final",
+      "home_team": "PIT",
+      "away_team": "ATL",
+      "home_score": 20,
+      "away_score": 13,
+      "predicted_winner": "PIT",
+      "predicted_home_win_prob": 0.8030157074818673,
+      "data_available": true,
+      "actual_winner": "PIT",
+      "correct_winner": true,
+      "home_stats": {
+        "rushing_yards": 61.0,
+        "passing_yards": 221.0,
+        "turnovers": 1,
+        "third_down_attempts": 12,
+        "third_down_conversions": 3,
+        "third_down_pct": 0.25,
+        "fourth_down_attempts": 2,
+        "fourth_down_conversions": 0,
+        "fourth_down_pct": 0.0
+      },
+      "away_stats": {
+        "rushing_yards": 120.0,
+        "passing_yards": 143.0,
+        "turnovers": 2,
+        "third_down_attempts": 12,
+        "third_down_conversions": 2,
+        "third_down_pct": 0.16666666666666666,
+        "fourth_down_attempts": 0,
+        "fourth_down_conversions": 0,
+        "fourth_down_pct": null
+      },
+      "keys": [
+        {
+          "key": "turnover_margin",
+          "label": "Turnover margin",
+          "home_value": 1,
+          "away_value": -1,
+          "winner": "home"
+        },
+        {
+          "key": "rushing_yards",
+          "label": "Rushing yards",
+          "home_value": 61.0,
+          "away_value": 120.0,
+          "winner": "away"
+        },
+        {
+          "key": "passing_yards",
+          "label": "Passing yards",
+          "home_value": 221.0,
+          "away_value": 143.0,
+          "winner": "home"
+        },
+        {
+          "key": "third_down_pct",
+          "label": "3rd down conversion rate",
+          "home_value": 0.25,
+          "away_value": 0.16666666666666666,
+          "winner": "home"
+        },
+        {
+          "key": "fourth_down_pct",
+          "label": "4th down conversion rate",
+          "home_value": 0.0,
+          "away_value": null,
+          "winner": null,
+          "no_signal": true
+        }
+      ],
+      "narrative": "PIT beat ATL: PIT won turnover margin, passing yards, and 3rd down conversion rate, despite losing rushing yards. The model correctly favored PIT to win (80%).",
+      "computed_at": "2026-09-14T00:01:23.167822",
+      "home_injuries": [
+        {
+          "player_name": "Drew Allar",
+          "position": "QB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Will Howard",
+          "position": "QB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Joey Porter Jr.",
+          "position": "CB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Cole Burgess",
+          "position": "WR",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "DeShon Elliott",
+          "position": "S",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Daequan Hardy",
+          "position": "CB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Donte Kent",
+          "position": "CB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Logan Lee",
+          "position": "DT",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        }
+      ],
+      "away_injuries": [
+        {
+          "player_name": "Michael Penix Jr.",
+          "position": "QB",
+          "report_status": "Out",
+          "is_starter": true
+        },
+        {
+          "player_name": "Tua Tagovailoa",
+          "position": "QB",
+          "report_status": "Out",
+          "is_starter": true
+        },
+        {
+          "player_name": "Billy Bowman Jr.",
+          "position": "CB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Da'Shawn Hand",
+          "position": "DT",
+          "report_status": "Questionable",
+          "is_starter": false
+        },
+        {
+          "player_name": "Christian Harris",
+          "position": "LB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "James Pearce Jr.",
+          "position": "LB",
+          "report_status": "Suspension",
+          "is_starter": false
+        },
+        {
+          "player_name": "JD Bertrand",
+          "position": "LB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Beaux Collins",
+          "position": "WR",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "DeAngelo Malone",
+          "position": "LB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Trey Sermon",
+          "position": "RB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Anterio Thompson",
+          "position": "DT",
+          "report_status": "Out",
+          "is_starter": false
+        }
+      ]
+    },
+    {
+      "game_id": "2026_01_GB_MIN",
+      "status": "final",
+      "home_team": "MIN",
+      "away_team": "GB",
+      "home_score": 39,
+      "away_score": 22,
+      "predicted_winner": "MIN",
+      "predicted_home_win_prob": 0.5615300584905772,
+      "data_available": false,
+      "reason": "Play-by-play for this game hasn't been ingested yet.",
+      "home_injuries": [
+        {
+          "player_name": "Demond Claiborne",
+          "position": "RB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Jeshaun Jones",
+          "position": "WR",
+          "report_status": "Suspension",
+          "is_starter": false
+        },
+        {
+          "player_name": "J.J. McCarthy",
+          "position": "QB",
+          "report_status": "Out",
+          "is_starter": true
+        },
+        {
+          "player_name": "Kyler Murray",
+          "position": "QB",
+          "report_status": "Questionable",
+          "is_starter": true
+        },
+        {
+          "player_name": "Jakobe Thomas",
+          "position": "S",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Zemaiah Vaughn",
+          "position": "CB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Elijah Williams",
+          "position": "DE",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Jamal Adams",
+          "position": "LB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Tyler Batty",
+          "position": "LB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Dwight McGlothern Jr.",
+          "position": "CB",
+          "report_status": "Questionable",
+          "is_starter": false
+        },
+        {
+          "player_name": "Ben Yurosek",
+          "position": "TE",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Naquan Jones",
+          "position": "DT",
+          "report_status": "Questionable",
+          "is_starter": false
+        }
+      ],
+      "away_injuries": [
+        {
+          "player_name": "Josh Jacobs",
+          "position": "RB",
+          "report_status": "Out",
+          "is_starter": true
+        },
+        {
+          "player_name": "J. Michael Sturdivant",
+          "position": "WR",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Josh Whyle",
+          "position": "TE",
+          "report_status": "Questionable",
+          "is_starter": false
+        },
+        {
+          "player_name": "Warren Brinson",
+          "position": "DT",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Brandon Cisse",
+          "position": "CB",
+          "report_status": "Questionable",
+          "is_starter": false
+        },
+        {
+          "player_name": "Ty'Ron Hopper",
+          "position": "LB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Johnathan Baldwin II",
+          "position": "S",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Trey Dean III",
+          "position": "S",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Luke Musgrave",
+          "position": "TE",
+          "report_status": "Out",
+          "is_starter": true
+        },
+        {
+          "player_name": "Collin Oliver",
+          "position": "DE",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Micah Parsons",
+          "position": "DE",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Jordon Riley",
+          "position": "DT",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Savion Williams",
+          "position": "WR",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Pierre Strong Jr.",
+          "position": "RB",
+          "report_status": "Questionable",
+          "is_starter": false
+        }
+      ]
+    },
+    {
+      "game_id": "2026_01_TB_CIN",
+      "status": "final",
+      "home_team": "CIN",
+      "away_team": "TB",
+      "home_score": 33,
+      "away_score": 27,
+      "predicted_winner": "CIN",
+      "predicted_home_win_prob": 0.8237607426341725,
+      "data_available": true,
+      "actual_winner": "CIN",
+      "correct_winner": true,
+      "home_stats": {
+        "rushing_yards": 107.0,
+        "passing_yards": 254.0,
+        "turnovers": 1,
+        "third_down_attempts": 14,
+        "third_down_conversions": 8,
+        "third_down_pct": 0.5714285714285714,
+        "fourth_down_attempts": 0,
+        "fourth_down_conversions": 0,
+        "fourth_down_pct": null
+      },
+      "away_stats": {
+        "rushing_yards": 90.0,
+        "passing_yards": 216.0,
+        "turnovers": 4,
+        "third_down_attempts": 10,
+        "third_down_conversions": 5,
+        "third_down_pct": 0.5,
+        "fourth_down_attempts": 0,
+        "fourth_down_conversions": 0,
+        "fourth_down_pct": null
+      },
+      "keys": [
+        {
+          "key": "turnover_margin",
+          "label": "Turnover margin",
+          "home_value": 3,
+          "away_value": -3,
+          "winner": "home"
+        },
+        {
+          "key": "rushing_yards",
+          "label": "Rushing yards",
+          "home_value": 107.0,
+          "away_value": 90.0,
+          "winner": "home"
+        },
+        {
+          "key": "passing_yards",
+          "label": "Passing yards",
+          "home_value": 254.0,
+          "away_value": 216.0,
+          "winner": "home"
+        },
+        {
+          "key": "third_down_pct",
+          "label": "3rd down conversion rate",
+          "home_value": 0.5714285714285714,
+          "away_value": 0.5,
+          "winner": "home"
+        },
+        {
+          "key": "fourth_down_pct",
+          "label": "4th down conversion rate",
+          "home_value": null,
+          "away_value": null,
+          "winner": null,
+          "no_signal": true
+        }
+      ],
+      "narrative": "CIN beat TB: CIN won turnover margin, rushing yards, passing yards, and 3rd down conversion rate. The model correctly favored CIN to win (82%).",
+      "computed_at": "2026-09-14T00:01:23.626900",
+      "home_injuries": [
+        {
+          "player_name": "Jack Endries",
+          "position": "TE",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Ke'Shawn Williams",
+          "position": "WR",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Josh Newton",
+          "position": "CB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Landon Robinson",
+          "position": "DT",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Shemar Stewart",
+          "position": "DE",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Ja'Sir Taylor",
+          "position": "CB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        }
+      ],
+      "away_injuries": [
+        {
+          "player_name": "Jalen McMillan",
+          "position": "WR",
+          "report_status": "Out",
+          "is_starter": true
+        },
+        {
+          "player_name": "Sean Tucker",
+          "position": "RB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "DeMonte Capehart",
+          "position": "DT",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Ayden Garnes",
+          "position": "CB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Jacob Parrish",
+          "position": "CB",
+          "report_status": "Questionable",
+          "is_starter": false
+        },
+        {
+          "player_name": "Elijah Simmons",
+          "position": "DT",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Josh Hayes",
+          "position": "CB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Mohamed Kamara",
+          "position": "LB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "David Sills V",
+          "position": "WR",
+          "report_status": "Injured Reserve",
+          "is_starter": true
+        }
+      ]
+    },
+    {
+      "game_id": "2026_01_NO_DET",
+      "status": "final",
+      "home_team": "DET",
+      "away_team": "NO",
+      "home_score": 31,
+      "away_score": 30,
+      "predicted_winner": "DET",
+      "predicted_home_win_prob": 0.9075739905660599,
+      "data_available": true,
+      "actual_winner": "DET",
+      "correct_winner": true,
+      "home_stats": {
+        "rushing_yards": 165.0,
+        "passing_yards": 206.0,
+        "turnovers": 1,
+        "third_down_attempts": 13,
+        "third_down_conversions": 5,
+        "third_down_pct": 0.38461538461538464,
+        "fourth_down_attempts": 0,
+        "fourth_down_conversions": 0,
+        "fourth_down_pct": null
+      },
+      "away_stats": {
+        "rushing_yards": 91.0,
+        "passing_yards": 410.0,
+        "turnovers": 3,
+        "third_down_attempts": 17,
+        "third_down_conversions": 8,
+        "third_down_pct": 0.47058823529411764,
+        "fourth_down_attempts": 2,
+        "fourth_down_conversions": 2,
+        "fourth_down_pct": 1.0
+      },
+      "keys": [
+        {
+          "key": "turnover_margin",
+          "label": "Turnover margin",
+          "home_value": 2,
+          "away_value": -2,
+          "winner": "home"
+        },
+        {
+          "key": "rushing_yards",
+          "label": "Rushing yards",
+          "home_value": 165.0,
+          "away_value": 91.0,
+          "winner": "home"
+        },
+        {
+          "key": "passing_yards",
+          "label": "Passing yards",
+          "home_value": 206.0,
+          "away_value": 410.0,
+          "winner": "away"
+        },
+        {
+          "key": "third_down_pct",
+          "label": "3rd down conversion rate",
+          "home_value": 0.38461538461538464,
+          "away_value": 0.47058823529411764,
+          "winner": "away"
+        },
+        {
+          "key": "fourth_down_pct",
+          "label": "4th down conversion rate",
+          "home_value": null,
+          "away_value": 1.0,
+          "winner": null,
+          "no_signal": true
+        }
+      ],
+      "narrative": "DET beat NO: DET won turnover margin, and rushing yards, despite losing passing yards, and 3rd down conversion rate. The model correctly favored DET to win (91%).",
+      "computed_at": "2026-09-14T00:01:23.837388",
+      "home_injuries": [
+        {
+          "player_name": "Ahmed Hassanein",
+          "position": "DE",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Christian Izien",
+          "position": "S",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Ennis Rakestraw Jr.",
+          "position": "CB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Jimmy Rolder",
+          "position": "LB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Mekhi Wingo",
+          "position": "DT",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Brian Branch",
+          "position": "S",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Damone Clark",
+          "position": "LB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Kerby Joseph",
+          "position": "S",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Kendrick Law",
+          "position": "WR",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Isiah Pacheco",
+          "position": "RB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Payton Turner",
+          "position": "DE",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        }
+      ],
+      "away_injuries": [
+        {
+          "player_name": "Oscar Delp",
+          "position": "TE",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Alvin Kamara",
+          "position": "RB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Brock Rechsteiner",
+          "position": "WR",
+          "report_status": "Suspension",
+          "is_starter": false
+        },
+        {
+          "player_name": "Zach Wilson",
+          "position": "QB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Khristian Boyd",
+          "position": "DT",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Cameron Jordan",
+          "position": "DE",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "John Ridgeway III",
+          "position": "DT",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Bryan Bresee",
+          "position": "DT",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Ty Chandler",
+          "position": "RB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Audric Estime",
+          "position": "RB",
+          "report_status": "Injured Reserve",
+          "is_starter": true
+        },
+        {
+          "player_name": "Jaylan Ford",
+          "position": "LB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "David Long Jr.",
+          "position": "CB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Moliki Matavao",
+          "position": "TE",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Lorenzo Styles Jr.",
+          "position": "S",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Mason Tipton",
+          "position": "WR",
+          "report_status": "Out",
+          "is_starter": true
+        },
+        {
+          "player_name": "Jordyn Tyson",
+          "position": "WR",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        }
+      ]
+    },
+    {
+      "game_id": "2026_01_WAS_PHI",
+      "status": "final",
+      "home_team": "PHI",
+      "away_team": "WAS",
+      "home_score": 24,
+      "away_score": 22,
+      "predicted_winner": "PHI",
+      "predicted_home_win_prob": 0.7254361601230509,
+      "data_available": false,
+      "reason": "Play-by-play for this game hasn't been ingested yet.",
+      "home_injuries": [
+        {
+          "player_name": "Tanner McKee",
+          "position": "QB",
+          "report_status": "Out",
+          "is_starter": true
+        },
+        {
+          "player_name": "Elijah Moore",
+          "position": "WR",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Cole Payton",
+          "position": "QB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Marcus Epps",
+          "position": "S",
+          "report_status": "Questionable",
+          "is_starter": false
+        },
+        {
+          "player_name": "Jonathan Greenard",
+          "position": "LB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Jakorian Bennett",
+          "position": "CB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Grant Calcaterra",
+          "position": "TE",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Tariq Castro-Fields",
+          "position": "CB",
+          "report_status": "Questionable",
+          "is_starter": false
+        },
+        {
+          "player_name": "Andre' Sam",
+          "position": "S",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Eli Stowers",
+          "position": "TE",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Johnny Wilson",
+          "position": "WR",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Danny Gray",
+          "position": "WR",
+          "report_status": "Questionable",
+          "is_starter": false
+        }
+      ],
+      "away_injuries": [
+        {
+          "player_name": "Treylon Burks",
+          "position": "WR",
+          "report_status": "Out",
+          "is_starter": true
+        },
+        {
+          "player_name": "Athan Kaliakmanis",
+          "position": "QB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Luke McCaffrey",
+          "position": "WR",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Chig Okonkwo",
+          "position": "TE",
+          "report_status": "Questionable",
+          "is_starter": true
+        },
+        {
+          "player_name": "Dorance Armstrong",
+          "position": "DE",
+          "report_status": "Suspension",
+          "is_starter": false
+        },
+        {
+          "player_name": "Ricky Barber",
+          "position": "DT",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Frankie Luvu",
+          "position": "LB",
+          "report_status": "Questionable",
+          "is_starter": false
+        },
+        {
+          "player_name": "Jordan Magee",
+          "position": "LB",
+          "report_status": "Questionable",
+          "is_starter": false
+        },
+        {
+          "player_name": "Tyler Owens",
+          "position": "S",
+          "report_status": "Questionable",
+          "is_starter": false
+        },
+        {
+          "player_name": "Trey Amos",
+          "position": "CB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Jeremy McNichols",
+          "position": "RB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Jer'Zhan Newton",
+          "position": "DT",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Deatrich Wise Jr.",
+          "position": "DE",
+          "report_status": "Out",
+          "is_starter": false
+        }
+      ]
+    },
+    {
+      "game_id": "2026_01_ARI_LAC",
+      "status": "final",
+      "home_team": "LAC",
+      "away_team": "ARI",
+      "home_score": 14,
+      "away_score": 26,
+      "predicted_winner": "LAC",
+      "predicted_home_win_prob": 0.8099739658409555,
+      "data_available": false,
+      "reason": "Play-by-play for this game hasn't been ingested yet.",
+      "home_injuries": [
+        {
+          "player_name": "KeAndre Lambert-Smith",
+          "position": "WR",
+          "report_status": "Questionable",
+          "is_starter": false
+        },
+        {
+          "player_name": "Ladd McConkey",
+          "position": "WR",
+          "report_status": "Questionable",
+          "is_starter": true
+        },
+        {
+          "player_name": "Deane Leonard",
+          "position": "CB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "RJ Mickens",
+          "position": "S",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Elijah Molden",
+          "position": "CB",
+          "report_status": "Questionable",
+          "is_starter": false
+        },
+        {
+          "player_name": "Scott Matlock",
+          "position": "FB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Denzel Perryman",
+          "position": "LB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        }
+      ],
+      "away_injuries": [
+        {
+          "player_name": "Carson Beck",
+          "position": "QB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Reggie Virgil",
+          "position": "WR",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Andrew Billings",
+          "position": "DT",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Kitan Crawford",
+          "position": "S",
+          "report_status": "Questionable",
+          "is_starter": false
+        },
+        {
+          "player_name": "Dadrion Taylor-Demerson",
+          "position": "S",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Garrett Williams",
+          "position": "CB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Trey Benson",
+          "position": "RB",
+          "report_status": "Injured Reserve",
+          "is_starter": true
+        },
+        {
+          "player_name": "Joey Blount",
+          "position": "S",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Zachary Carter",
+          "position": "DT",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "James Conner",
+          "position": "RB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Kaleb Proctor",
+          "position": "DT",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Tip Reiman",
+          "position": "TE",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Xavier Weaver",
+          "position": "WR",
+          "report_status": "Questionable",
+          "is_starter": true
+        }
+      ]
+    },
+    {
+      "game_id": "2026_01_BAL_IND",
+      "status": "final",
+      "home_team": "IND",
+      "away_team": "BAL",
+      "home_score": 23,
+      "away_score": 41,
+      "predicted_winner": "BAL",
+      "predicted_home_win_prob": 0.1447541972332732,
+      "data_available": true,
+      "actual_winner": "BAL",
+      "correct_winner": true,
+      "home_stats": {
+        "rushing_yards": 102.0,
+        "passing_yards": 166.0,
+        "turnovers": 2,
+        "third_down_attempts": 10,
+        "third_down_conversions": 3,
+        "third_down_pct": 0.3,
+        "fourth_down_attempts": 1,
+        "fourth_down_conversions": 0,
+        "fourth_down_pct": 0.0
+      },
+      "away_stats": {
+        "rushing_yards": 205.0,
+        "passing_yards": 324.0,
+        "turnovers": 1,
+        "third_down_attempts": 8,
+        "third_down_conversions": 3,
+        "third_down_pct": 0.375,
+        "fourth_down_attempts": 1,
+        "fourth_down_conversions": 0,
+        "fourth_down_pct": 0.0
+      },
+      "keys": [
+        {
+          "key": "turnover_margin",
+          "label": "Turnover margin",
+          "home_value": -1,
+          "away_value": 1,
+          "winner": "away"
+        },
+        {
+          "key": "rushing_yards",
+          "label": "Rushing yards",
+          "home_value": 102.0,
+          "away_value": 205.0,
+          "winner": "away"
+        },
+        {
+          "key": "passing_yards",
+          "label": "Passing yards",
+          "home_value": 166.0,
+          "away_value": 324.0,
+          "winner": "away"
+        },
+        {
+          "key": "third_down_pct",
+          "label": "3rd down conversion rate",
+          "home_value": 0.3,
+          "away_value": 0.375,
+          "winner": "away"
+        },
+        {
+          "key": "fourth_down_pct",
+          "label": "4th down conversion rate",
+          "home_value": 0.0,
+          "away_value": 0.0,
+          "winner": null,
+          "no_signal": true
+        }
+      ],
+      "narrative": "BAL beat IND: BAL won turnover margin, rushing yards, passing yards, and 3rd down conversion rate. The model correctly favored BAL to win (86%).",
+      "computed_at": "2026-09-14T00:01:24.509717",
+      "home_injuries": [
+        {
+          "player_name": "DJ Giddens",
+          "position": "RB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Riley Leonard",
+          "position": "QB",
+          "report_status": "Out",
+          "is_starter": true
+        },
+        {
+          "player_name": "Alec Pierce",
+          "position": "WR",
+          "report_status": "Questionable",
+          "is_starter": true
+        },
+        {
+          "player_name": "Austin Ajiake",
+          "position": "LB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Johnathan Edwards",
+          "position": "CB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "George Gumbs Jr.",
+          "position": "LB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Cam Taylor-Britt",
+          "position": "CB",
+          "report_status": "Suspension",
+          "is_starter": false
+        },
+        {
+          "player_name": "Will Mallory",
+          "position": "TE",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Sean McKeon",
+          "position": "TE",
+          "report_status": "Questionable",
+          "is_starter": false
+        },
+        {
+          "player_name": "Cameron Mitchell",
+          "position": "CB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "D.J. Montgomery",
+          "position": "WR",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        }
+      ],
+      "away_injuries": [
+        {
+          "player_name": "Joe Fagnano",
+          "position": "QB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Zay Flowers",
+          "position": "WR",
+          "report_status": "Questionable",
+          "is_starter": true
+        },
+        {
+          "player_name": "Ja'Kobi Lane",
+          "position": "WR",
+          "report_status": "Questionable",
+          "is_starter": false
+        },
+        {
+          "player_name": "Elijah Sarratt",
+          "position": "WR",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Devontez Walker",
+          "position": "WR",
+          "report_status": "Out",
+          "is_starter": true
+        },
+        {
+          "player_name": "Teddye Buchanan",
+          "position": "LB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Nnamdi Madubuike",
+          "position": "DT",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Chandler Rivers",
+          "position": "CB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "T.J. Tampa",
+          "position": "CB",
+          "report_status": "Questionable",
+          "is_starter": false
+        },
+        {
+          "player_name": "Bilhal Kone",
+          "position": "CB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Adam Randall",
+          "position": "RB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Skylar Thompson",
+          "position": "QB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        }
+      ]
+    },
+    {
+      "game_id": "2026_01_BUF_HOU",
+      "status": "final",
+      "home_team": "HOU",
+      "away_team": "BUF",
+      "home_score": 31,
+      "away_score": 36,
+      "predicted_winner": "BUF",
+      "predicted_home_win_prob": 0.41782854266214486,
+      "data_available": true,
+      "actual_winner": "BUF",
+      "correct_winner": true,
+      "home_stats": {
+        "rushing_yards": 124.0,
+        "passing_yards": 274.0,
+        "turnovers": 2,
+        "third_down_attempts": 16,
+        "third_down_conversions": 7,
+        "third_down_pct": 0.4375,
+        "fourth_down_attempts": 2,
+        "fourth_down_conversions": 2,
+        "fourth_down_pct": 1.0
+      },
+      "away_stats": {
+        "rushing_yards": 87.0,
+        "passing_yards": 334.0,
+        "turnovers": 0,
+        "third_down_attempts": 9,
+        "third_down_conversions": 3,
+        "third_down_pct": 0.3333333333333333,
+        "fourth_down_attempts": 1,
+        "fourth_down_conversions": 0,
+        "fourth_down_pct": 0.0
+      },
+      "keys": [
+        {
+          "key": "turnover_margin",
+          "label": "Turnover margin",
+          "home_value": -2,
+          "away_value": 2,
+          "winner": "away"
+        },
+        {
+          "key": "rushing_yards",
+          "label": "Rushing yards",
+          "home_value": 124.0,
+          "away_value": 87.0,
+          "winner": "home"
+        },
+        {
+          "key": "passing_yards",
+          "label": "Passing yards",
+          "home_value": 274.0,
+          "away_value": 334.0,
+          "winner": "away"
+        },
+        {
+          "key": "third_down_pct",
+          "label": "3rd down conversion rate",
+          "home_value": 0.4375,
+          "away_value": 0.3333333333333333,
+          "winner": "home"
+        },
+        {
+          "key": "fourth_down_pct",
+          "label": "4th down conversion rate",
+          "home_value": 1.0,
+          "away_value": 0.0,
+          "winner": "home",
+          "no_signal": true
+        }
+      ],
+      "narrative": "BUF beat HOU: BUF won turnover margin, and passing yards, despite losing rushing yards, and 3rd down conversion rate. The model correctly favored BUF to win (58%).",
+      "computed_at": "2026-09-14T00:01:24.720030",
+      "home_injuries": [
+        {
+          "player_name": "Brevin Jordan",
+          "position": "TE",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Jaden Crumedy",
+          "position": "DT",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Aiden Fisher",
+          "position": "LB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Jake Hummel",
+          "position": "LB",
+          "report_status": "Questionable",
+          "is_starter": false
+        },
+        {
+          "player_name": "Henry To'oTo'o",
+          "position": "LB",
+          "report_status": "Questionable",
+          "is_starter": false
+        },
+        {
+          "player_name": "Solomon Byrd",
+          "position": "DE",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Tank Dell",
+          "position": "WR",
+          "report_status": "Injured Reserve",
+          "is_starter": true
+        },
+        {
+          "player_name": "Ali Gaye",
+          "position": "DE",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Jayden Higgins",
+          "position": "WR",
+          "report_status": "Injured Reserve",
+          "is_starter": true
+        },
+        {
+          "player_name": "Dylan Horton",
+          "position": "DE",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Ja'Marcus Ingram",
+          "position": "CB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Kayden McDonald",
+          "position": "DT",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Graham Mertz",
+          "position": "QB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "E.J. Speed",
+          "position": "LB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "M.J. Stewart",
+          "position": "S",
+          "report_status": "Out",
+          "is_starter": false
+        }
+      ],
+      "away_injuries": [
+        {
+          "player_name": "Skyler Bell",
+          "position": "WR",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Ty Johnson",
+          "position": "RB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Mike Danna",
+          "position": "DE",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Jalon Kilgore",
+          "position": "S",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Phidarian Mathis",
+          "position": "DT",
+          "report_status": "Suspension",
+          "is_starter": false
+        },
+        {
+          "player_name": "T.J. Sanders",
+          "position": "DT",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Zane Durant",
+          "position": "DT",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Tyrell Shavers",
+          "position": "WR",
+          "report_status": "Out",
+          "is_starter": true
+        },
+        {
+          "player_name": "Dorian Strong",
+          "position": "CB",
+          "report_status": "Out",
+          "is_starter": false
+        }
+      ]
+    },
+    {
+      "game_id": "2026_01_CHI_CAR",
+      "status": "final",
+      "home_team": "CAR",
+      "away_team": "CHI",
+      "home_score": 37,
+      "away_score": 59,
+      "predicted_winner": "CHI",
+      "predicted_home_win_prob": 0.3010371526075774,
+      "data_available": true,
+      "actual_winner": "CHI",
+      "correct_winner": true,
+      "home_stats": {
+        "rushing_yards": 125.0,
+        "passing_yards": 361.0,
+        "turnovers": 2,
+        "third_down_attempts": 9,
+        "third_down_conversions": 4,
+        "third_down_pct": 0.4444444444444444,
+        "fourth_down_attempts": 1,
+        "fourth_down_conversions": 0,
+        "fourth_down_pct": 0.0
+      },
+      "away_stats": {
+        "rushing_yards": 291.0,
+        "passing_yards": 269.0,
+        "turnovers": 1,
+        "third_down_attempts": 14,
+        "third_down_conversions": 10,
+        "third_down_pct": 0.7142857142857143,
+        "fourth_down_attempts": 1,
+        "fourth_down_conversions": 0,
+        "fourth_down_pct": 0.0
+      },
+      "keys": [
+        {
+          "key": "turnover_margin",
+          "label": "Turnover margin",
+          "home_value": -1,
+          "away_value": 1,
+          "winner": "away"
+        },
+        {
+          "key": "rushing_yards",
+          "label": "Rushing yards",
+          "home_value": 125.0,
+          "away_value": 291.0,
+          "winner": "away"
+        },
+        {
+          "key": "passing_yards",
+          "label": "Passing yards",
+          "home_value": 361.0,
+          "away_value": 269.0,
+          "winner": "home"
+        },
+        {
+          "key": "third_down_pct",
+          "label": "3rd down conversion rate",
+          "home_value": 0.4444444444444444,
+          "away_value": 0.7142857142857143,
+          "winner": "away"
+        },
+        {
+          "key": "fourth_down_pct",
+          "label": "4th down conversion rate",
+          "home_value": 0.0,
+          "away_value": 0.0,
+          "winner": null,
+          "no_signal": true
+        }
+      ],
+      "narrative": "CHI beat CAR: CHI won turnover margin, rushing yards, and 3rd down conversion rate, despite losing passing yards. The model correctly favored CHI to win (70%).",
+      "computed_at": "2026-09-14T00:01:24.931681",
+      "home_injuries": [
+        {
+          "player_name": "Haynes King",
+          "position": "QB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "John Metchie III",
+          "position": "WR",
+          "report_status": "Out",
+          "is_starter": true
+        },
+        {
+          "player_name": "Ja'Tavion Sanders",
+          "position": "TE",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Cam Jackson",
+          "position": "DT",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Patrick Jones II",
+          "position": "LB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Zakee Wheatley",
+          "position": "S",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Chris Brazzell II",
+          "position": "WR",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Trevor Etienne",
+          "position": "RB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Bam Martin-Scott",
+          "position": "LB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Nic Scourton",
+          "position": "LB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Tershawn Wharton",
+          "position": "DT",
+          "report_status": "Out",
+          "is_starter": false
+        }
+      ],
+      "away_injuries": [
+        {
+          "player_name": "Tyson Bagent",
+          "position": "QB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Xavier Woods",
+          "position": "S",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Brittain Brown",
+          "position": "RB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Coby Bryant",
+          "position": "S",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Tony Fields II",
+          "position": "LB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Dallis Flowers",
+          "position": "CB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Jonathan Garvin",
+          "position": "DE",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Kyler Gordon",
+          "position": "CB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Ruben Hyppolite II",
+          "position": "LB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Nikola Kalinic",
+          "position": "TE",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Nephi Sewell",
+          "position": "LB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Noah Sewell",
+          "position": "LB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Shemar Turner",
+          "position": "DT",
+          "report_status": "Out",
+          "is_starter": false
+        }
+      ]
+    },
+    {
+      "game_id": "2026_01_CLE_JAX",
+      "status": "final",
+      "home_team": "JAX",
+      "away_team": "CLE",
+      "home_score": 34,
+      "away_score": 10,
+      "predicted_winner": "JAX",
+      "predicted_home_win_prob": 0.7979277776921283,
+      "data_available": true,
+      "actual_winner": "JAX",
+      "correct_winner": true,
+      "home_stats": {
+        "rushing_yards": 129.0,
+        "passing_yards": 245.0,
+        "turnovers": 0,
+        "third_down_attempts": 9,
+        "third_down_conversions": 5,
+        "third_down_pct": 0.5555555555555556,
+        "fourth_down_attempts": 0,
+        "fourth_down_conversions": 0,
+        "fourth_down_pct": null
+      },
+      "away_stats": {
+        "rushing_yards": 87.0,
+        "passing_yards": 205.0,
+        "turnovers": 2,
+        "third_down_attempts": 8,
+        "third_down_conversions": 1,
+        "third_down_pct": 0.125,
+        "fourth_down_attempts": 2,
+        "fourth_down_conversions": 1,
+        "fourth_down_pct": 0.5
+      },
+      "keys": [
+        {
+          "key": "turnover_margin",
+          "label": "Turnover margin",
+          "home_value": 2,
+          "away_value": -2,
+          "winner": "home"
+        },
+        {
+          "key": "rushing_yards",
+          "label": "Rushing yards",
+          "home_value": 129.0,
+          "away_value": 87.0,
+          "winner": "home"
+        },
+        {
+          "key": "passing_yards",
+          "label": "Passing yards",
+          "home_value": 245.0,
+          "away_value": 205.0,
+          "winner": "home"
+        },
+        {
+          "key": "third_down_pct",
+          "label": "3rd down conversion rate",
+          "home_value": 0.5555555555555556,
+          "away_value": 0.125,
+          "winner": "home"
+        },
+        {
+          "key": "fourth_down_pct",
+          "label": "4th down conversion rate",
+          "home_value": null,
+          "away_value": 0.5,
+          "winner": null,
+          "no_signal": true
+        }
+      ],
+      "narrative": "JAX beat CLE: JAX won turnover margin, rushing yards, passing yards, and 3rd down conversion rate. The model correctly favored JAX to win (80%).",
+      "computed_at": "2026-09-14T00:01:25.141656",
+      "home_injuries": [
+        {
+          "player_name": "Quinn Ewers",
+          "position": "QB",
+          "report_status": "Out",
+          "is_starter": true
+        },
+        {
+          "player_name": "Tanner Koziol",
+          "position": "TE",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "B.J. Green II",
+          "position": "DE",
+          "report_status": "Questionable",
+          "is_starter": false
+        },
+        {
+          "player_name": "Jalen Huskey",
+          "position": "S",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Bryan Thomas Jr.",
+          "position": "DE",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Wesley Williams",
+          "position": "DE",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Zach Durfee",
+          "position": "DE",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Parker Hughes",
+          "position": "LB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        }
+      ],
+      "away_injuries": [
+        {
+          "player_name": "Taylen Green",
+          "position": "QB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Dylan Sampson",
+          "position": "RB",
+          "report_status": "Questionable",
+          "is_starter": true
+        },
+        {
+          "player_name": "Noah Igbinoghene",
+          "position": "CB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Justin Jefferson",
+          "position": "LB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Toriano Pride Jr.",
+          "position": "CB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Daniel Thomas",
+          "position": "S",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Elijah Chatman",
+          "position": "DT",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Kalia Davis",
+          "position": "DT",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Dillon Gabriel",
+          "position": "QB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Damarri Mathis",
+          "position": "CB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Jeremiah Owusu-Koramoah",
+          "position": "LB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Joe Royer",
+          "position": "TE",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Edefuan Ulofoshio",
+          "position": "LB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Alex Wright",
+          "position": "DE",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        }
+      ]
+    },
+    {
+      "game_id": "2026_01_MIA_LV",
+      "status": "final",
+      "home_team": "LV",
+      "away_team": "MIA",
+      "home_score": 27,
+      "away_score": 13,
+      "predicted_winner": "LV",
+      "predicted_home_win_prob": 0.5361201265498108,
+      "data_available": false,
+      "reason": "Play-by-play for this game hasn't been ingested yet.",
+      "home_injuries": [
+        {
+          "player_name": "Brock Bowers",
+          "position": "TE",
+          "report_status": "Out",
+          "is_starter": true
+        },
+        {
+          "player_name": "Aidan O'Connell",
+          "position": "QB",
+          "report_status": "Out",
+          "is_starter": true
+        },
+        {
+          "player_name": "Dalton Johnson",
+          "position": "S",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Cody Lindenberg",
+          "position": "LB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Darrell Luter Jr.",
+          "position": "CB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "JJ Pegues",
+          "position": "DT",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Darien Porter",
+          "position": "CB",
+          "report_status": "Questionable",
+          "is_starter": false
+        },
+        {
+          "player_name": "Chigozie Anusiem",
+          "position": "CB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Chris Collier",
+          "position": "RB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Keyron Crawford",
+          "position": "DE",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Brennan Jackson",
+          "position": "LB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Carter Runyon",
+          "position": "TE",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Justin Shorter",
+          "position": "WR",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Dont'e Thornton Jr.",
+          "position": "WR",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        }
+      ],
+      "away_injuries": [
+        {
+          "player_name": "Brady Cook",
+          "position": "QB",
+          "report_status": "Out",
+          "is_starter": true
+        },
+        {
+          "player_name": "Justin Joly",
+          "position": "TE",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Jalen Tolbert",
+          "position": "WR",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Ronnie Harrison Jr.",
+          "position": "LB",
+          "report_status": "Questionable",
+          "is_starter": false
+        },
+        {
+          "player_name": "Kyle Louis",
+          "position": "LB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Reese Taylor",
+          "position": "CB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Darrell Baker Jr.",
+          "position": "CB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Storm Duck",
+          "position": "CB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Kenneth Grant",
+          "position": "DT",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Trey Moore",
+          "position": "LB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Cole Turner",
+          "position": "TE",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        }
+      ]
+    },
     {
       "game_id": "2026_01_SF_LA",
       "status": "final",
@@ -116,7 +2456,7 @@
         }
       ],
       "narrative": "SF beat LA: SF won turnover margin, rushing yards, passing yards, and 3rd down conversion rate. The model favored LA (63%) and got the winner wrong here.",
-      "computed_at": "2026-09-13T19:03:14.144230",
+      "computed_at": "2026-09-14T00:01:25.558886",
       "home_injuries": [
         {
           "player_name": "Davis Allen",
@@ -357,7 +2697,7 @@
         }
       ],
       "narrative": "SEA beat NE: SEA won turnover margin, and passing yards, despite losing rushing yards, and 3rd down conversion rate. The model correctly favored SEA to win (64%).",
-      "computed_at": "2026-09-13T19:03:14.290469",
+      "computed_at": "2026-09-14T00:01:25.768976",
       "home_injuries": [
         {
           "player_name": "Sam Darnold",
