@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-14T08:53:26.448503",
+  "generated_at": "2026-09-14T18:01:50.908797",
   "season": 2026,
   "rolling_performance": {
     "graded_predictions": 3093,
@@ -116,30 +116,12 @@
         }
       ],
       "narrative": "NYJ beat TEN: NYJ won rushing yards, and passing yards, despite losing 3rd down conversion rate. The model correctly favored NYJ to win (80%).",
-      "computed_at": "2026-09-14T08:53:22.613168",
+      "computed_at": "2026-09-14T18:01:46.634809",
       "home_injuries": [
-        {
-          "player_name": "Nicholas Singleton",
-          "position": "RB",
-          "report_status": "Out",
-          "is_starter": false
-        },
         {
           "player_name": "Cedric Gray",
           "position": "LB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Jackie Marshall",
-          "position": "DT",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Owen Pappoe",
-          "position": "LB",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": false
         },
         {
@@ -189,7 +171,7 @@
         {
           "player_name": "Kene Nwangwu",
           "position": "RB",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": false
         },
         {
@@ -201,25 +183,13 @@
         {
           "player_name": "Joseph Ossai",
           "position": "DE",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": false
         },
         {
           "player_name": "D'Angelo Ponds",
           "position": "CB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Trevin Wallace",
-          "position": "LB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Blake Grupe",
-          "position": "PK",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": false
         },
         {
@@ -339,24 +309,12 @@
         }
       ],
       "narrative": "PIT beat ATL: PIT won turnover margin, passing yards, and 3rd down conversion rate, despite losing rushing yards. The model correctly favored PIT to win (80%).",
-      "computed_at": "2026-09-14T08:53:22.872121",
+      "computed_at": "2026-09-14T18:01:46.919802",
       "home_injuries": [
-        {
-          "player_name": "Drew Allar",
-          "position": "QB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Will Howard",
-          "position": "QB",
-          "report_status": "Out",
-          "is_starter": false
-        },
         {
           "player_name": "Joey Porter Jr.",
           "position": "CB",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": false
         },
         {
@@ -394,31 +352,25 @@
         {
           "player_name": "Michael Penix Jr.",
           "position": "QB",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": true
         },
         {
           "player_name": "Tua Tagovailoa",
           "position": "QB",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": true
         },
         {
           "player_name": "Billy Bowman Jr.",
           "position": "CB",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": false
         },
         {
           "player_name": "Da'Shawn Hand",
           "position": "DT",
-          "report_status": "Questionable",
-          "is_starter": false
-        },
-        {
-          "player_name": "Christian Harris",
-          "position": "LB",
-          "report_status": "Out",
+          "report_status": "Doubtful",
           "is_starter": false
         },
         {
@@ -532,14 +484,8 @@
         }
       ],
       "narrative": "MIN beat GB: MIN won turnover margin, rushing yards, and 3rd down conversion rate, despite losing passing yards. The model correctly favored MIN to win (56%).",
-      "computed_at": "2026-09-14T08:53:23.128477",
+      "computed_at": "2026-09-14T18:01:47.210348",
       "home_injuries": [
-        {
-          "player_name": "Demond Claiborne",
-          "position": "RB",
-          "report_status": "Out",
-          "is_starter": false
-        },
         {
           "player_name": "Jeshaun Jones",
           "position": "WR",
@@ -547,34 +493,10 @@
           "is_starter": false
         },
         {
-          "player_name": "J.J. McCarthy",
-          "position": "QB",
-          "report_status": "Out",
-          "is_starter": true
-        },
-        {
           "player_name": "Kyler Murray",
           "position": "QB",
           "report_status": "Questionable",
           "is_starter": true
-        },
-        {
-          "player_name": "Jakobe Thomas",
-          "position": "S",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Zemaiah Vaughn",
-          "position": "CB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Elijah Williams",
-          "position": "DE",
-          "report_status": "Out",
-          "is_starter": false
         },
         {
           "player_name": "Jamal Adams",
@@ -615,12 +537,6 @@
           "is_starter": true
         },
         {
-          "player_name": "J. Michael Sturdivant",
-          "position": "WR",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
           "player_name": "Josh Whyle",
           "position": "TE",
           "report_status": "Questionable",
@@ -629,7 +545,7 @@
         {
           "player_name": "Warren Brinson",
           "position": "DT",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": false
         },
         {
@@ -641,7 +557,7 @@
         {
           "player_name": "Ty'Ron Hopper",
           "position": "LB",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": false
         },
         {
@@ -767,36 +683,12 @@
         }
       ],
       "narrative": "CIN beat TB: CIN won turnover margin, rushing yards, passing yards, and 3rd down conversion rate. The model correctly favored CIN to win (82%).",
-      "computed_at": "2026-09-14T08:53:23.432821",
+      "computed_at": "2026-09-14T18:01:47.559948",
       "home_injuries": [
-        {
-          "player_name": "Jack Endries",
-          "position": "TE",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Ke'Shawn Williams",
-          "position": "WR",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Josh Newton",
-          "position": "CB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Landon Robinson",
-          "position": "DT",
-          "report_status": "Out",
-          "is_starter": false
-        },
         {
           "player_name": "Shemar Stewart",
           "position": "DE",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": false
         },
         {
@@ -810,37 +702,19 @@
         {
           "player_name": "Jalen McMillan",
           "position": "WR",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": true
         },
         {
           "player_name": "Sean Tucker",
           "position": "RB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "DeMonte Capehart",
-          "position": "DT",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Ayden Garnes",
-          "position": "CB",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": false
         },
         {
           "player_name": "Jacob Parrish",
           "position": "CB",
           "report_status": "Questionable",
-          "is_starter": false
-        },
-        {
-          "player_name": "Elijah Simmons",
-          "position": "DT",
-          "report_status": "Out",
           "is_starter": false
         },
         {
@@ -936,36 +810,12 @@
         }
       ],
       "narrative": "DET beat NO: DET won turnover margin, and rushing yards, despite losing passing yards, and 3rd down conversion rate. The model correctly favored DET to win (91%).",
-      "computed_at": "2026-09-14T08:53:23.689470",
+      "computed_at": "2026-09-14T18:01:47.843455",
       "home_injuries": [
-        {
-          "player_name": "Ahmed Hassanein",
-          "position": "DE",
-          "report_status": "Out",
-          "is_starter": false
-        },
         {
           "player_name": "Christian Izien",
           "position": "S",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Ennis Rakestraw Jr.",
-          "position": "CB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Jimmy Rolder",
-          "position": "LB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Mekhi Wingo",
-          "position": "DT",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": false
         },
         {
@@ -1009,13 +859,13 @@
         {
           "player_name": "Oscar Delp",
           "position": "TE",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": false
         },
         {
           "player_name": "Alvin Kamara",
           "position": "RB",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": false
         },
         {
@@ -1025,27 +875,9 @@
           "is_starter": false
         },
         {
-          "player_name": "Zach Wilson",
-          "position": "QB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Khristian Boyd",
-          "position": "DT",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
           "player_name": "Cameron Jordan",
           "position": "DE",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "John Ridgeway III",
-          "position": "DT",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": false
         },
         {
@@ -1177,36 +1009,12 @@
         }
       ],
       "narrative": "PHI beat WAS: PHI won rushing yards, passing yards, and 3rd down conversion rate. The model correctly favored PHI to win (73%).",
-      "computed_at": "2026-09-14T08:53:23.992875",
+      "computed_at": "2026-09-14T18:01:48.183035",
       "home_injuries": [
-        {
-          "player_name": "Tanner McKee",
-          "position": "QB",
-          "report_status": "Out",
-          "is_starter": true
-        },
-        {
-          "player_name": "Elijah Moore",
-          "position": "WR",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Cole Payton",
-          "position": "QB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Marcus Epps",
-          "position": "S",
-          "report_status": "Questionable",
-          "is_starter": false
-        },
         {
           "player_name": "Jonathan Greenard",
           "position": "LB",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": false
         },
         {
@@ -1254,24 +1062,6 @@
       ],
       "away_injuries": [
         {
-          "player_name": "Treylon Burks",
-          "position": "WR",
-          "report_status": "Out",
-          "is_starter": true
-        },
-        {
-          "player_name": "Athan Kaliakmanis",
-          "position": "QB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Luke McCaffrey",
-          "position": "WR",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
           "player_name": "Chig Okonkwo",
           "position": "TE",
           "report_status": "Questionable",
@@ -1281,12 +1071,6 @@
           "player_name": "Dorance Armstrong",
           "position": "DE",
           "report_status": "Suspension",
-          "is_starter": false
-        },
-        {
-          "player_name": "Ricky Barber",
-          "position": "DT",
-          "report_status": "Out",
           "is_starter": false
         },
         {
@@ -1406,7 +1190,7 @@
         }
       ],
       "narrative": "ARI beat LAC: ARI won turnover margin, rushing yards, passing yards, and 3rd down conversion rate. The model favored LAC (81%) and got the winner wrong here.",
-      "computed_at": "2026-09-14T08:53:24.244099",
+      "computed_at": "2026-09-14T18:01:48.466551",
       "home_injuries": [
         {
           "player_name": "KeAndre Lambert-Smith",
@@ -1423,13 +1207,7 @@
         {
           "player_name": "Deane Leonard",
           "position": "CB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "RJ Mickens",
-          "position": "S",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": false
         },
         {
@@ -1453,24 +1231,6 @@
       ],
       "away_injuries": [
         {
-          "player_name": "Carson Beck",
-          "position": "QB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Reggie Virgil",
-          "position": "WR",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Andrew Billings",
-          "position": "DT",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
           "player_name": "Kitan Crawford",
           "position": "S",
           "report_status": "Questionable",
@@ -1479,13 +1239,13 @@
         {
           "player_name": "Dadrion Taylor-Demerson",
           "position": "S",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": false
         },
         {
           "player_name": "Garrett Williams",
           "position": "CB",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": false
         },
         {
@@ -1605,44 +1365,8 @@
         }
       ],
       "narrative": "NYG beat DAL: NYG won rushing yards, passing yards, and 3rd down conversion rate. The model favored DAL (58%) and got the winner wrong here.",
-      "computed_at": "2026-09-14T08:53:24.498872",
+      "computed_at": "2026-09-14T18:01:48.750015",
       "home_injuries": [
-        {
-          "player_name": "Dalen Cambre",
-          "position": "WR",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Thomas Fidone II",
-          "position": "TE",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Najee Harris",
-          "position": "RB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Bobby Jamison-Travis",
-          "position": "DT",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Nic Jones",
-          "position": "CB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Jason Pinnock",
-          "position": "S",
-          "report_status": "Out",
-          "is_starter": false
-        },
         {
           "player_name": "Calvin Austin III",
           "position": "WR",
@@ -1688,39 +1412,15 @@
       ],
       "away_injuries": [
         {
-          "player_name": "Israel Abanikanda",
-          "position": "RB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Camden Brown",
-          "position": "WR",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Caelen Carson",
-          "position": "CB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
           "player_name": "Malik Hooker",
           "position": "S",
-          "report_status": "Out",
+          "report_status": "Doubtful",
           "is_starter": false
         },
         {
           "player_name": "DeMarvion Overshown",
           "position": "LB",
           "report_status": "Questionable",
-          "is_starter": false
-        },
-        {
-          "player_name": "Tyrus Wheat",
-          "position": "LB",
-          "report_status": "Out",
           "is_starter": false
         },
         {
@@ -1822,20 +1522,8 @@
         }
       ],
       "narrative": "BAL beat IND: BAL won turnover margin, rushing yards, passing yards, and 3rd down conversion rate. The model correctly favored BAL to win (86%).",
-      "computed_at": "2026-09-14T08:53:24.749571",
+      "computed_at": "2026-09-14T18:01:49.045069",
       "home_injuries": [
-        {
-          "player_name": "DJ Giddens",
-          "position": "RB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Riley Leonard",
-          "position": "QB",
-          "report_status": "Out",
-          "is_starter": true
-        },
         {
           "player_name": "Alec Pierce",
           "position": "WR",
@@ -1845,19 +1533,7 @@
         {
           "player_name": "Austin Ajiake",
           "position": "LB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Johnathan Edwards",
-          "position": "CB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "George Gumbs Jr.",
-          "position": "LB",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": false
         },
         {
@@ -1893,12 +1569,6 @@
       ],
       "away_injuries": [
         {
-          "player_name": "Joe Fagnano",
-          "position": "QB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
           "player_name": "Zay Flowers",
           "position": "WR",
           "report_status": "Questionable",
@@ -1911,33 +1581,21 @@
           "is_starter": false
         },
         {
-          "player_name": "Elijah Sarratt",
-          "position": "WR",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
           "player_name": "Devontez Walker",
           "position": "WR",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": true
         },
         {
           "player_name": "Teddye Buchanan",
           "position": "LB",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": false
         },
         {
           "player_name": "Nnamdi Madubuike",
           "position": "DT",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Chandler Rivers",
-          "position": "CB",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": false
         },
         {
@@ -2039,30 +1697,12 @@
         }
       ],
       "narrative": "BUF beat HOU: BUF won turnover margin, and passing yards, despite losing rushing yards, and 3rd down conversion rate. The model correctly favored BUF to win (58%).",
-      "computed_at": "2026-09-14T08:53:25.000986",
+      "computed_at": "2026-09-14T18:01:49.323879",
       "home_injuries": [
-        {
-          "player_name": "Brevin Jordan",
-          "position": "TE",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Jaden Crumedy",
-          "position": "DT",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Aiden Fisher",
-          "position": "LB",
-          "report_status": "Out",
-          "is_starter": false
-        },
         {
           "player_name": "Jake Hummel",
           "position": "LB",
-          "report_status": "Questionable",
+          "report_status": "Doubtful",
           "is_starter": false
         },
         {
@@ -2134,27 +1774,9 @@
       ],
       "away_injuries": [
         {
-          "player_name": "Skyler Bell",
-          "position": "WR",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
           "player_name": "Ty Johnson",
           "position": "RB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Mike Danna",
-          "position": "DE",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Jalon Kilgore",
-          "position": "S",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": false
         },
         {
@@ -2166,7 +1788,7 @@
         {
           "player_name": "T.J. Sanders",
           "position": "DT",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": false
         },
         {
@@ -2262,42 +1884,12 @@
         }
       ],
       "narrative": "CHI beat CAR: CHI won turnover margin, rushing yards, and 3rd down conversion rate, despite losing passing yards. The model correctly favored CHI to win (70%).",
-      "computed_at": "2026-09-14T08:53:25.253026",
+      "computed_at": "2026-09-14T18:01:49.611264",
       "home_injuries": [
-        {
-          "player_name": "Haynes King",
-          "position": "QB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "John Metchie III",
-          "position": "WR",
-          "report_status": "Out",
-          "is_starter": true
-        },
-        {
-          "player_name": "Ja'Tavion Sanders",
-          "position": "TE",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Cam Jackson",
-          "position": "DT",
-          "report_status": "Out",
-          "is_starter": false
-        },
         {
           "player_name": "Patrick Jones II",
           "position": "LB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Zakee Wheatley",
-          "position": "S",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": false
         },
         {
@@ -2335,13 +1927,13 @@
         {
           "player_name": "Tyson Bagent",
           "position": "QB",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": false
         },
         {
           "player_name": "Xavier Woods",
           "position": "S",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": false
         },
         {
@@ -2485,42 +2077,18 @@
         }
       ],
       "narrative": "JAX beat CLE: JAX won turnover margin, rushing yards, passing yards, and 3rd down conversion rate. The model correctly favored JAX to win (80%).",
-      "computed_at": "2026-09-14T08:53:25.540599",
+      "computed_at": "2026-09-14T18:01:49.892092",
       "home_injuries": [
         {
-          "player_name": "Quinn Ewers",
-          "position": "QB",
-          "report_status": "Out",
+          "player_name": "Brian Thomas Jr.",
+          "position": "WR",
+          "report_status": "Questionable",
           "is_starter": true
-        },
-        {
-          "player_name": "Tanner Koziol",
-          "position": "TE",
-          "report_status": "Out",
-          "is_starter": false
         },
         {
           "player_name": "B.J. Green II",
           "position": "DE",
           "report_status": "Questionable",
-          "is_starter": false
-        },
-        {
-          "player_name": "Jalen Huskey",
-          "position": "S",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Bryan Thomas Jr.",
-          "position": "DE",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Wesley Williams",
-          "position": "DE",
-          "report_status": "Out",
           "is_starter": false
         },
         {
@@ -2538,40 +2106,10 @@
       ],
       "away_injuries": [
         {
-          "player_name": "Taylen Green",
-          "position": "QB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
           "player_name": "Dylan Sampson",
           "position": "RB",
           "report_status": "Questionable",
           "is_starter": true
-        },
-        {
-          "player_name": "Noah Igbinoghene",
-          "position": "CB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Justin Jefferson",
-          "position": "LB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Toriano Pride Jr.",
-          "position": "CB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Daniel Thomas",
-          "position": "S",
-          "report_status": "Out",
-          "is_starter": false
         },
         {
           "player_name": "Elijah Chatman",
@@ -2696,43 +2234,13 @@
         }
       ],
       "narrative": "LV beat MIA: LV won rushing yards, and 3rd down conversion rate, despite losing passing yards. The model correctly favored LV to win (54%).",
-      "computed_at": "2026-09-14T08:53:25.794128",
+      "computed_at": "2026-09-14T18:01:50.172835",
       "home_injuries": [
         {
           "player_name": "Brock Bowers",
           "position": "TE",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": true
-        },
-        {
-          "player_name": "Aidan O'Connell",
-          "position": "QB",
-          "report_status": "Out",
-          "is_starter": true
-        },
-        {
-          "player_name": "Dalton Johnson",
-          "position": "S",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Cody Lindenberg",
-          "position": "LB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Darrell Luter Jr.",
-          "position": "CB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "JJ Pegues",
-          "position": "DT",
-          "report_status": "Out",
-          "is_starter": false
         },
         {
           "player_name": "Darien Porter",
@@ -2785,24 +2293,6 @@
       ],
       "away_injuries": [
         {
-          "player_name": "Brady Cook",
-          "position": "QB",
-          "report_status": "Out",
-          "is_starter": true
-        },
-        {
-          "player_name": "Justin Joly",
-          "position": "TE",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Jalen Tolbert",
-          "position": "WR",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
           "player_name": "Ronnie Harrison Jr.",
           "position": "LB",
           "report_status": "Questionable",
@@ -2812,12 +2302,6 @@
           "player_name": "Kyle Louis",
           "position": "LB",
           "report_status": "Questionable",
-          "is_starter": false
-        },
-        {
-          "player_name": "Reese Taylor",
-          "position": "CB",
-          "report_status": "Out",
           "is_starter": false
         },
         {
@@ -2925,38 +2409,8 @@
         }
       ],
       "narrative": "SF beat LA: SF won turnover margin, rushing yards, passing yards, and 3rd down conversion rate. The model favored LA (63%) and got the winner wrong here.",
-      "computed_at": "2026-09-14T08:53:26.044282",
+      "computed_at": "2026-09-14T18:01:50.453938",
       "home_injuries": [
-        {
-          "player_name": "Davis Allen",
-          "position": "TE",
-          "report_status": "Questionable",
-          "is_starter": true
-        },
-        {
-          "player_name": "Tutu Atwell",
-          "position": "WR",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "CJ Daniels",
-          "position": "WR",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Max Klare",
-          "position": "TE",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Ty Simpson",
-          "position": "QB",
-          "report_status": "Out",
-          "is_starter": false
-        },
         {
           "player_name": "Kam Curl",
           "position": "S",
@@ -2967,6 +2421,18 @@
           "player_name": "Myles Garrett",
           "position": "DE",
           "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Nate Landman",
+          "position": "LB",
+          "report_status": "Questionable",
+          "is_starter": false
+        },
+        {
+          "player_name": "Omar Speights",
+          "position": "LB",
+          "report_status": "Questionable",
           "is_starter": false
         },
         {
@@ -2990,18 +2456,6 @@
           "is_starter": false
         },
         {
-          "player_name": "Jordan James",
-          "position": "RB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Kurtis Rourke",
-          "position": "QB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
           "player_name": "De'Zhaun Stribling",
           "position": "WR",
           "report_status": "Doubtful",
@@ -3011,24 +2465,6 @@
           "player_name": "Jake Tonges",
           "position": "TE",
           "report_status": "Questionable",
-          "is_starter": false
-        },
-        {
-          "player_name": "Jordan Watkins",
-          "position": "WR",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Tatum Bethune",
-          "position": "LB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Ephesians Prysock",
-          "position": "CB",
-          "report_status": "Out",
           "is_starter": false
         },
         {
@@ -3166,7 +2602,7 @@
         }
       ],
       "narrative": "SEA beat NE: SEA won turnover margin, and passing yards, despite losing rushing yards, and 3rd down conversion rate. The model correctly favored SEA to win (64%).",
-      "computed_at": "2026-09-14T08:53:26.293659",
+      "computed_at": "2026-09-14T18:01:50.734902",
       "home_injuries": [
         {
           "player_name": "Sam Darnold",
@@ -3177,20 +2613,8 @@
         {
           "player_name": "Tory Horton",
           "position": "WR",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": true
-        },
-        {
-          "player_name": "Nick Kallerup",
-          "position": "TE",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Jalen Milroe",
-          "position": "QB",
-          "report_status": "Out",
-          "is_starter": false
         },
         {
           "player_name": "Terrion Arnold",
@@ -3201,19 +2625,13 @@
         {
           "player_name": "Nick Emmanwori",
           "position": "S",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Mike Morris",
-          "position": "DE",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": false
         },
         {
           "player_name": "Ty Okada",
           "position": "S",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": false
         },
         {
@@ -3249,33 +2667,9 @@
       ],
       "away_injuries": [
         {
-          "player_name": "Efton Chism III",
-          "position": "WR",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
           "player_name": "TreVeyon Henderson",
           "position": "RB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Behren Morton",
-          "position": "QB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Erick Hunter",
-          "position": "LB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Karon Prunty",
-          "position": "CB",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": false
         },
         {
