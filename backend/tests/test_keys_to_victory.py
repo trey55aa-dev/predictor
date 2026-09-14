@@ -69,6 +69,23 @@ def test_breakdown_unavailable_when_plays_not_ingested_yet(db):
     assert "ingested" in result["reason"].lower()
 
 
+def test_correct_winner_available_even_when_plays_not_ingested(db):
+    """The winner call only needs the final score and the prediction -- grade.py's
+    grade_week() already proves this by grading winner_accuracy with no play-by-play
+    involved at all. build_game_breakdown should do the same instead of hiding a real
+    miss just because the box-score stats (which DO need plays) aren't ready yet."""
+    game = _game(db, home="LAC", away="ARI", home_score=14, away_score=26)  # home LAC lost
+    _prediction(db, "g1", home_win_prob=0.81)  # model heavily favored LAC (home) -- a real miss
+    db.commit()
+
+    result = build_game_breakdown(db, game)
+
+    assert result["data_available"] is False  # box-score stats/keys genuinely unavailable
+    assert result["predicted_winner"] == "LAC"
+    assert result["actual_winner"] == "ARI"
+    assert result["correct_winner"] is False
+
+
 def test_real_stats_computed_from_plays_not_estimated(db):
     game = _game(db)  # SEA 13, NE 10 -- SEA (home) actually won
     _prediction(db, "g1", home_win_prob=0.65)  # model also favored SEA

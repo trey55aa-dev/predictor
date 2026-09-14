@@ -182,8 +182,6 @@ def build_game_breakdown(db: Session, game: Game) -> dict:
 
     if game.status != "final":
         return {**base, "data_available": False, "reason": "Game isn't final yet."}
-    if not plays:
-        return {**base, "data_available": False, "reason": "Play-by-play for this game hasn't been ingested yet."}
 
     if game.home_score is None or game.away_score is None:
         actual_winner_side = None
@@ -196,12 +194,24 @@ def build_game_breakdown(db: Session, game: Game) -> dict:
     actual_winner = (
         game.home_team if actual_winner_side == "home" else game.away_team if actual_winner_side == "away" else None
     )
+    # The winner call only needs the final score and the prediction (see grade.py's
+    # grade_week(), which grades winner_accuracy the same way with no play-by-play
+    # involved) -- compute and surface it even when the box-score stats below aren't
+    # ready yet, so a real miss/hit isn't hidden behind unrelated ingestion lag.
+    correct_winner = (predicted_winner == actual_winner) if (predicted_winner and actual_winner) else None
+
+    if not plays:
+        return {
+            **base,
+            "data_available": False,
+            "reason": "Play-by-play for this game hasn't been ingested yet.",
+            "actual_winner": actual_winner,
+            "correct_winner": correct_winner,
+        }
 
     home_stats = team_stats(plays, game.home_team)
     away_stats = team_stats(plays, game.away_team)
     keys = build_keys(home_stats, away_stats)
-
-    correct_winner = (predicted_winner == actual_winner) if (predicted_winner and actual_winner) else None
 
     return {
         **base,
