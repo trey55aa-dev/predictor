@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-09-14T00:01:25.898011",
+  "generated_at": "2026-09-14T08:53:26.448503",
   "season": 2026,
   "rolling_performance": {
-    "graded_predictions": 3073,
-    "winner_accuracy": 0.6521314676212171,
-    "avg_brier_score": 0.21991527407549355,
-    "avg_abs_margin_error": 11.15329616930393,
-    "avg_abs_total_error": 10.743963517489327
+    "graded_predictions": 3093,
+    "winner_accuracy": 0.6479146459747818,
+    "avg_brier_score": 0.2205719340342479,
+    "avg_abs_margin_error": 11.146418881933906,
+    "avg_abs_total_error": 10.684531882142554
   },
   "recent_calibrations": [
     {
@@ -116,7 +116,7 @@
         }
       ],
       "narrative": "NYJ beat TEN: NYJ won rushing yards, and passing yards, despite losing 3rd down conversion rate. The model correctly favored NYJ to win (80%).",
-      "computed_at": "2026-09-14T00:01:22.897636",
+      "computed_at": "2026-09-14T08:53:22.613168",
       "home_injuries": [
         {
           "player_name": "Nicholas Singleton",
@@ -195,7 +195,7 @@
         {
           "player_name": "Minkah Fitzpatrick",
           "position": "S",
-          "report_status": "Doubtful",
+          "report_status": "Questionable",
           "is_starter": false
         },
         {
@@ -339,7 +339,7 @@
         }
       ],
       "narrative": "PIT beat ATL: PIT won turnover margin, passing yards, and 3rd down conversion rate, despite losing rushing yards. The model correctly favored PIT to win (80%).",
-      "computed_at": "2026-09-14T00:01:23.167822",
+      "computed_at": "2026-09-14T08:53:22.872121",
       "home_injuries": [
         {
           "player_name": "Drew Allar",
@@ -468,8 +468,71 @@
       "away_score": 22,
       "predicted_winner": "MIN",
       "predicted_home_win_prob": 0.5615300584905772,
-      "data_available": false,
-      "reason": "Play-by-play for this game hasn't been ingested yet.",
+      "data_available": true,
+      "actual_winner": "MIN",
+      "correct_winner": true,
+      "home_stats": {
+        "rushing_yards": 110.0,
+        "passing_yards": 153.0,
+        "turnovers": 1,
+        "third_down_attempts": 14,
+        "third_down_conversions": 8,
+        "third_down_pct": 0.5714285714285714,
+        "fourth_down_attempts": 0,
+        "fourth_down_conversions": 0,
+        "fourth_down_pct": null
+      },
+      "away_stats": {
+        "rushing_yards": 66.0,
+        "passing_yards": 387.0,
+        "turnovers": 2,
+        "third_down_attempts": 12,
+        "third_down_conversions": 3,
+        "third_down_pct": 0.25,
+        "fourth_down_attempts": 2,
+        "fourth_down_conversions": 0,
+        "fourth_down_pct": 0.0
+      },
+      "keys": [
+        {
+          "key": "turnover_margin",
+          "label": "Turnover margin",
+          "home_value": 1,
+          "away_value": -1,
+          "winner": "home"
+        },
+        {
+          "key": "rushing_yards",
+          "label": "Rushing yards",
+          "home_value": 110.0,
+          "away_value": 66.0,
+          "winner": "home"
+        },
+        {
+          "key": "passing_yards",
+          "label": "Passing yards",
+          "home_value": 153.0,
+          "away_value": 387.0,
+          "winner": "away"
+        },
+        {
+          "key": "third_down_pct",
+          "label": "3rd down conversion rate",
+          "home_value": 0.5714285714285714,
+          "away_value": 0.25,
+          "winner": "home"
+        },
+        {
+          "key": "fourth_down_pct",
+          "label": "4th down conversion rate",
+          "home_value": null,
+          "away_value": 0.0,
+          "winner": null,
+          "no_signal": true
+        }
+      ],
+      "narrative": "MIN beat GB: MIN won turnover margin, rushing yards, and 3rd down conversion rate, despite losing passing yards. The model correctly favored MIN to win (56%).",
+      "computed_at": "2026-09-14T08:53:23.128477",
       "home_injuries": [
         {
           "player_name": "Demond Claiborne",
@@ -704,7 +767,7 @@
         }
       ],
       "narrative": "CIN beat TB: CIN won turnover margin, rushing yards, passing yards, and 3rd down conversion rate. The model correctly favored CIN to win (82%).",
-      "computed_at": "2026-09-14T00:01:23.626900",
+      "computed_at": "2026-09-14T08:53:23.432821",
       "home_injuries": [
         {
           "player_name": "Jack Endries",
@@ -873,7 +936,7 @@
         }
       ],
       "narrative": "DET beat NO: DET won turnover margin, and rushing yards, despite losing passing yards, and 3rd down conversion rate. The model correctly favored DET to win (91%).",
-      "computed_at": "2026-09-14T00:01:23.837388",
+      "computed_at": "2026-09-14T08:53:23.689470",
       "home_injuries": [
         {
           "player_name": "Ahmed Hassanein",
@@ -1050,8 +1113,71 @@
       "away_score": 22,
       "predicted_winner": "PHI",
       "predicted_home_win_prob": 0.7254361601230509,
-      "data_available": false,
-      "reason": "Play-by-play for this game hasn't been ingested yet.",
+      "data_available": true,
+      "actual_winner": "PHI",
+      "correct_winner": true,
+      "home_stats": {
+        "rushing_yards": 138.0,
+        "passing_yards": 203.0,
+        "turnovers": 0,
+        "third_down_attempts": 14,
+        "third_down_conversions": 6,
+        "third_down_pct": 0.42857142857142855,
+        "fourth_down_attempts": 0,
+        "fourth_down_conversions": 0,
+        "fourth_down_pct": null
+      },
+      "away_stats": {
+        "rushing_yards": 132.0,
+        "passing_yards": 164.0,
+        "turnovers": 0,
+        "third_down_attempts": 15,
+        "third_down_conversions": 5,
+        "third_down_pct": 0.3333333333333333,
+        "fourth_down_attempts": 2,
+        "fourth_down_conversions": 2,
+        "fourth_down_pct": 1.0
+      },
+      "keys": [
+        {
+          "key": "turnover_margin",
+          "label": "Turnover margin",
+          "home_value": 0,
+          "away_value": 0,
+          "winner": null
+        },
+        {
+          "key": "rushing_yards",
+          "label": "Rushing yards",
+          "home_value": 138.0,
+          "away_value": 132.0,
+          "winner": "home"
+        },
+        {
+          "key": "passing_yards",
+          "label": "Passing yards",
+          "home_value": 203.0,
+          "away_value": 164.0,
+          "winner": "home"
+        },
+        {
+          "key": "third_down_pct",
+          "label": "3rd down conversion rate",
+          "home_value": 0.42857142857142855,
+          "away_value": 0.3333333333333333,
+          "winner": "home"
+        },
+        {
+          "key": "fourth_down_pct",
+          "label": "4th down conversion rate",
+          "home_value": null,
+          "away_value": 1.0,
+          "winner": null,
+          "no_signal": true
+        }
+      ],
+      "narrative": "PHI beat WAS: PHI won rushing yards, passing yards, and 3rd down conversion rate. The model correctly favored PHI to win (73%).",
+      "computed_at": "2026-09-14T08:53:23.992875",
       "home_injuries": [
         {
           "player_name": "Tanner McKee",
@@ -1216,8 +1342,71 @@
       "away_score": 26,
       "predicted_winner": "LAC",
       "predicted_home_win_prob": 0.8099739658409555,
-      "data_available": false,
-      "reason": "Play-by-play for this game hasn't been ingested yet.",
+      "data_available": true,
+      "actual_winner": "ARI",
+      "correct_winner": false,
+      "home_stats": {
+        "rushing_yards": 81.0,
+        "passing_yards": 209.0,
+        "turnovers": 2,
+        "third_down_attempts": 8,
+        "third_down_conversions": 2,
+        "third_down_pct": 0.25,
+        "fourth_down_attempts": 3,
+        "fourth_down_conversions": 0,
+        "fourth_down_pct": 0.0
+      },
+      "away_stats": {
+        "rushing_yards": 119.0,
+        "passing_yards": 277.0,
+        "turnovers": 0,
+        "third_down_attempts": 13,
+        "third_down_conversions": 6,
+        "third_down_pct": 0.46153846153846156,
+        "fourth_down_attempts": 0,
+        "fourth_down_conversions": 0,
+        "fourth_down_pct": null
+      },
+      "keys": [
+        {
+          "key": "turnover_margin",
+          "label": "Turnover margin",
+          "home_value": -2,
+          "away_value": 2,
+          "winner": "away"
+        },
+        {
+          "key": "rushing_yards",
+          "label": "Rushing yards",
+          "home_value": 81.0,
+          "away_value": 119.0,
+          "winner": "away"
+        },
+        {
+          "key": "passing_yards",
+          "label": "Passing yards",
+          "home_value": 209.0,
+          "away_value": 277.0,
+          "winner": "away"
+        },
+        {
+          "key": "third_down_pct",
+          "label": "3rd down conversion rate",
+          "home_value": 0.25,
+          "away_value": 0.46153846153846156,
+          "winner": "away"
+        },
+        {
+          "key": "fourth_down_pct",
+          "label": "4th down conversion rate",
+          "home_value": 0.0,
+          "away_value": null,
+          "winner": null,
+          "no_signal": true
+        }
+      ],
+      "narrative": "ARI beat LAC: ARI won turnover margin, rushing yards, passing yards, and 3rd down conversion rate. The model favored LAC (81%) and got the winner wrong here.",
+      "computed_at": "2026-09-14T08:53:24.244099",
       "home_injuries": [
         {
           "player_name": "KeAndre Lambert-Smith",
@@ -1344,6 +1533,223 @@
       ]
     },
     {
+      "game_id": "2026_01_DAL_NYG",
+      "status": "final",
+      "home_team": "NYG",
+      "away_team": "DAL",
+      "home_score": 28,
+      "away_score": 20,
+      "predicted_winner": "DAL",
+      "predicted_home_win_prob": 0.4161587645674203,
+      "data_available": true,
+      "actual_winner": "NYG",
+      "correct_winner": false,
+      "home_stats": {
+        "rushing_yards": 170.0,
+        "passing_yards": 230.0,
+        "turnovers": 1,
+        "third_down_attempts": 10,
+        "third_down_conversions": 9,
+        "third_down_pct": 0.9,
+        "fourth_down_attempts": 0,
+        "fourth_down_conversions": 0,
+        "fourth_down_pct": null
+      },
+      "away_stats": {
+        "rushing_yards": 69.0,
+        "passing_yards": 175.0,
+        "turnovers": 1,
+        "third_down_attempts": 11,
+        "third_down_conversions": 8,
+        "third_down_pct": 0.7272727272727273,
+        "fourth_down_attempts": 0,
+        "fourth_down_conversions": 0,
+        "fourth_down_pct": null
+      },
+      "keys": [
+        {
+          "key": "turnover_margin",
+          "label": "Turnover margin",
+          "home_value": 0,
+          "away_value": 0,
+          "winner": null
+        },
+        {
+          "key": "rushing_yards",
+          "label": "Rushing yards",
+          "home_value": 170.0,
+          "away_value": 69.0,
+          "winner": "home"
+        },
+        {
+          "key": "passing_yards",
+          "label": "Passing yards",
+          "home_value": 230.0,
+          "away_value": 175.0,
+          "winner": "home"
+        },
+        {
+          "key": "third_down_pct",
+          "label": "3rd down conversion rate",
+          "home_value": 0.9,
+          "away_value": 0.7272727272727273,
+          "winner": "home"
+        },
+        {
+          "key": "fourth_down_pct",
+          "label": "4th down conversion rate",
+          "home_value": null,
+          "away_value": null,
+          "winner": null,
+          "no_signal": true
+        }
+      ],
+      "narrative": "NYG beat DAL: NYG won rushing yards, passing yards, and 3rd down conversion rate. The model favored DAL (58%) and got the winner wrong here.",
+      "computed_at": "2026-09-14T08:53:24.498872",
+      "home_injuries": [
+        {
+          "player_name": "Dalen Cambre",
+          "position": "WR",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Thomas Fidone II",
+          "position": "TE",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Najee Harris",
+          "position": "RB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Bobby Jamison-Travis",
+          "position": "DT",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Nic Jones",
+          "position": "CB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Jason Pinnock",
+          "position": "S",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Calvin Austin III",
+          "position": "WR",
+          "report_status": "Injured Reserve",
+          "is_starter": true
+        },
+        {
+          "player_name": "Jarrick Bernard-Converse",
+          "position": "CB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Korie Black",
+          "position": "CB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "DJ James",
+          "position": "CB",
+          "report_status": "Questionable",
+          "is_starter": false
+        },
+        {
+          "player_name": "Gunner Olszewski",
+          "position": "WR",
+          "report_status": "Injured Reserve",
+          "is_starter": true
+        },
+        {
+          "player_name": "Rico Payton",
+          "position": "CB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Roy Robertson-Harris",
+          "position": "DT",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        }
+      ],
+      "away_injuries": [
+        {
+          "player_name": "Israel Abanikanda",
+          "position": "RB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Camden Brown",
+          "position": "WR",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Caelen Carson",
+          "position": "CB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Malik Hooker",
+          "position": "S",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "DeMarvion Overshown",
+          "position": "LB",
+          "report_status": "Questionable",
+          "is_starter": false
+        },
+        {
+          "player_name": "Tyrus Wheat",
+          "position": "LB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Malik Davis",
+          "position": "RB",
+          "report_status": "Injured Reserve",
+          "is_starter": true
+        },
+        {
+          "player_name": "Princeton Fant",
+          "position": "TE",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Marist Liufau",
+          "position": "LB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Devin Moore",
+          "position": "CB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        }
+      ]
+    },
+    {
       "game_id": "2026_01_BAL_IND",
       "status": "final",
       "home_team": "IND",
@@ -1416,7 +1822,7 @@
         }
       ],
       "narrative": "BAL beat IND: BAL won turnover margin, rushing yards, passing yards, and 3rd down conversion rate. The model correctly favored BAL to win (86%).",
-      "computed_at": "2026-09-14T00:01:24.509717",
+      "computed_at": "2026-09-14T08:53:24.749571",
       "home_injuries": [
         {
           "player_name": "DJ Giddens",
@@ -1501,7 +1907,7 @@
         {
           "player_name": "Ja'Kobi Lane",
           "position": "WR",
-          "report_status": "Questionable",
+          "report_status": "Doubtful",
           "is_starter": false
         },
         {
@@ -1633,7 +2039,7 @@
         }
       ],
       "narrative": "BUF beat HOU: BUF won turnover margin, and passing yards, despite losing rushing yards, and 3rd down conversion rate. The model correctly favored BUF to win (58%).",
-      "computed_at": "2026-09-14T00:01:24.720030",
+      "computed_at": "2026-09-14T08:53:25.000986",
       "home_injuries": [
         {
           "player_name": "Brevin Jordan",
@@ -1856,7 +2262,7 @@
         }
       ],
       "narrative": "CHI beat CAR: CHI won turnover margin, rushing yards, and 3rd down conversion rate, despite losing passing yards. The model correctly favored CHI to win (70%).",
-      "computed_at": "2026-09-14T00:01:24.931681",
+      "computed_at": "2026-09-14T08:53:25.253026",
       "home_injuries": [
         {
           "player_name": "Haynes King",
@@ -2079,7 +2485,7 @@
         }
       ],
       "narrative": "JAX beat CLE: JAX won turnover margin, rushing yards, passing yards, and 3rd down conversion rate. The model correctly favored JAX to win (80%).",
-      "computed_at": "2026-09-14T00:01:25.141656",
+      "computed_at": "2026-09-14T08:53:25.540599",
       "home_injuries": [
         {
           "player_name": "Quinn Ewers",
@@ -2226,8 +2632,71 @@
       "away_score": 13,
       "predicted_winner": "LV",
       "predicted_home_win_prob": 0.5361201265498108,
-      "data_available": false,
-      "reason": "Play-by-play for this game hasn't been ingested yet.",
+      "data_available": true,
+      "actual_winner": "LV",
+      "correct_winner": true,
+      "home_stats": {
+        "rushing_yards": 136.0,
+        "passing_yards": 160.0,
+        "turnovers": 2,
+        "third_down_attempts": 12,
+        "third_down_conversions": 5,
+        "third_down_pct": 0.4166666666666667,
+        "fourth_down_attempts": 1,
+        "fourth_down_conversions": 1,
+        "fourth_down_pct": 1.0
+      },
+      "away_stats": {
+        "rushing_yards": 74.0,
+        "passing_yards": 220.0,
+        "turnovers": 2,
+        "third_down_attempts": 10,
+        "third_down_conversions": 3,
+        "third_down_pct": 0.3,
+        "fourth_down_attempts": 1,
+        "fourth_down_conversions": 0,
+        "fourth_down_pct": 0.0
+      },
+      "keys": [
+        {
+          "key": "turnover_margin",
+          "label": "Turnover margin",
+          "home_value": 0,
+          "away_value": 0,
+          "winner": null
+        },
+        {
+          "key": "rushing_yards",
+          "label": "Rushing yards",
+          "home_value": 136.0,
+          "away_value": 74.0,
+          "winner": "home"
+        },
+        {
+          "key": "passing_yards",
+          "label": "Passing yards",
+          "home_value": 160.0,
+          "away_value": 220.0,
+          "winner": "away"
+        },
+        {
+          "key": "third_down_pct",
+          "label": "3rd down conversion rate",
+          "home_value": 0.4166666666666667,
+          "away_value": 0.3,
+          "winner": "home"
+        },
+        {
+          "key": "fourth_down_pct",
+          "label": "4th down conversion rate",
+          "home_value": 1.0,
+          "away_value": 0.0,
+          "winner": "home",
+          "no_signal": true
+        }
+      ],
+      "narrative": "LV beat MIA: LV won rushing yards, and 3rd down conversion rate, despite losing passing yards. The model correctly favored LV to win (54%).",
+      "computed_at": "2026-09-14T08:53:25.794128",
       "home_injuries": [
         {
           "player_name": "Brock Bowers",
@@ -2342,7 +2811,7 @@
         {
           "player_name": "Kyle Louis",
           "position": "LB",
-          "report_status": "Out",
+          "report_status": "Questionable",
           "is_starter": false
         },
         {
@@ -2456,7 +2925,7 @@
         }
       ],
       "narrative": "SF beat LA: SF won turnover margin, rushing yards, passing yards, and 3rd down conversion rate. The model favored LA (63%) and got the winner wrong here.",
-      "computed_at": "2026-09-14T00:01:25.558886",
+      "computed_at": "2026-09-14T08:53:26.044282",
       "home_injuries": [
         {
           "player_name": "Davis Allen",
@@ -2697,7 +3166,7 @@
         }
       ],
       "narrative": "SEA beat NE: SEA won turnover margin, and passing yards, despite losing rushing yards, and 3rd down conversion rate. The model correctly favored SEA to win (64%).",
-      "computed_at": "2026-09-14T00:01:25.768976",
+      "computed_at": "2026-09-14T08:53:26.293659",
       "home_injuries": [
         {
           "player_name": "Sam Darnold",
