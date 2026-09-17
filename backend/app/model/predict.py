@@ -10,6 +10,7 @@ from app.model.market import blend_line, blend_win_prob, market_home_win_prob
 from app.model.recalibration import get_tuned_value
 from app.model.recent_form import recent_form_adjustment
 from app.model.scoring import matchup_expected_total
+from app.model.stat_rankings import stat_rank_adjustment
 from app.model.venue import is_true_home_game
 from app.model.weather_adjust import total_points_adjustment
 from app.models import Game, OddsSnapshot, Prediction, WeatherSnapshot
@@ -64,7 +65,13 @@ def predict_game(db: Session, game: Game) -> Prediction:
     # won and by how much, not how). See model/recent_form.py.
     home_form_delta, _home_form_note = recent_form_adjustment(db, game.home_team, game.season, game.week)
     away_form_delta, _away_form_note = recent_form_adjustment(db, game.away_team, game.season, game.week)
-    home_win_prob = min(max(home_win_prob + home_form_delta - away_form_delta, 0.02), 0.98)
+
+    # Separate, season-long counterpart to the single-game nudge above -- see
+    # model/stat_rankings.py. Distinct signal from Elo (which reflects wins,
+    # not box-score volume) and from the last-game-only form nudge.
+    stat_rank_delta, _stat_rank_note = stat_rank_adjustment(db, game.home_team, game.away_team, game.season, game.week)
+
+    home_win_prob = min(max(home_win_prob + home_form_delta - away_form_delta + stat_rank_delta, 0.02), 0.98)
 
     market_margin = -market_spread if market_spread is not None else None  # spread is from home's perspective (negative = favored)
     predicted_margin = blend_line(elo_margin, market_margin, weight=tuned_blend_weight)
