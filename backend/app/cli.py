@@ -23,7 +23,12 @@ from app.model.player_projection import (
     player_projection_performance_summary,
     project_week,
 )
-from app.model.player_sim import DEFAULT_N_SIMS, should_refresh_week_props, store_week_player_props
+from app.model.player_sim import (
+    DEFAULT_N_SIMS,
+    should_refresh_week_props,
+    sim_player_projection_performance_summary,
+    store_week_player_props,
+)
 from app.model.predict import predict_week
 from app.model.recalibration import recalibrate
 from app.model.review_export import export_review_snapshot
@@ -452,12 +457,14 @@ def run_routine_cmd() -> None:
         perf = performance_summary(db)
         parlay_perf = parlay_performance_summary(db)
         player_perf = player_projection_performance_summary(db)
+        sim_player_perf = sim_player_projection_performance_summary(db)
         winner_accuracy = perf.get("winner_accuracy")
         n_graded = perf.get("graded_predictions", 0)
 
         typer.echo(f"Rolling performance: {perf}")
         typer.echo(f"Rolling parlay performance: {parlay_perf}")
         typer.echo(f"Rolling player-projection performance: {player_perf}")
+        typer.echo(f"Rolling sim player-prop performance: {sim_player_perf}")
         if parlay_perf.get("best_money_move", {}).get("graded_parlays", 0) == 0:
             typer.echo(
                 "Note: 'best_money_move' parlays require live market odds (ODDS_API_KEY in .env) -- "

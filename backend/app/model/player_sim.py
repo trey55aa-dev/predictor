@@ -315,3 +315,93 @@ def should_refresh_week_props(db: Session, season: int, week: int, today: dt.dat
     if latest is None:
         return True
     return latest[0].date() < today
+
+
+def sim_player_projection_performance_summary(db: Session, season: int | None = None, week: int | None = None) -> dict:
+    """How far off the live-served Monte Carlo player props (SimPlayerProjection)
+    actually are from real outcomes -- the production counterpart to
+    player_sim_validation.py's offline backtest (same MAE and p10-p90
+    interval-coverage metrics, same 0.80 coverage target), but measuring
+    what was really stored/served rather than re-simulating historical
+    games, and updating continuously as new games are graded instead of
+    needing a manual `validate-player-props` run.
+
+    No new columns: unlike PlayerProjection, SimPlayerProjection has no
+    actual_*/graded_at fields, and this project has no migration tooling to
+    safely add columns to an existing production table (schema is created
+    via Base.metadata.create_all, which doesn't alter existing tables). So
+    this joins to the real PlayerGameStat row at query time instead of
+    writing anything back -- the same approach grade.py's over_under_summary
+    uses and for the same reason.
+
+    A SimPlayerProjection with no matching PlayerGameStat row yet (that
+    week's box scores haven't been ingested) is simply not in the result,
+    not treated as a miss.
+    """
+    from app.models import PlayerGameStat, SimPlayerProjection
+
+    query = db.query(SimPlayerProjection, PlayerGameStat).join(
+        PlayerGameStat,
+        (PlayerGameStat.player_id == SimPlayerProjection.player_id)
+        & (PlayerGameStat.season == SimPlayerProjection.season)
+        & (PlayerGameStat.week == SimPlayerProjection.week),
+    )
+    if season is not None:
+        query = query.filter(SimPlayerProjection.season == season)
+    if week is not None:
+        query = query.filter(SimPlayerProjection.week == week)
+
+    rows = query.all()
+    n = len(rows)
+    if n == 0:
+        return {"graded_projections": 0}
+
+    def _mae(pred_attr: str, actual_attr: str) -> float | None:
+        pairs = [
+            (getattr(sim, pred_attr), getattr(stat, actual_attr) or 0.0)
+            for sim, stat in rows
+            if getattr(sim, pred_attr) is not None
+        ]
+        return (sum(abs(p - a) for p, a in pairs) / len(pairs)) if pairs else None
+
+    def _coverage(low_attr: str, high_attr: str, actual_attr: str) -> dict:
+        pairs = [
+            (getattr(sim, low_attr), getattr(sim, high_attr), getattr(stat, actual_attr) or 0.0)
+            for sim, stat in rows
+            if getattr(sim, low_attr) is not None and getattr(sim, high_attr) is not None
+        ]
+        if not pairs:
+            return {"hit_rate": None, "n": 0, "target": 0.80}
+        hits = sum(1 for low, high, actual in pairs if low <= actual <= high)
+        return {"hit_rate": hits / len(pairs), "n": len(pairs), "target": 0.80}
+
+    def _td_brier(prob_attr: str, actual_td_attr: str) -> float | None:
+        pairs = [
+            (getattr(sim, prob_attr), 1.0 if (getattr(stat, actual_td_attr) or 0) > 0 else 0.0)
+            for sim, stat in rows
+            if getattr(sim, prob_attr) is not None
+        ]
+        return (sum((p - a) ** 2 for p, a in pairs) / len(pairs)) if pairs else None
+
+    anytime_pairs = [
+        (sim.anytime_td_probability, 1.0 if ((stat.rushing_tds or 0) + (stat.receiving_tds or 0)) > 0 else 0.0)
+        for sim, stat in rows
+    ]
+    anytime_brier = sum((p - a) ** 2 for p, a in anytime_pairs) / len(anytime_pairs)
+
+    return {
+        "graded_projections": n,
+        "mae": {
+            "rushing": _mae("rushing_mean_yards", "rushing_yards"),
+            "receiving": _mae("receiving_mean_yards", "receiving_yards"),
+        },
+        "interval_coverage_p10_p90": {
+            "rushing": _coverage("rushing_p10", "rushing_p90", "rushing_yards"),
+            "receiving": _coverage("receiving_p10", "receiving_p90", "receiving_yards"),
+        },
+        "td_brier_score": {
+            "rushing": _td_brier("rushing_td_prob", "rushing_tds"),
+            "receiving": _td_brier("receiving_td_prob", "receiving_tds"),
+        },
+        "anytime_td_brier_score": anytime_brier,
+    }
