@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 
 from app.config import settings
 from app.model.elo import expected_win_prob, latest_rating
+from app.model.injury_signal import injury_adjustment
 from app.model.market import blend_line, blend_win_prob, market_home_win_prob
 from app.model.recalibration import get_tuned_value
 from app.model.recent_form import recent_form_adjustment
@@ -79,8 +80,21 @@ def predict_game(db: Session, game: Game) -> Prediction:
     home_rank_delta, _home_rank_note = stat_ranking_adjustment(db, game.home_team, game.season, game.week)
     away_rank_delta, _away_rank_note = stat_ranking_adjustment(db, game.away_team, game.season, game.week)
 
+    # Small, capped downgrade from each team's own current-week starter
+    # injury report -- previously injuries only reached the live model
+    # indirectly through the market line, never directly. See
+    # model/injury_signal.py.
+    home_injury_delta, _home_injury_note = injury_adjustment(db, game.home_team, game.season, game.week)
+    away_injury_delta, _away_injury_note = injury_adjustment(db, game.away_team, game.season, game.week)
+
     home_win_prob = min(
-        max(home_win_prob + home_form_delta - away_form_delta + home_rank_delta - away_rank_delta, 0.02),
+        max(
+            home_win_prob
+            + home_form_delta - away_form_delta
+            + home_rank_delta - away_rank_delta
+            + home_injury_delta - away_injury_delta,
+            0.02,
+        ),
         0.98,
     )
 
