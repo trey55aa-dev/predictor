@@ -11,6 +11,7 @@ from app.models import Game
 
 LOOKBACK_GAMES = 17  # roughly one season
 LEAGUE_AVERAGE_POINTS = 22.0  # fallback for a team with no completed-game history at all
+ELO_POINTS_PER_ELO = 25.0  # rough conversion: 25 Elo points ~= 1 point of expected margin
 
 
 def team_scoring_averages(db: Session, team_abbr: str, before_season: int, before_week: int) -> dict:

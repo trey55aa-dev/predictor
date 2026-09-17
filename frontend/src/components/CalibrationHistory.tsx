@@ -4,6 +4,8 @@ import type { CalibrationAdjustment } from "../types";
 
 const PARAMETER_LABELS: Record<string, string> = {
   market_blend_weight: "Elo/market blend weight",
+  margin_blend_weight: "Margin blend weight",
+  total_blend_weight: "Total blend weight",
   margin_std_default: "Margin confidence range",
   total_std_default: "Total confidence range",
 };

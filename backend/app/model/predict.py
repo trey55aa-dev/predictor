@@ -9,13 +9,11 @@ from app.model.elo import expected_win_prob, latest_rating
 from app.model.market import blend_line, blend_win_prob, market_home_win_prob
 from app.model.recalibration import get_tuned_value
 from app.model.recent_form import recent_form_adjustment
-from app.model.scoring import matchup_expected_total
+from app.model.scoring import ELO_POINTS_PER_ELO, matchup_expected_total
 from app.model.stat_rankings import stat_ranking_adjustment
 from app.model.venue import is_true_home_game
 from app.model.weather_adjust import total_points_adjustment
 from app.models import Game, OddsSnapshot, Prediction, WeatherSnapshot
-
-ELO_POINTS_PER_ELO = 25.0  # rough conversion: 25 Elo points ~= 1 point of expected margin
 
 
 def _latest_odds(db: Session, game_id: str) -> OddsSnapshot | None:
@@ -58,6 +56,13 @@ def predict_game(db: Session, game: Game) -> Prediction:
 
     tuned_blend_weight = get_tuned_value(db, "market_blend_weight", settings.market_blend_weight)
     home_win_prob = blend_win_prob(elo_home_prob, market_prob, weight=tuned_blend_weight)
+    # margin_blend_weight/total_blend_weight are tuned separately from
+    # market_blend_weight above: that weight is grid-searched purely for
+    # win-probability Brier score, which isn't necessarily the weight that
+    # best minimizes margin/total point error -- a distinct optimization
+    # target. See model/recalibration.py.
+    tuned_margin_blend_weight = get_tuned_value(db, "margin_blend_weight", settings.margin_blend_weight)
+    tuned_total_blend_weight = get_tuned_value(db, "total_blend_weight", settings.total_blend_weight)
 
     # Small, capped nudge from each team's most recent game's keys-to-victory
     # record (turnover margin, rushing/passing yards, 3rd-down%) -- a signal
@@ -80,10 +85,10 @@ def predict_game(db: Session, game: Game) -> Prediction:
     )
 
     market_margin = -market_spread if market_spread is not None else None  # spread is from home's perspective (negative = favored)
-    predicted_margin = blend_line(elo_margin, market_margin, weight=tuned_blend_weight)
+    predicted_margin = blend_line(elo_margin, market_margin, weight=tuned_margin_blend_weight)
 
     scoring_expected_total = matchup_expected_total(db, game.home_team, game.away_team, game.season, game.week)
-    predicted_total = blend_line(scoring_expected_total, market_total, weight=tuned_blend_weight)
+    predicted_total = blend_line(scoring_expected_total, market_total, weight=tuned_total_blend_weight)
 
     weather_adjustment, weather_note = total_points_adjustment(weather)
     predicted_total = max(predicted_total - weather_adjustment, 20.0)
