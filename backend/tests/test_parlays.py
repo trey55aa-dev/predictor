@@ -111,6 +111,25 @@ def test_safest_picks_highest_model_probability(db):
     assert teams[0] == "KC"  # highest model prob picked first
 
 
+def test_already_final_game_is_excluded_from_leg_candidates(db):
+    """The bug this guards against: a standalone primetime game (Thursday,
+    Sunday, or Monday night) finishes independently, days before the rest
+    of the week -- without excluding it, its already-decided result kept
+    getting suggested as a live parlay pick in every rebuild for the rest
+    of that week, right alongside games that are still actually bettable."""
+    _game(db, "tnf", "KC", "DEN", home_score=31, away_score=10)  # already final
+    _prediction(db, "tnf", 0.85)
+    _game(db, "sun", "SEA", "NE")  # still upcoming
+    _prediction(db, "sun", 0.6)
+    db.commit()
+
+    result = build_parlays(db, 2024, 1, legs=2)
+
+    game_ids = [leg["game_id"] for leg in result["safest"]["legs"]]
+    assert "tnf" not in game_ids
+    assert game_ids == ["sun"]
+
+
 def test_no_odds_means_no_best_money_move(db):
     _game(db, "g1", "KC", "DEN")
     _prediction(db, "g1", 0.8)
@@ -211,9 +230,17 @@ def test_one_leg_per_game_enforced(db):
 
 
 def test_grade_anytime_td_leg_hit(db):
-    _game(db, "g1", "KC", "DEN", home_score=27, away_score=20)  # game_winner style already covers final score path
+    # Real production timeline: the pick is logged while the game is still
+    # upcoming (log_parlays now excludes already-final games), then the
+    # game goes final and gets graded afterward.
+    game = _game(db, "g1", "KC", "DEN")  # scheduled -- still a live pick when logged
     _prediction(db, "g1", 0.55)
     _player_projection(db, "g1", "p1", "Star Back", "KC", "DEN", anytime_td_prob=0.9)
+    db.commit()
+
+    log_parlays(db, 2024, 1, legs=1)
+
+    game.home_score, game.away_score, game.status = 27, 20, "final"
     db.add(
         PlayerGameStat(
             player_id="p1", player_name="Star Back", position="RB", team="KC",
@@ -222,7 +249,6 @@ def test_grade_anytime_td_leg_hit(db):
     )
     db.commit()
 
-    log_parlays(db, 2024, 1, legs=1)
     grade_parlays(db, 2024, 1)
 
     pick = db.query(ParlayPick).filter(ParlayPick.parlay_type == "safest").first()
@@ -230,12 +256,16 @@ def test_grade_anytime_td_leg_hit(db):
 
 
 def test_grade_anytime_td_leg_miss_when_no_stat_line(db):
-    _game(db, "g1", "KC", "DEN", home_score=27, away_score=20)
+    game = _game(db, "g1", "KC", "DEN")  # scheduled -- still a live pick when logged
     _prediction(db, "g1", 0.55)
     _player_projection(db, "g1", "p1", "Star Back", "KC", "DEN", anytime_td_prob=0.9)
-    db.commit()  # no PlayerGameStat row for p1 -- didn't record a stat line
+    db.commit()
 
     log_parlays(db, 2024, 1, legs=1)
+
+    game.home_score, game.away_score, game.status = 27, 20, "final"
+    db.commit()  # no PlayerGameStat row for p1 -- didn't record a stat line
+
     grade_parlays(db, 2024, 1)
 
     pick = db.query(ParlayPick).filter(ParlayPick.parlay_type == "safest").first()

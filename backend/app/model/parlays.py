@@ -131,7 +131,17 @@ def _summarize(legs: list[dict]) -> dict:
 
 
 def build_parlays(db: Session, season: int, week: int, legs: int = 3) -> dict:
-    games = db.query(Game).filter(Game.season == season, Game.week == week, Game.game_type == "REG").all()
+    # Excludes games already final: a standalone primetime slate (Thursday,
+    # Sunday, or Monday night) finishes independently, days before the rest
+    # of the week's games -- without this filter, an already-decided game
+    # keeps getting suggested as a "pick" in every parlay rebuilt for the
+    # rest of that week, right alongside games that are still actually
+    # bettable. Same convention as predict_week's own status filter.
+    games = (
+        db.query(Game)
+        .filter(Game.season == season, Game.week == week, Game.game_type == "REG", Game.status != "final")
+        .all()
+    )
     game_winner_candidates = [c for c in (_leg_candidate(db, g) for g in games) if c is not None]
     td_candidates = [c for g in games for c in _anytime_td_candidates(db, g)]
 

@@ -91,10 +91,15 @@ def test_log_parlays_replaces_ungraded_picks_not_duplicates(db):
 
 
 def test_grade_parlays_marks_hit_when_all_legs_win(db):
-    _game(db, "g1", "KC", "DEN", home_score=27, away_score=20)
+    # Real production timeline: logged while still upcoming (log_parlays
+    # now excludes already-final games), goes final, then gets graded.
+    game = _game(db, "g1", "KC", "DEN")
     _prediction(db, "g1", 0.8)
     db.commit()
     log_parlays(db, 2024, 1, legs=1)
+
+    game.home_score, game.away_score, game.status = 27, 20, "final"
+    db.commit()
 
     graded = grade_parlays(db, 2024, 1)
     assert graded >= 1
@@ -104,10 +109,13 @@ def test_grade_parlays_marks_hit_when_all_legs_win(db):
 
 
 def test_grade_parlays_marks_miss_when_a_leg_loses(db):
-    _game(db, "g1", "KC", "DEN", home_score=17, away_score=24)  # KC (picked, home favored) loses
+    game = _game(db, "g1", "KC", "DEN")
     _prediction(db, "g1", 0.8)
     db.commit()
     log_parlays(db, 2024, 1, legs=1)
+
+    game.home_score, game.away_score, game.status = 17, 24, "final"  # KC (picked, home favored) loses
+    db.commit()
 
     grade_parlays(db, 2024, 1)
     pick = db.query(ParlayPick).filter(ParlayPick.parlay_type == "safest").first()
@@ -127,14 +135,19 @@ def test_grade_parlays_skips_unfinished_games(db):
 
 
 def test_parlay_performance_summary_computes_hit_rate(db):
-    _game(db, "g1", "KC", "DEN", home_score=27, away_score=20)
+    game1 = _game(db, "g1", "KC", "DEN")
     _prediction(db, "g1", 0.8)
-    _game(db, "g2", "SF", "SEA", week=2, home_score=10, away_score=24)  # SF favored but loses
+    game2 = _game(db, "g2", "SF", "SEA", week=2)
     _prediction(db, "g2", 0.7)
     db.commit()
 
     log_parlays(db, 2024, 1, legs=1)
     log_parlays(db, 2024, 2, legs=1)
+
+    game1.home_score, game1.away_score, game1.status = 27, 20, "final"
+    game2.home_score, game2.away_score, game2.status = 10, 24, "final"  # SF favored but loses
+    db.commit()
+
     grade_parlays(db, 2024, 1)
     grade_parlays(db, 2024, 2)
 
