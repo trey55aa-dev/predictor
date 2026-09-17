@@ -195,6 +195,25 @@ class TeamSeasonScheme(Base):
     defense_scheme_id: Mapped[str] = mapped_column(ForeignKey("scheme_families.id"))
 
 
+class CoachingChange(Base):
+    """A manually-logged coaching/play-calling change -- who actually calls
+    plays for a team isn't in any ingested feed, so this is real ground
+    truth entered as it's learned (see app.cli log-coaching-change), not
+    inferred or guessed. See model/coaching_change.py for how it's used."""
+
+    __tablename__ = "coaching_changes"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    team_abbr: Mapped[str] = mapped_column(ForeignKey("teams.team_abbr"))
+    season: Mapped[int] = mapped_column(Integer)
+    effective_week: Mapped[int] = mapped_column(Integer)  # first week this change applies from
+    role: Mapped[str] = mapped_column(String)  # e.g. "offensive_play_caller", "defensive_play_caller", "head_coach"
+    person_name: Mapped[str] = mapped_column(String)
+    previous_person_name: Mapped[str | None] = mapped_column(String, nullable=True)
+    note: Mapped[str | None] = mapped_column(String, nullable=True)
+    logged_at: Mapped[dt.datetime] = mapped_column(DateTime)
+
+
 class Play(Base):
     __tablename__ = "plays"
     __table_args__ = (

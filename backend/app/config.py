@@ -23,6 +23,8 @@ class Settings(BaseSettings):
     recent_form_max_adjustment: float = 0.03  # +/- cap on the last-game keys-to-victory nudge
     stat_rank_max_adjustment: float = 0.03  # +/- cap on the season-to-date league stat-ranking nudge
     injury_max_adjustment: float = 0.03  # +/- cap on the current-week starter-injury-burden nudge
+    coaching_change_uncertainty_per_change: float = 2.0  # points of extra margin/total range width per recent logged change
+    coaching_change_uncertainty_cap: float = 4.0  # max extra width regardless of how many changes are logged
 
     # Weather adjustment thresholds (outdoor games only).
     weather_wind_threshold_mph: float = 10.0

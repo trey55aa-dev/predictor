@@ -138,6 +138,46 @@ def ingest_injuries_cmd(season: int, week: int) -> None:
         db.close()
 
 
+@app.command(name="log-coaching-change")
+def log_coaching_change_cmd(
+    team: str,
+    season: int,
+    effective_week: int,
+    role: str,
+    person: str,
+    previous_person: str | None = None,
+    note: str | None = None,
+) -> None:
+    """Manually record a coaching/play-calling change -- who actually calls
+    plays isn't in any ingested feed, so this is how real ground truth
+    reaches the model instead of a guess (see model/coaching_change.py:
+    widens that team's prediction confidence range for a few weeks, never
+    moves win probability in a guessed direction).
+
+    Example: log-coaching-change DEN 2026 2 offensive_play_caller "Davis Webb" --previous-person "Sean Payton"
+    """
+    from app.models import CoachingChange
+
+    db = SessionLocal()
+    try:
+        db.add(
+            CoachingChange(
+                team_abbr=team,
+                season=season,
+                effective_week=effective_week,
+                role=role,
+                person_name=person,
+                previous_person_name=previous_person,
+                note=note,
+                logged_at=dt.datetime.utcnow(),
+            )
+        )
+        db.commit()
+        typer.echo(f"Logged: {team} {role} is now {person} (effective week {effective_week}, {season}).")
+    finally:
+        db.close()
+
+
 @app.command(name="predict-week")
 def predict_week_cmd(season: int, week: int) -> None:
     """Generate predictions for every game in a given season/week."""

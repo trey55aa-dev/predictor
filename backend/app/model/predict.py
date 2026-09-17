@@ -5,6 +5,7 @@ import datetime as dt
 from sqlalchemy.orm import Session
 
 from app.config import settings
+from app.model.coaching_change import coaching_change_uncertainty
 from app.model.elo import expected_win_prob, latest_rating
 from app.model.injury_signal import injury_adjustment
 from app.model.market import blend_line, blend_win_prob, market_home_win_prob
@@ -110,6 +111,15 @@ def predict_game(db: Session, game: Game) -> Prediction:
     tuned_margin_std = get_tuned_value(db, "margin_std_default", settings.margin_std_default)
     tuned_total_std = get_tuned_value(db, "total_std_default", settings.total_std_default)
 
+    # A recently-logged coaching/play-calling change (see model/coaching_change.py)
+    # widens the confidence range rather than moving the point estimate or
+    # home_win_prob -- there's no honest evidence for which direction a
+    # change tilts a team, only that it makes them less predictable than
+    # usual until the new staff has a real track record.
+    home_coaching_widen, _home_coaching_note = coaching_change_uncertainty(db, game.home_team, game.season, game.week)
+    away_coaching_widen, _away_coaching_note = coaching_change_uncertainty(db, game.away_team, game.season, game.week)
+    coaching_widen = max(home_coaching_widen, away_coaching_widen)
+
     predicted_home_score = (predicted_total + predicted_margin) / 2
     predicted_away_score = (predicted_total - predicted_margin) / 2
 
@@ -128,10 +138,10 @@ def predict_game(db: Session, game: Game) -> Prediction:
         predicted_away_score=predicted_away_score,
         predicted_margin=predicted_margin,
         predicted_total=predicted_total,
-        margin_range_low=predicted_margin - tuned_margin_std,
-        margin_range_high=predicted_margin + tuned_margin_std,
-        total_range_low=predicted_total - tuned_total_std,
-        total_range_high=predicted_total + tuned_total_std,
+        margin_range_low=predicted_margin - tuned_margin_std - coaching_widen,
+        margin_range_high=predicted_margin + tuned_margin_std + coaching_widen,
+        total_range_low=predicted_total - tuned_total_std - coaching_widen,
+        total_range_high=predicted_total + tuned_total_std + coaching_widen,
         weather_note=weather_note,
     )
     db.add(prediction)
