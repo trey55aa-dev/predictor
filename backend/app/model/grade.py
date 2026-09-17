@@ -12,7 +12,7 @@ import datetime as dt
 
 from sqlalchemy.orm import Session
 
-from app.models import Game, Prediction
+from app.models import Game, OddsSnapshot, Prediction
 
 
 def grade_week(db: Session, season: int, week: int) -> int:
@@ -75,6 +75,64 @@ def performance_summary(db: Session, season: int | None = None, week: int | None
         "avg_brier_score": avg_brier,
         "avg_abs_margin_error": avg_margin_error,
         "avg_abs_total_error": avg_total_error,
+    }
+
+
+def over_under_summary(db: Session, season: int | None = None, week: int | None = None) -> dict:
+    """How often the model's predicted total actually landed on the right
+    side of the real betting line -- distinct from avg_abs_total_error
+    (performance_summary), which measures how close the point total was,
+    not whether it would have won an over/under bet.
+
+    Needs no new columns: every prediction already keeps the id of the
+    OddsSnapshot whose total_line it was predicted against
+    (odds_snapshot_id), so the market line used at prediction time and the
+    real final score are both already on hand via existing joins.
+
+    Real pushes (actual_total == total_line) are excluded from the hit rate
+    -- neither a win nor a loss, same convention real sportsbooks use.
+    """
+    query = (
+        db.query(Prediction, OddsSnapshot, Game)
+        .join(OddsSnapshot, Prediction.odds_snapshot_id == OddsSnapshot.id)
+        .join(Game, Prediction.game_id == Game.game_id)
+        .filter(
+            Prediction.graded_at.isnot(None),
+            OddsSnapshot.total_line.isnot(None),
+            Game.home_score.isnot(None),
+            Game.away_score.isnot(None),
+        )
+    )
+    if season is not None:
+        query = query.filter(Game.season == season)
+    if week is not None:
+        query = query.filter(Game.week == week)
+
+    rows = query.all()
+    graded_with_line = len(rows)
+    if graded_with_line == 0:
+        return {"graded_with_line": 0, "decided": 0, "pushes": 0, "over_under_accuracy": None}
+
+    pushes = 0
+    correct = 0
+    decided = 0
+    for prediction, odds, game in rows:
+        line = odds.total_line
+        actual_total = game.home_score + game.away_score
+        if actual_total == line:
+            pushes += 1
+            continue
+        actual_side = "over" if actual_total > line else "under"
+        predicted_side = "over" if prediction.predicted_total >= line else "under"
+        decided += 1
+        if predicted_side == actual_side:
+            correct += 1
+
+    return {
+        "graded_with_line": graded_with_line,
+        "pushes": pushes,
+        "decided": decided,
+        "over_under_accuracy": (correct / decided) if decided else None,
     }
 
 

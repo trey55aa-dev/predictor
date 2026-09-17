@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from app.db import get_db
-from app.model.grade import model_vs_market_comparison, performance_summary
+from app.model.grade import model_vs_market_comparison, over_under_summary, performance_summary
 from app.models import CalibrationAdjustment
 from app.schemas import PerformanceOut
 
@@ -15,6 +15,16 @@ def model_performance(
 ) -> PerformanceOut:
     summary = performance_summary(db, season=season, week=week)
     return PerformanceOut(**summary)
+
+
+@router.get("/model/over-under-performance")
+def over_under_performance(
+    season: int | None = None, week: int | None = None, db: Session = Depends(get_db)
+) -> dict:
+    """Rolling over/under hit rate -- how often the predicted total landed
+    on the right side of the real betting line, not just how close it was.
+    See model/grade.py:over_under_summary."""
+    return over_under_summary(db, season=season, week=week)
 
 
 @router.get("/model/accuracy-comparison")
