@@ -10,6 +10,7 @@ from app.model.market import blend_line, blend_win_prob, market_home_win_prob
 from app.model.recalibration import get_tuned_value
 from app.model.recent_form import recent_form_adjustment
 from app.model.scoring import matchup_expected_total
+from app.model.stat_rankings import stat_ranking_adjustment
 from app.model.venue import is_true_home_game
 from app.model.weather_adjust import total_points_adjustment
 from app.models import Game, OddsSnapshot, Prediction, WeatherSnapshot
@@ -64,7 +65,19 @@ def predict_game(db: Session, game: Game) -> Prediction:
     # won and by how much, not how). See model/recent_form.py.
     home_form_delta, _home_form_note = recent_form_adjustment(db, game.home_team, game.season, game.week)
     away_form_delta, _away_form_note = recent_form_adjustment(db, game.away_team, game.season, game.week)
-    home_win_prob = min(max(home_win_prob + home_form_delta - away_form_delta, 0.02), 0.98)
+
+    # Small, capped nudge from each team's season-to-date rank against the
+    # rest of the league across the same tracked stat categories (rushing/
+    # passing yards, turnover margin, 3rd-down%, points scored/allowed) --
+    # distinct from home_form_delta above, which only looks at one prior
+    # game. See model/stat_rankings.py.
+    home_rank_delta, _home_rank_note = stat_ranking_adjustment(db, game.home_team, game.season, game.week)
+    away_rank_delta, _away_rank_note = stat_ranking_adjustment(db, game.away_team, game.season, game.week)
+
+    home_win_prob = min(
+        max(home_win_prob + home_form_delta - away_form_delta + home_rank_delta - away_rank_delta, 0.02),
+        0.98,
+    )
 
     market_margin = -market_spread if market_spread is not None else None  # spread is from home's perspective (negative = favored)
     predicted_margin = blend_line(elo_margin, market_margin, weight=tuned_blend_weight)

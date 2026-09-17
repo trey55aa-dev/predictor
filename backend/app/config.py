@@ -19,6 +19,7 @@ class Settings(BaseSettings):
     elo_season_regression: float = 1.0 / 3.0
     market_blend_weight: float = 0.4  # weight given to the Elo model vs. the market
     recent_form_max_adjustment: float = 0.03  # +/- cap on the last-game keys-to-victory nudge
+    stat_rank_max_adjustment: float = 0.03  # +/- cap on the season-to-date league stat-ranking nudge
 
     # Weather adjustment thresholds (outdoor games only).
     weather_wind_threshold_mph: float = 10.0
