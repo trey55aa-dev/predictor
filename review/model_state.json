@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-19T15:49:22.898983",
+  "generated_at": "2026-09-19T19:07:42.496512",
   "season": 2026,
   "rolling_performance": {
     "graded_predictions": 3125,
@@ -156,7 +156,7 @@
         }
       ],
       "narrative": "BUF beat DET: BUF won rushing yards, and 3rd down conversion rate, despite losing passing yards. The model correctly favored BUF to win (68%).",
-      "computed_at": "2026-09-19T15:49:20.263881",
+      "computed_at": "2026-09-19T19:07:40.572388",
       "home_injuries": [
         {
           "player_name": "Skyler Bell",
@@ -367,7 +367,7 @@
         }
       ],
       "narrative": "KC beat DEN: KC won turnover margin, rushing yards, passing yards, and 3rd down conversion rate. The model favored DEN (51%) and got the winner wrong here.",
-      "computed_at": "2026-09-19T15:49:20.419917",
+      "computed_at": "2026-09-19T19:07:40.675975",
       "home_injuries": [
         {
           "player_name": "Chamarri Conner",
@@ -500,7 +500,7 @@
         }
       ],
       "narrative": "MIN beat GB: MIN won turnover margin, rushing yards, and 3rd down conversion rate, despite losing passing yards. The model correctly favored MIN to win (56%).",
-      "computed_at": "2026-09-19T15:49:20.577066",
+      "computed_at": "2026-09-19T19:07:40.784504",
       "home_injuries": [
         {
           "player_name": "Jeshaun Jones",
@@ -705,7 +705,7 @@
         }
       ],
       "narrative": "CIN beat TB: CIN won turnover margin, rushing yards, passing yards, and 3rd down conversion rate. The model correctly favored CIN to win (82%).",
-      "computed_at": "2026-09-19T15:49:20.761956",
+      "computed_at": "2026-09-19T19:07:40.910776",
       "home_injuries": [
         {
           "player_name": "Shemar Stewart",
@@ -832,7 +832,7 @@
         }
       ],
       "narrative": "ARI beat LAC: ARI won turnover margin, rushing yards, passing yards, and 3rd down conversion rate. The model favored LAC (81%) and got the winner wrong here.",
-      "computed_at": "2026-09-19T15:49:20.919675",
+      "computed_at": "2026-09-19T19:07:41.044067",
       "home_injuries": [
         {
           "player_name": "KeAndre Lambert-Smith",
@@ -1007,7 +1007,7 @@
         }
       ],
       "narrative": "NYG beat DAL: NYG won rushing yards, passing yards, and 3rd down conversion rate. The model favored DAL (58%) and got the winner wrong here.",
-      "computed_at": "2026-09-19T15:49:21.074990",
+      "computed_at": "2026-09-19T19:07:41.158403",
       "home_injuries": [
         {
           "player_name": "Calvin Austin III",
@@ -1164,7 +1164,7 @@
         }
       ],
       "narrative": "BAL beat IND: BAL won turnover margin, rushing yards, passing yards, and 3rd down conversion rate. The model correctly favored BAL to win (86%).",
-      "computed_at": "2026-09-19T15:49:21.233201",
+      "computed_at": "2026-09-19T19:07:41.259956",
       "home_injuries": [
         {
           "player_name": "Alec Pierce",
@@ -1333,7 +1333,7 @@
         }
       ],
       "narrative": "BUF beat HOU: BUF won turnover margin, and passing yards, despite losing rushing yards, and 3rd down conversion rate. The model correctly favored BUF to win (58%).",
-      "computed_at": "2026-09-19T15:49:21.391926",
+      "computed_at": "2026-09-19T19:07:41.366499",
       "home_injuries": [
         {
           "player_name": "Jake Hummel",
@@ -1526,7 +1526,7 @@
         }
       ],
       "narrative": "CHI beat CAR: CHI won turnover margin, rushing yards, and 3rd down conversion rate, despite losing passing yards. The model correctly favored CHI to win (70%).",
-      "computed_at": "2026-09-19T15:49:21.547078",
+      "computed_at": "2026-09-19T19:07:41.468053",
       "home_injuries": [
         {
           "player_name": "Jalen Coker",
@@ -1725,7 +1725,7 @@
         }
       ],
       "narrative": "JAX beat CLE: JAX won turnover margin, rushing yards, passing yards, and 3rd down conversion rate. The model correctly favored JAX to win (80%).",
-      "computed_at": "2026-09-19T15:49:21.702001",
+      "computed_at": "2026-09-19T19:07:41.569141",
       "home_injuries": [
         {
           "player_name": "Brian Thomas Jr.",
@@ -1882,7 +1882,7 @@
         }
       ],
       "narrative": "LV beat MIA: LV won rushing yards, and 3rd down conversion rate, despite losing passing yards. The model correctly favored LV to win (54%).",
-      "computed_at": "2026-09-19T15:49:21.855390",
+      "computed_at": "2026-09-19T19:07:41.676069",
       "home_injuries": [
         {
           "player_name": "Brock Bowers",
@@ -2057,7 +2057,7 @@
         }
       ],
       "narrative": "NYJ beat TEN: NYJ won rushing yards, and passing yards, despite losing 3rd down conversion rate. The model correctly favored NYJ to win (80%).",
-      "computed_at": "2026-09-19T15:49:22.009059",
+      "computed_at": "2026-09-19T19:07:41.778120",
       "home_injuries": [
         {
           "player_name": "Cedric Gray",
@@ -2250,7 +2250,7 @@
         }
       ],
       "narrative": "PIT beat ATL: PIT won turnover margin, passing yards, and 3rd down conversion rate, despite losing rushing yards. The model correctly favored PIT to win (80%).",
-      "computed_at": "2026-09-19T15:49:22.163968",
+      "computed_at": "2026-09-19T19:07:41.885027",
       "home_injuries": [
         {
           "player_name": "Joey Porter Jr.",
@@ -2425,7 +2425,7 @@
         }
       ],
       "narrative": "DET beat NO: DET won turnover margin, and rushing yards, despite losing passing yards, and 3rd down conversion rate. The model correctly favored DET to win (91%).",
-      "computed_at": "2026-09-19T15:49:22.347394",
+      "computed_at": "2026-09-19T19:07:41.994743",
       "home_injuries": [
         {
           "player_name": "Brian Branch",
@@ -2618,7 +2618,7 @@
         }
       ],
       "narrative": "PHI beat WAS: PHI won rushing yards, passing yards, and 3rd down conversion rate. The model correctly favored PHI to win (73%).",
-      "computed_at": "2026-09-19T15:49:22.503455",
+      "computed_at": "2026-09-19T19:07:42.100740",
       "home_injuries": [
         {
           "player_name": "Jonathan Greenard",
@@ -2793,7 +2793,7 @@
         }
       ],
       "narrative": "SF beat LA: SF won turnover margin, rushing yards, passing yards, and 3rd down conversion rate. The model favored LA (63%) and got the winner wrong here.",
-      "computed_at": "2026-09-19T15:49:22.655651",
+      "computed_at": "2026-09-19T19:07:42.250519",
       "home_injuries": [
         {
           "player_name": "Kam Curl",
@@ -2986,7 +2986,7 @@
         }
       ],
       "narrative": "SEA beat NE: SEA won turnover margin, and passing yards, despite losing rushing yards, and 3rd down conversion rate. The model correctly favored SEA to win (64%).",
-      "computed_at": "2026-09-19T15:49:22.808820",
+      "computed_at": "2026-09-19T19:07:42.411677",
       "home_injuries": [
         {
           "player_name": "Sam Darnold",
