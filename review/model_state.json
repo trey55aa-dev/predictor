@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-19T19:07:42.496512",
+  "generated_at": "2026-09-20T08:38:35.094161",
   "season": 2026,
   "rolling_performance": {
     "graded_predictions": 3125,
@@ -156,7 +156,7 @@
         }
       ],
       "narrative": "BUF beat DET: BUF won rushing yards, and 3rd down conversion rate, despite losing passing yards. The model correctly favored BUF to win (68%).",
-      "computed_at": "2026-09-19T19:07:40.572388",
+      "computed_at": "2026-09-20T08:38:33.265371",
       "home_injuries": [
         {
           "player_name": "Skyler Bell",
@@ -367,7 +367,7 @@
         }
       ],
       "narrative": "KC beat DEN: KC won turnover margin, rushing yards, passing yards, and 3rd down conversion rate. The model favored DEN (51%) and got the winner wrong here.",
-      "computed_at": "2026-09-19T19:07:40.675975",
+      "computed_at": "2026-09-20T08:38:33.380739",
       "home_injuries": [
         {
           "player_name": "Chamarri Conner",
@@ -500,7 +500,7 @@
         }
       ],
       "narrative": "MIN beat GB: MIN won turnover margin, rushing yards, and 3rd down conversion rate, despite losing passing yards. The model correctly favored MIN to win (56%).",
-      "computed_at": "2026-09-19T19:07:40.784504",
+      "computed_at": "2026-09-20T08:38:33.495858",
       "home_injuries": [
         {
           "player_name": "Jeshaun Jones",
@@ -705,7 +705,7 @@
         }
       ],
       "narrative": "CIN beat TB: CIN won turnover margin, rushing yards, passing yards, and 3rd down conversion rate. The model correctly favored CIN to win (82%).",
-      "computed_at": "2026-09-19T19:07:40.910776",
+      "computed_at": "2026-09-20T08:38:33.632358",
       "home_injuries": [
         {
           "player_name": "Shemar Stewart",
@@ -832,7 +832,7 @@
         }
       ],
       "narrative": "ARI beat LAC: ARI won turnover margin, rushing yards, passing yards, and 3rd down conversion rate. The model favored LAC (81%) and got the winner wrong here.",
-      "computed_at": "2026-09-19T19:07:41.044067",
+      "computed_at": "2026-09-20T08:38:33.749187",
       "home_injuries": [
         {
           "player_name": "KeAndre Lambert-Smith",
@@ -1007,7 +1007,7 @@
         }
       ],
       "narrative": "NYG beat DAL: NYG won rushing yards, passing yards, and 3rd down conversion rate. The model favored DAL (58%) and got the winner wrong here.",
-      "computed_at": "2026-09-19T19:07:41.158403",
+      "computed_at": "2026-09-20T08:38:33.864199",
       "home_injuries": [
         {
           "player_name": "Calvin Austin III",
@@ -1164,7 +1164,7 @@
         }
       ],
       "narrative": "BAL beat IND: BAL won turnover margin, rushing yards, passing yards, and 3rd down conversion rate. The model correctly favored BAL to win (86%).",
-      "computed_at": "2026-09-19T19:07:41.259956",
+      "computed_at": "2026-09-20T08:38:33.979255",
       "home_injuries": [
         {
           "player_name": "Alec Pierce",
@@ -1333,7 +1333,7 @@
         }
       ],
       "narrative": "BUF beat HOU: BUF won turnover margin, and passing yards, despite losing rushing yards, and 3rd down conversion rate. The model correctly favored BUF to win (58%).",
-      "computed_at": "2026-09-19T19:07:41.366499",
+      "computed_at": "2026-09-20T08:38:34.094740",
       "home_injuries": [
         {
           "player_name": "Jake Hummel",
@@ -1526,7 +1526,7 @@
         }
       ],
       "narrative": "CHI beat CAR: CHI won turnover margin, rushing yards, and 3rd down conversion rate, despite losing passing yards. The model correctly favored CHI to win (70%).",
-      "computed_at": "2026-09-19T19:07:41.468053",
+      "computed_at": "2026-09-20T08:38:34.210451",
       "home_injuries": [
         {
           "player_name": "Jalen Coker",
@@ -1725,7 +1725,7 @@
         }
       ],
       "narrative": "JAX beat CLE: JAX won turnover margin, rushing yards, passing yards, and 3rd down conversion rate. The model correctly favored JAX to win (80%).",
-      "computed_at": "2026-09-19T19:07:41.569141",
+      "computed_at": "2026-09-20T08:38:34.326936",
       "home_injuries": [
         {
           "player_name": "Brian Thomas Jr.",
@@ -1882,7 +1882,7 @@
         }
       ],
       "narrative": "LV beat MIA: LV won rushing yards, and 3rd down conversion rate, despite losing passing yards. The model correctly favored LV to win (54%).",
-      "computed_at": "2026-09-19T19:07:41.676069",
+      "computed_at": "2026-09-20T08:38:34.445558",
       "home_injuries": [
         {
           "player_name": "Brock Bowers",
@@ -1985,6 +1985,199 @@
       ]
     },
     {
+      "game_id": "2026_01_NO_DET",
+      "status": "final",
+      "home_team": "DET",
+      "away_team": "NO",
+      "home_score": 31,
+      "away_score": 30,
+      "predicted_winner": "DET",
+      "predicted_home_win_prob": 0.9075739905660599,
+      "data_available": true,
+      "actual_winner": "DET",
+      "correct_winner": true,
+      "home_stats": {
+        "rushing_yards": 165.0,
+        "passing_yards": 206.0,
+        "turnovers": 1,
+        "third_down_attempts": 13,
+        "third_down_conversions": 5,
+        "third_down_pct": 0.38461538461538464,
+        "fourth_down_attempts": 0,
+        "fourth_down_conversions": 0,
+        "fourth_down_pct": null
+      },
+      "away_stats": {
+        "rushing_yards": 91.0,
+        "passing_yards": 410.0,
+        "turnovers": 3,
+        "third_down_attempts": 17,
+        "third_down_conversions": 8,
+        "third_down_pct": 0.47058823529411764,
+        "fourth_down_attempts": 2,
+        "fourth_down_conversions": 2,
+        "fourth_down_pct": 1.0
+      },
+      "keys": [
+        {
+          "key": "turnover_margin",
+          "label": "Turnover margin",
+          "home_value": 2,
+          "away_value": -2,
+          "winner": "home"
+        },
+        {
+          "key": "rushing_yards",
+          "label": "Rushing yards",
+          "home_value": 165.0,
+          "away_value": 91.0,
+          "winner": "home"
+        },
+        {
+          "key": "passing_yards",
+          "label": "Passing yards",
+          "home_value": 206.0,
+          "away_value": 410.0,
+          "winner": "away"
+        },
+        {
+          "key": "third_down_pct",
+          "label": "3rd down conversion rate",
+          "home_value": 0.38461538461538464,
+          "away_value": 0.47058823529411764,
+          "winner": "away"
+        },
+        {
+          "key": "fourth_down_pct",
+          "label": "4th down conversion rate",
+          "home_value": null,
+          "away_value": 1.0,
+          "winner": null,
+          "no_signal": true
+        }
+      ],
+      "narrative": "DET beat NO: DET won turnover margin, and rushing yards, despite losing passing yards, and 3rd down conversion rate. The model correctly favored DET to win (91%).",
+      "computed_at": "2026-09-20T08:38:34.569373",
+      "home_injuries": [
+        {
+          "player_name": "Brian Branch",
+          "position": "S",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Damone Clark",
+          "position": "LB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Kerby Joseph",
+          "position": "S",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Kendrick Law",
+          "position": "WR",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Isiah Pacheco",
+          "position": "RB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Payton Turner",
+          "position": "DE",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        }
+      ],
+      "away_injuries": [
+        {
+          "player_name": "Oscar Delp",
+          "position": "TE",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Alvin Kamara",
+          "position": "RB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Brock Rechsteiner",
+          "position": "WR",
+          "report_status": "Suspension",
+          "is_starter": false
+        },
+        {
+          "player_name": "Cameron Jordan",
+          "position": "DE",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Bryan Bresee",
+          "position": "DT",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Ty Chandler",
+          "position": "RB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Audric Estime",
+          "position": "RB",
+          "report_status": "Injured Reserve",
+          "is_starter": true
+        },
+        {
+          "player_name": "Jaylan Ford",
+          "position": "LB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "David Long Jr.",
+          "position": "CB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Moliki Matavao",
+          "position": "TE",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Lorenzo Styles Jr.",
+          "position": "S",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Mason Tipton",
+          "position": "WR",
+          "report_status": "Out",
+          "is_starter": true
+        },
+        {
+          "player_name": "Jordyn Tyson",
+          "position": "WR",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        }
+      ]
+    },
+    {
       "game_id": "2026_01_NYJ_TEN",
       "status": "final",
       "home_team": "TEN",
@@ -2057,7 +2250,7 @@
         }
       ],
       "narrative": "NYJ beat TEN: NYJ won rushing yards, and passing yards, despite losing 3rd down conversion rate. The model correctly favored NYJ to win (80%).",
-      "computed_at": "2026-09-19T19:07:41.778120",
+      "computed_at": "2026-09-20T08:38:34.685356",
       "home_injuries": [
         {
           "player_name": "Cedric Gray",
@@ -2250,7 +2443,7 @@
         }
       ],
       "narrative": "PIT beat ATL: PIT won turnover margin, passing yards, and 3rd down conversion rate, despite losing rushing yards. The model correctly favored PIT to win (80%).",
-      "computed_at": "2026-09-19T19:07:41.885027",
+      "computed_at": "2026-09-20T08:38:34.801967",
       "home_injuries": [
         {
           "player_name": "Joey Porter Jr.",
@@ -2353,199 +2546,6 @@
       ]
     },
     {
-      "game_id": "2026_01_NO_DET",
-      "status": "final",
-      "home_team": "DET",
-      "away_team": "NO",
-      "home_score": 31,
-      "away_score": 30,
-      "predicted_winner": "DET",
-      "predicted_home_win_prob": 0.9075739905660599,
-      "data_available": true,
-      "actual_winner": "DET",
-      "correct_winner": true,
-      "home_stats": {
-        "rushing_yards": 165.0,
-        "passing_yards": 206.0,
-        "turnovers": 1,
-        "third_down_attempts": 13,
-        "third_down_conversions": 5,
-        "third_down_pct": 0.38461538461538464,
-        "fourth_down_attempts": 0,
-        "fourth_down_conversions": 0,
-        "fourth_down_pct": null
-      },
-      "away_stats": {
-        "rushing_yards": 91.0,
-        "passing_yards": 410.0,
-        "turnovers": 3,
-        "third_down_attempts": 17,
-        "third_down_conversions": 8,
-        "third_down_pct": 0.47058823529411764,
-        "fourth_down_attempts": 2,
-        "fourth_down_conversions": 2,
-        "fourth_down_pct": 1.0
-      },
-      "keys": [
-        {
-          "key": "turnover_margin",
-          "label": "Turnover margin",
-          "home_value": 2,
-          "away_value": -2,
-          "winner": "home"
-        },
-        {
-          "key": "rushing_yards",
-          "label": "Rushing yards",
-          "home_value": 165.0,
-          "away_value": 91.0,
-          "winner": "home"
-        },
-        {
-          "key": "passing_yards",
-          "label": "Passing yards",
-          "home_value": 206.0,
-          "away_value": 410.0,
-          "winner": "away"
-        },
-        {
-          "key": "third_down_pct",
-          "label": "3rd down conversion rate",
-          "home_value": 0.38461538461538464,
-          "away_value": 0.47058823529411764,
-          "winner": "away"
-        },
-        {
-          "key": "fourth_down_pct",
-          "label": "4th down conversion rate",
-          "home_value": null,
-          "away_value": 1.0,
-          "winner": null,
-          "no_signal": true
-        }
-      ],
-      "narrative": "DET beat NO: DET won turnover margin, and rushing yards, despite losing passing yards, and 3rd down conversion rate. The model correctly favored DET to win (91%).",
-      "computed_at": "2026-09-19T19:07:41.994743",
-      "home_injuries": [
-        {
-          "player_name": "Brian Branch",
-          "position": "S",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Damone Clark",
-          "position": "LB",
-          "report_status": "Injured Reserve",
-          "is_starter": false
-        },
-        {
-          "player_name": "Kerby Joseph",
-          "position": "S",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Kendrick Law",
-          "position": "WR",
-          "report_status": "Injured Reserve",
-          "is_starter": false
-        },
-        {
-          "player_name": "Isiah Pacheco",
-          "position": "RB",
-          "report_status": "Injured Reserve",
-          "is_starter": false
-        },
-        {
-          "player_name": "Payton Turner",
-          "position": "DE",
-          "report_status": "Injured Reserve",
-          "is_starter": false
-        }
-      ],
-      "away_injuries": [
-        {
-          "player_name": "Oscar Delp",
-          "position": "TE",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Alvin Kamara",
-          "position": "RB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Brock Rechsteiner",
-          "position": "WR",
-          "report_status": "Suspension",
-          "is_starter": false
-        },
-        {
-          "player_name": "Cameron Jordan",
-          "position": "DE",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Bryan Bresee",
-          "position": "DT",
-          "report_status": "Injured Reserve",
-          "is_starter": false
-        },
-        {
-          "player_name": "Ty Chandler",
-          "position": "RB",
-          "report_status": "Injured Reserve",
-          "is_starter": false
-        },
-        {
-          "player_name": "Audric Estime",
-          "position": "RB",
-          "report_status": "Injured Reserve",
-          "is_starter": true
-        },
-        {
-          "player_name": "Jaylan Ford",
-          "position": "LB",
-          "report_status": "Injured Reserve",
-          "is_starter": false
-        },
-        {
-          "player_name": "David Long Jr.",
-          "position": "CB",
-          "report_status": "Injured Reserve",
-          "is_starter": false
-        },
-        {
-          "player_name": "Moliki Matavao",
-          "position": "TE",
-          "report_status": "Injured Reserve",
-          "is_starter": false
-        },
-        {
-          "player_name": "Lorenzo Styles Jr.",
-          "position": "S",
-          "report_status": "Injured Reserve",
-          "is_starter": false
-        },
-        {
-          "player_name": "Mason Tipton",
-          "position": "WR",
-          "report_status": "Out",
-          "is_starter": true
-        },
-        {
-          "player_name": "Jordyn Tyson",
-          "position": "WR",
-          "report_status": "Injured Reserve",
-          "is_starter": false
-        }
-      ]
-    },
-    {
       "game_id": "2026_01_WAS_PHI",
       "status": "final",
       "home_team": "PHI",
@@ -2618,7 +2618,7 @@
         }
       ],
       "narrative": "PHI beat WAS: PHI won rushing yards, passing yards, and 3rd down conversion rate. The model correctly favored PHI to win (73%).",
-      "computed_at": "2026-09-19T19:07:42.100740",
+      "computed_at": "2026-09-20T08:38:34.917266",
       "home_injuries": [
         {
           "player_name": "Jonathan Greenard",
@@ -2793,7 +2793,7 @@
         }
       ],
       "narrative": "SF beat LA: SF won turnover margin, rushing yards, passing yards, and 3rd down conversion rate. The model favored LA (63%) and got the winner wrong here.",
-      "computed_at": "2026-09-19T19:07:42.250519",
+      "computed_at": "2026-09-20T08:38:35.033628",
       "home_injuries": [
         {
           "player_name": "Kam Curl",
@@ -2908,193 +2908,6 @@
         {
           "player_name": "Mykel Williams",
           "position": "DE",
-          "report_status": "Out",
-          "is_starter": false
-        }
-      ]
-    },
-    {
-      "game_id": "2026_01_NE_SEA",
-      "status": "final",
-      "home_team": "SEA",
-      "away_team": "NE",
-      "home_score": 13,
-      "away_score": 10,
-      "predicted_winner": "SEA",
-      "predicted_home_win_prob": 0.6404338702336463,
-      "data_available": true,
-      "actual_winner": "SEA",
-      "correct_winner": true,
-      "home_stats": {
-        "rushing_yards": 98.0,
-        "passing_yards": 200.0,
-        "turnovers": 0,
-        "third_down_attempts": 11,
-        "third_down_conversions": 2,
-        "third_down_pct": 0.18181818181818182,
-        "fourth_down_attempts": 1,
-        "fourth_down_conversions": 1,
-        "fourth_down_pct": 1.0
-      },
-      "away_stats": {
-        "rushing_yards": 109.0,
-        "passing_yards": 178.0,
-        "turnovers": 3,
-        "third_down_attempts": 16,
-        "third_down_conversions": 5,
-        "third_down_pct": 0.3125,
-        "fourth_down_attempts": 2,
-        "fourth_down_conversions": 2,
-        "fourth_down_pct": 1.0
-      },
-      "keys": [
-        {
-          "key": "turnover_margin",
-          "label": "Turnover margin",
-          "home_value": 3,
-          "away_value": -3,
-          "winner": "home"
-        },
-        {
-          "key": "rushing_yards",
-          "label": "Rushing yards",
-          "home_value": 98.0,
-          "away_value": 109.0,
-          "winner": "away"
-        },
-        {
-          "key": "passing_yards",
-          "label": "Passing yards",
-          "home_value": 200.0,
-          "away_value": 178.0,
-          "winner": "home"
-        },
-        {
-          "key": "third_down_pct",
-          "label": "3rd down conversion rate",
-          "home_value": 0.18181818181818182,
-          "away_value": 0.3125,
-          "winner": "away"
-        },
-        {
-          "key": "fourth_down_pct",
-          "label": "4th down conversion rate",
-          "home_value": 1.0,
-          "away_value": 1.0,
-          "winner": null,
-          "no_signal": true
-        }
-      ],
-      "narrative": "SEA beat NE: SEA won turnover margin, and passing yards, despite losing rushing yards, and 3rd down conversion rate. The model correctly favored SEA to win (64%).",
-      "computed_at": "2026-09-19T19:07:42.411677",
-      "home_injuries": [
-        {
-          "player_name": "Sam Darnold",
-          "position": "QB",
-          "report_status": "Doubtful",
-          "is_starter": true
-        },
-        {
-          "player_name": "Tory Horton",
-          "position": "WR",
-          "report_status": "Out",
-          "is_starter": true
-        },
-        {
-          "player_name": "Terrion Arnold",
-          "position": "CB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Nick Emmanwori",
-          "position": "S",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Ty Okada",
-          "position": "S",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Jake Bobo",
-          "position": "WR",
-          "report_status": "Injured Reserve",
-          "is_starter": false
-        },
-        {
-          "player_name": "Zach Charbonnet",
-          "position": "RB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Irv Charles",
-          "position": "WR",
-          "report_status": "Injured Reserve",
-          "is_starter": false
-        },
-        {
-          "player_name": "Bud Clark",
-          "position": "S",
-          "report_status": "Injured Reserve",
-          "is_starter": false
-        },
-        {
-          "player_name": "Robbie Ouzts",
-          "position": "FB",
-          "report_status": "Injured Reserve",
-          "is_starter": false
-        }
-      ],
-      "away_injuries": [
-        {
-          "player_name": "TreVeyon Henderson",
-          "position": "RB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Bryce Baringer",
-          "position": "P",
-          "report_status": "Injured Reserve",
-          "is_starter": false
-        },
-        {
-          "player_name": "A.J. Brown",
-          "position": "WR",
-          "report_status": "Injured Reserve",
-          "is_starter": true
-        },
-        {
-          "player_name": "Julian Hill",
-          "position": "TE",
-          "report_status": "Injured Reserve",
-          "is_starter": true
-        },
-        {
-          "player_name": "Khalil Jacobs",
-          "position": "LB",
-          "report_status": "Injured Reserve",
-          "is_starter": false
-        },
-        {
-          "player_name": "Harold Landry III",
-          "position": "LB",
-          "report_status": "Out",
-          "is_starter": false
-        },
-        {
-          "player_name": "Myles Montgomery",
-          "position": "RB",
-          "report_status": "Injured Reserve",
-          "is_starter": false
-        },
-        {
-          "player_name": "Brenden Schooler",
-          "position": "S",
           "report_status": "Out",
           "is_starter": false
         }
