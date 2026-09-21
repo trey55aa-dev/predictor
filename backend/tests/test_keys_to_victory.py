@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from app.model.keys_to_victory import build_game_breakdown, team_stats
-from app.models import Base, Game, Play, Prediction
+from app.models import Base, Game, Play, PlayAdvancedStat, Prediction
 
 
 @pytest.fixture()
@@ -39,12 +39,13 @@ def _prediction(db, game_id, home_win_prob):
 
 
 def _play(db, game_id, posteam, defteam, play_type, yards_gained=0, down=None, ydstogo=None,
-          interception=False, fumble_lost=False, sack=False, play_id=1):
+          interception=False, fumble_lost=False, sack=False, play_id=1, receiver_player_id=None):
     db.add(
         Play(
             play_key=f"{game_id}_{play_id}", game_id=game_id, season=2026, week=1,
             posteam=posteam, defteam=defteam, play_type=play_type, down=down, ydstogo=ydstogo,
             yards_gained=yards_gained, interception=interception, fumble_lost=fumble_lost, sack=sack,
+            receiver_player_id=receiver_player_id,
         )
     )
 
@@ -157,6 +158,28 @@ def test_pass_rate_none_when_team_ran_no_scrimmage_plays():
     assert stats["pass_rate"] is None
     assert stats["offensive_run_pass_plays"] == 0
     assert stats["defensive_run_pass_plays"] == 0
+
+
+def test_air_yards_per_target_computed_from_advanced_stats_table(db):
+    game = _game(db)
+    _play(db, "g1", "SEA", "NE", "pass", play_id=1, receiver_player_id="00-1")
+    _play(db, "g1", "SEA", "NE", "pass", play_id=2, receiver_player_id="00-2")
+    # a sack -- no receiver, must not count toward air_yards_per_target even
+    # if it somehow had an advanced row
+    _play(db, "g1", "SEA", "NE", "pass", play_id=3, sack=True)
+    db.add(PlayAdvancedStat(play_key="g1_1", game_id="g1", season=2026, air_yards=8.0))
+    db.add(PlayAdvancedStat(play_key="g1_2", game_id="g1", season=2026, air_yards=20.0))
+    db.commit()
+
+    result = build_game_breakdown(db, game)
+
+    assert result["home_stats"]["air_yards_per_target"] == pytest.approx((8.0 + 20.0) / 2)
+
+
+def test_air_yards_per_target_none_when_no_advanced_data():
+    stats = team_stats([Play(play_key="p1", game_id="g", season=2026, week=1, posteam="SEA",
+                              defteam="NE", play_type="pass", receiver_player_id="00-1")], "SEA")
+    assert stats["air_yards_per_target"] is None
 
 
 def test_sack_yardage_excluded_from_passing_yards(db):

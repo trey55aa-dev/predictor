@@ -8,7 +8,7 @@ from app.model.efficiency_stats import (
     league_efficiency_averages,
     team_efficiency_stats,
 )
-from app.models import Base, Game, Play, Stadium, Team
+from app.models import Base, Game, Play, PlayAdvancedStat, Stadium, Team
 
 
 @pytest.fixture()
@@ -75,6 +75,28 @@ def test_team_efficiency_stats_splits_dropbacks_rushes_and_targets():
     assert stats["epa_per_rush"] == pytest.approx(0.2)
     assert stats["epa_per_target"] == pytest.approx(1.5)  # only the non-sack, targeted dropback
     assert stats["pressure_rate_allowed"] == pytest.approx(0.5)  # 1 of 2 dropbacks pressured
+    assert stats["cpoe"] is None  # no `advanced` mapping passed in
+
+
+def test_team_efficiency_stats_computes_cpoe_from_advanced_data():
+    plays = [
+        Play(play_key="p1", game_id="g", season=2026, week=1, posteam="SEA", defteam="NE",
+             play_type="pass", epa=1.0, receiver_player_id="00-1"),
+        # a sacked dropback -- still counts toward cpoe if it has an advanced row
+        Play(play_key="p2", game_id="g", season=2026, week=1, posteam="SEA", defteam="NE",
+             play_type="pass", epa=-1.0, sack=True),
+        # no matching advanced row at all -- excluded, not treated as 0
+        Play(play_key="p3", game_id="g", season=2026, week=1, posteam="SEA", defteam="NE",
+             play_type="pass", epa=0.5, receiver_player_id="00-2"),
+    ]
+    advanced = {
+        "p1": PlayAdvancedStat(play_key="p1", game_id="g", season=2026, cpoe=5.0),
+        "p2": PlayAdvancedStat(play_key="p2", game_id="g", season=2026, cpoe=None),
+    }
+
+    stats = team_efficiency_stats(plays, "SEA", advanced)
+
+    assert stats["cpoe"] == pytest.approx(5.0)  # only p1 has a non-null cpoe
 
 
 def test_team_efficiency_stats_excludes_missing_participation_data_from_pressure_rate():
@@ -97,6 +119,7 @@ def test_team_efficiency_stats_returns_none_for_categories_with_no_plays():
         "epa_per_dropback": None,
         "epa_per_rush": None,
         "epa_per_target": None,
+        "cpoe": None,
         "pressure_rate_allowed": None,
     }
 
@@ -160,3 +183,15 @@ def test_league_efficiency_averages_omits_categories_with_no_qualifying_plays(db
 
     assert "epa_per_dropback" not in averages["SEA"]
     assert averages["SEA"]["epa_per_rush"] == pytest.approx(1.0)
+
+
+def test_league_efficiency_averages_picks_up_cpoe_from_advanced_stats_table(db):
+    _seed_teams(db, "SEA", "NE")
+    _seed_game(db, 1, "SEA", "NE", 13, 10, "2026_01_NE_SEA")
+    _play(db, "2026_01_NE_SEA", "SEA", "NE", "pass", 1, epa=1.0, receiver_player_id="00-1")
+    db.add(PlayAdvancedStat(play_key="2026_01_NE_SEA_1", game_id="2026_01_NE_SEA", season=2026, cpoe=4.0))
+    db.commit()
+
+    averages = league_efficiency_averages(db, 2026, 2)
+
+    assert averages["SEA"]["cpoe"] == pytest.approx(4.0)

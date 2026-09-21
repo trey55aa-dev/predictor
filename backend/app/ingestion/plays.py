@@ -14,7 +14,7 @@ import nflreadpy as nfl
 import polars as pl
 from sqlalchemy.orm import Session
 
-from app.models import Play, TeamSeasonScheme
+from app.models import Play, PlayAdvancedStat, TeamSeasonScheme
 
 FTN_MIN_SEASON = 2022
 
@@ -49,6 +49,7 @@ def _load_season_frame(season: int) -> pl.DataFrame:
         "run_location", "run_gap", "pass_length", "pass_location",
         "rusher_player_id", "rusher_player_name", "receiver_player_id", "receiver_player_name",
         "passer_player_id", "passer_player_name", "pass_touchdown", "rush_touchdown",
+        "cpoe", "air_yards",
     ]
     pbp = pbp.select([c for c in pbp_cols if c in pbp.columns])
 
@@ -89,9 +90,15 @@ def ingest_plays(db: Session, seasons: list[int]) -> int:
     total = 0
     for season in seasons:
         frame = _load_season_frame(season)
+        # Children before parents: play_advanced_stats.play_key has no
+        # DB-level cascade, so deleting `plays` first would either orphan
+        # these rows or hit a real FK violation -- the same mistake already
+        # fixed once in this codebase (see the parlay-pick-leg bugfix).
+        db.query(PlayAdvancedStat).filter(PlayAdvancedStat.season == season).delete(synchronize_session=False)
         db.query(Play).filter(Play.season == season).delete(synchronize_session=False)
 
         rows_to_insert = []
+        advanced_rows_to_insert = []
         for row in frame.iter_rows(named=True):
             posteam = row.get("posteam")
             defteam = row.get("defteam")
@@ -100,10 +107,11 @@ def ingest_plays(db: Session, seasons: list[int]) -> int:
 
             touchdown = bool(row.get("touchdown"))
             scoring_type = _scoring_type(row)
+            play_key = f"{row['game_id']}_{int(row['play_id'])}"
 
             rows_to_insert.append(
                 {
-                    "play_key": f"{row['game_id']}_{int(row['play_id'])}",
+                    "play_key": play_key,
                     "game_id": row["game_id"],
                     "season": season,
                     "week": row.get("week"),
@@ -154,8 +162,18 @@ def ingest_plays(db: Session, seasons: list[int]) -> int:
                     "rush_touchdown": bool(row.get("rush_touchdown")) if row.get("rush_touchdown") is not None else None,
                 }
             )
+            advanced_rows_to_insert.append(
+                {
+                    "play_key": play_key,
+                    "game_id": row["game_id"],
+                    "season": season,
+                    "cpoe": row.get("cpoe"),
+                    "air_yards": row.get("air_yards"),
+                }
+            )
 
         db.bulk_insert_mappings(Play, rows_to_insert)
+        db.bulk_insert_mappings(PlayAdvancedStat, advanced_rows_to_insert)
         db.commit()
         total += len(rows_to_insert)
 

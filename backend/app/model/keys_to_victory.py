@@ -15,7 +15,7 @@ import datetime as dt
 
 from sqlalchemy.orm import Session
 
-from app.models import Game, Play, Prediction
+from app.models import Game, Play, PlayAdvancedStat, Prediction
 
 # Keys that showed real signal in validation (see module docstring). 4th
 # down is deliberately not in this set -- it's shown in the stats table but
@@ -32,7 +32,16 @@ def _latest_prediction(db: Session, game_id: str) -> Prediction | None:
     )
 
 
-def team_stats(plays: list[Play], team: str) -> dict:
+def advanced_stats_by_play_key(db: Session, game_id: str) -> dict[str, PlayAdvancedStat]:
+    """CPOE/air-yards rows for `game_id`, keyed by play_key -- a separate
+    table from `plays` (see PlayAdvancedStat's docstring for why), fetched
+    once per game and passed into team_stats/efficiency_stats.py's
+    team_efficiency_stats rather than joined per-play."""
+    rows = db.query(PlayAdvancedStat).filter(PlayAdvancedStat.game_id == game_id).all()
+    return {row.play_key: row for row in rows}
+
+
+def team_stats(plays: list[Play], team: str, advanced: dict[str, PlayAdvancedStat] | None = None) -> dict:
     rushing_yards = sum(p.yards_gained or 0 for p in plays if p.posteam == team and p.play_type == "run")
     passing_yards = sum(
         p.yards_gained or 0 for p in plays if p.posteam == team and p.play_type == "pass" and not p.sack
@@ -56,6 +65,17 @@ def team_stats(plays: list[Play], team: str) -> dict:
     pass_plays = sum(1 for p in plays if p.posteam == team and p.play_type == "pass")
     run_plays = sum(1 for p in plays if p.posteam == team and p.play_type == "run")
 
+    advanced = advanced or {}
+    target_air_yards = [
+        advanced[p.play_key].air_yards
+        for p in plays
+        if p.posteam == team
+        and p.play_type == "pass"
+        and p.receiver_player_id is not None
+        and p.play_key in advanced
+        and advanced[p.play_key].air_yards is not None
+    ]
+
     return {
         "rushing_yards": rushing_yards,
         "passing_yards": passing_yards,
@@ -70,6 +90,9 @@ def team_stats(plays: list[Play], team: str) -> dict:
         "defensive_run_pass_plays": defensive_run_pass_plays,
         "total_run_pass_plays": offensive_run_pass_plays + defensive_run_pass_plays,
         "pass_rate": (pass_plays / (pass_plays + run_plays)) if (pass_plays + run_plays) else None,
+        "air_yards_per_target": (
+            (sum(target_air_yards) / len(target_air_yards)) if target_air_yards else None
+        ),
     }
 
 
@@ -224,8 +247,9 @@ def build_game_breakdown(db: Session, game: Game) -> dict:
             "correct_winner": correct_winner,
         }
 
-    home_stats = team_stats(plays, game.home_team)
-    away_stats = team_stats(plays, game.away_team)
+    advanced = advanced_stats_by_play_key(db, game.game_id)
+    home_stats = team_stats(plays, game.home_team, advanced)
+    away_stats = team_stats(plays, game.away_team, advanced)
     keys = build_keys(home_stats, away_stats)
 
     return {

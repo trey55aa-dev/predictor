@@ -286,6 +286,33 @@ class Play(Base):
     rush_touchdown: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
 
 
+class PlayAdvancedStat(Base):
+    """CPOE (completion % over expected) and air yards, one row per pass
+    play -- split into their own table rather than added as new columns to
+    the already-shipped `plays` table, since this project has no migration
+    tooling (schema is created via Base.metadata.create_all, which never
+    alters an existing table); a new column there would crash the app the
+    moment it deploys against the real, already-populated production DB
+    (see the over/under grading commit, which flagged the same risk). A
+    brand new table is safe -- create_all only ever creates tables that
+    don't exist yet.
+
+    game_id and season are denormalized here (also derivable by joining
+    back to `plays` on play_key) purely so ingestion can delete-before-
+    reinsert this table the same way it already does for `plays`, without
+    an extra join on every ingest pass -- the same choice `plays` itself
+    already made for its own season/week columns.
+    """
+
+    __tablename__ = "play_advanced_stats"
+
+    play_key: Mapped[str] = mapped_column(ForeignKey("plays.play_key"), primary_key=True)
+    game_id: Mapped[str] = mapped_column(String)
+    season: Mapped[int] = mapped_column(Integer)
+    cpoe: Mapped[float | None] = mapped_column(Float, nullable=True)
+    air_yards: Mapped[float | None] = mapped_column(Float, nullable=True)
+
+
 class ParlayPick(Base):
     __tablename__ = "parlay_picks"
 
