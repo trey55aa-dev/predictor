@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.db import get_db
 from app.model.grade import model_vs_market_comparison, over_under_summary, performance_summary
+from app.model.league_context import league_pass_rate_by_week
 from app.models import CalibrationAdjustment
 from app.schemas import PerformanceOut
 
@@ -33,6 +34,13 @@ def accuracy_comparison(db: Session = Depends(get_db)) -> dict:
     scored against each other on the same graded games. Backs the honesty
     note on the parlay page -- see model/grade.py:model_vs_market_comparison."""
     return model_vs_market_comparison(db)
+
+
+@router.get("/model/league-pass-rate")
+def league_pass_rate(season: int, db: Session = Depends(get_db)) -> dict:
+    """League-wide pass rate per week for `season`, across every team's
+    ingested run/pass plays combined. See model/league_context.py."""
+    return league_pass_rate_by_week(db, season)
 
 
 @router.get("/model/calibration-history")

@@ -4,7 +4,7 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from app.model.keys_to_victory import build_game_breakdown
+from app.model.keys_to_victory import build_game_breakdown, team_stats
 from app.models import Base, Game, Play, Prediction
 
 
@@ -123,6 +123,40 @@ def test_real_stats_computed_from_plays_not_estimated(db):
     # The narrative should credit SEA's real wins and note the passing loss.
     assert "SEA" in result["narrative"]
     assert "rushing" in result["narrative"].lower()
+
+
+def test_play_counts_and_pass_rate_computed_from_scrimmage_plays(db):
+    game = _game(db)  # SEA 13, NE 10
+    _play(db, "g1", "SEA", "NE", "run", yards_gained=10, play_id=1)
+    _play(db, "g1", "SEA", "NE", "run", yards_gained=5, play_id=2)
+    _play(db, "g1", "SEA", "NE", "pass", yards_gained=20, play_id=3)
+    _play(db, "g1", "NE", "SEA", "run", yards_gained=3, play_id=4)
+    _play(db, "g1", "NE", "SEA", "pass", yards_gained=15, play_id=5)
+    _play(db, "g1", "NE", "SEA", "pass", yards_gained=0, interception=True, play_id=6)
+    db.commit()
+
+    result = build_game_breakdown(db, game)
+
+    # SEA: 2 runs + 1 pass = 3 offensive plays; on defense for NE's 3 plays.
+    assert result["home_stats"]["offensive_run_pass_plays"] == 3
+    assert result["home_stats"]["defensive_run_pass_plays"] == 3
+    assert result["home_stats"]["total_run_pass_plays"] == 6
+    assert result["home_stats"]["pass_rate"] == pytest.approx(1 / 3)
+
+    assert result["away_stats"]["offensive_run_pass_plays"] == 3
+    assert result["away_stats"]["pass_rate"] == pytest.approx(2 / 3)
+
+    # Every play in the game has exactly one team on offense and one on
+    # defense, so total_run_pass_plays must match for both teams and equal
+    # the game's overall play count.
+    assert result["home_stats"]["total_run_pass_plays"] == result["away_stats"]["total_run_pass_plays"] == 6
+
+
+def test_pass_rate_none_when_team_ran_no_scrimmage_plays():
+    stats = team_stats([], "SEA")
+    assert stats["pass_rate"] is None
+    assert stats["offensive_run_pass_plays"] == 0
+    assert stats["defensive_run_pass_plays"] == 0
 
 
 def test_sack_yardage_excluded_from_passing_yards(db):

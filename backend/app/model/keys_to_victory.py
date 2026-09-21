@@ -45,6 +45,17 @@ def team_stats(plays: list[Play], team: str) -> dict:
     fourth_downs = [p for p in plays if p.posteam == team and p.down == 4]
     fourth_conversions = sum(1 for p in fourth_downs if (p.yards_gained or 0) >= (p.ydstogo or 999))
 
+    # Snap counts from scrimmage only -- this table doesn't ingest special-teams
+    # plays (punts, field goals, kickoffs; see ingestion/plays.py's scope note),
+    # so these undercount a team's real total offensive/defensive snaps by
+    # however many special-teams plays it had. offensive_run_pass_plays +
+    # defensive_run_pass_plays always equals the game's total run/pass plays,
+    # since every such play has exactly one team on offense and one on defense.
+    offensive_run_pass_plays = sum(1 for p in plays if p.posteam == team and p.play_type in ("run", "pass"))
+    defensive_run_pass_plays = sum(1 for p in plays if p.defteam == team and p.play_type in ("run", "pass"))
+    pass_plays = sum(1 for p in plays if p.posteam == team and p.play_type == "pass")
+    run_plays = sum(1 for p in plays if p.posteam == team and p.play_type == "run")
+
     return {
         "rushing_yards": rushing_yards,
         "passing_yards": passing_yards,
@@ -55,6 +66,10 @@ def team_stats(plays: list[Play], team: str) -> dict:
         "fourth_down_attempts": len(fourth_downs),
         "fourth_down_conversions": fourth_conversions,
         "fourth_down_pct": (fourth_conversions / len(fourth_downs)) if fourth_downs else None,
+        "offensive_run_pass_plays": offensive_run_pass_plays,
+        "defensive_run_pass_plays": defensive_run_pass_plays,
+        "total_run_pass_plays": offensive_run_pass_plays + defensive_run_pass_plays,
+        "pass_rate": (pass_plays / (pass_plays + run_plays)) if (pass_plays + run_plays) else None,
     }
 
 
