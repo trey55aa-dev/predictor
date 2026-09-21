@@ -100,7 +100,7 @@ def league_stat_averages(db: Session, season: int, before_week: int) -> dict[str
     }
 
 
-def _percentile(value: float, all_values: list[float], higher_is_better: bool) -> float:
+def percentile(value: float, all_values: list[float], higher_is_better: bool) -> float:
     """0.0 (worst in the league) .. 1.0 (best), ties split evenly. Needs at
     least 2 values to mean anything; callers guard the n<2 case."""
     n = len(all_values)
@@ -126,7 +126,7 @@ def stat_ranking_adjustment(db: Session, team: str, season: int, before_week: in
         values = [stats[category] for stats in averages.values() if category in stats]
         if team not in [t for t in averages if category in averages[t]] or len(values) < 2:
             continue
-        percentiles.append(_percentile(averages[team][category], values, HIGHER_IS_BETTER[category]))
+        percentiles.append(percentile(averages[team][category], values, HIGHER_IS_BETTER[category]))
 
     if not percentiles:
         return 0.0, None

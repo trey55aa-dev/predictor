@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 
 from app.config import settings
 from app.model.coaching_change import coaching_change_uncertainty
+from app.model.efficiency_stats import efficiency_adjustment
 from app.model.elo import expected_win_prob, latest_rating
 from app.model.injury_signal import injury_adjustment
 from app.model.market import blend_line, blend_win_prob, market_home_win_prob
@@ -88,12 +89,22 @@ def predict_game(db: Session, game: Game) -> Prediction:
     home_injury_delta, _home_injury_note = injury_adjustment(db, game.home_team, game.season, game.week)
     away_injury_delta, _away_injury_note = injury_adjustment(db, game.away_team, game.season, game.week)
 
+    # Small, capped nudge from each team's season-to-date EPA-per-dropback,
+    # EPA-per-rush, EPA-per-target, and pressure-rate-allowed splits, ranked
+    # against the rest of the league -- distinct from home_rank_delta above
+    # (box-score yardage/3rd-down%) since EPA and pressure rate capture play
+    # efficiency and pass protection that raw yardage totals can miss. See
+    # model/efficiency_stats.py.
+    home_efficiency_delta, _home_efficiency_note = efficiency_adjustment(db, game.home_team, game.season, game.week)
+    away_efficiency_delta, _away_efficiency_note = efficiency_adjustment(db, game.away_team, game.season, game.week)
+
     home_win_prob = min(
         max(
             home_win_prob
             + home_form_delta - away_form_delta
             + home_rank_delta - away_rank_delta
-            + home_injury_delta - away_injury_delta,
+            + home_injury_delta - away_injury_delta
+            + home_efficiency_delta - away_efficiency_delta,
             0.02,
         ),
         0.98,

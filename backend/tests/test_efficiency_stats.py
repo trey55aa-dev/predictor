@@ -1,0 +1,162 @@
+import pytest
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
+from app.config import settings
+from app.model.efficiency_stats import (
+    efficiency_adjustment,
+    league_efficiency_averages,
+    team_efficiency_stats,
+)
+from app.models import Base, Game, Play, Stadium, Team
+
+
+@pytest.fixture()
+def db():
+    engine = create_engine("sqlite:///:memory:")
+    Base.metadata.create_all(bind=engine)
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    yield session
+    session.close()
+
+
+def _seed_teams(db, *abbrs):
+    for abbr in abbrs:
+        db.add(Stadium(stadium_id=f"{abbr}01", name=f"{abbr} stadium", roof_type="outdoor"))
+        db.add(Team(team_abbr=abbr, name=abbr, stadium_id=f"{abbr}01"))
+    db.commit()
+
+
+def _play(
+    db, game_id, posteam, defteam, play_type, play_id, epa=None, sack=False,
+    was_pressure=None, receiver_player_id=None,
+):
+    db.add(
+        Play(
+            play_key=f"{game_id}_{play_id}", game_id=game_id, season=2026, week=1,
+            posteam=posteam, defteam=defteam, play_type=play_type,
+            epa=epa, sack=sack, was_pressure=was_pressure, receiver_player_id=receiver_player_id,
+        )
+    )
+
+
+def _seed_game(db, week, home, away, home_score, away_score, game_id):
+    db.add(
+        Game(
+            game_id=game_id, season=2026, week=week, game_type="REG", gameday="2026-09-09",
+            home_team=home, away_team=away, home_score=home_score, away_score=away_score,
+            status="final", stadium_id=f"{home}01",
+        )
+    )
+    db.commit()
+
+
+def test_team_efficiency_stats_splits_dropbacks_rushes_and_targets():
+    plays = [
+        # a clean, completed dropback that's also a target
+        Play(play_key="p1", game_id="g", season=2026, week=1, posteam="SEA", defteam="NE",
+             play_type="pass", epa=1.5, was_pressure=False, receiver_player_id="00-1"),
+        # a sacked dropback -- counts toward epa_per_dropback and pressure rate,
+        # but has no receiver so it's excluded from epa_per_target
+        Play(play_key="p2", game_id="g", season=2026, week=1, posteam="SEA", defteam="NE",
+             play_type="pass", epa=-1.8, sack=True, was_pressure=True, receiver_player_id=None),
+        # a rush attempt
+        Play(play_key="p3", game_id="g", season=2026, week=1, posteam="SEA", defteam="NE",
+             play_type="run", epa=0.2),
+        # the opponent's own play -- must not leak into SEA's numbers
+        Play(play_key="p4", game_id="g", season=2026, week=1, posteam="NE", defteam="SEA",
+             play_type="pass", epa=5.0, was_pressure=False, receiver_player_id="00-2"),
+    ]
+
+    stats = team_efficiency_stats(plays, "SEA")
+
+    assert stats["epa_per_dropback"] == pytest.approx((1.5 + -1.8) / 2)
+    assert stats["epa_per_rush"] == pytest.approx(0.2)
+    assert stats["epa_per_target"] == pytest.approx(1.5)  # only the non-sack, targeted dropback
+    assert stats["pressure_rate_allowed"] == pytest.approx(0.5)  # 1 of 2 dropbacks pressured
+
+
+def test_team_efficiency_stats_excludes_missing_participation_data_from_pressure_rate():
+    """A dropback with was_pressure=None (participation coverage gap) must
+    not be silently counted as a clean, unpressured dropback."""
+    plays = [
+        Play(play_key="p1", game_id="g", season=2026, week=1, posteam="SEA", defteam="NE",
+             play_type="pass", epa=1.0, was_pressure=None, receiver_player_id="00-1"),
+    ]
+
+    stats = team_efficiency_stats(plays, "SEA")
+
+    assert stats["pressure_rate_allowed"] is None
+
+
+def test_team_efficiency_stats_returns_none_for_categories_with_no_plays():
+    stats = team_efficiency_stats([], "SEA")
+
+    assert stats == {
+        "epa_per_dropback": None,
+        "epa_per_rush": None,
+        "epa_per_target": None,
+        "pressure_rate_allowed": None,
+    }
+
+
+def test_no_adjustment_when_team_has_no_prior_game_this_season(db):
+    _seed_teams(db, "SEA", "NE")
+    delta, note = efficiency_adjustment(db, "SEA", 2026, 1)
+    assert delta == 0.0
+    assert note is None
+
+
+def test_adjustment_never_looks_at_a_future_or_same_week_game(db):
+    _seed_teams(db, "SEA", "NE")
+    _seed_game(db, 1, "SEA", "NE", 13, 10, "2026_01_NE_SEA")
+    _play(db, "2026_01_NE_SEA", "SEA", "NE", "pass", 1, epa=2.0, was_pressure=False, receiver_player_id="00-1")
+    _play(db, "2026_01_NE_SEA", "NE", "SEA", "pass", 2, epa=-1.0, was_pressure=True, receiver_player_id="00-2")
+    db.commit()
+
+    delta, note = efficiency_adjustment(db, "SEA", 2026, 1)
+
+    assert delta == 0.0
+    assert note is None
+
+
+def test_more_efficient_team_gets_a_positive_capped_adjustment(db):
+    _seed_teams(db, "SEA", "NE")
+    _seed_game(db, 1, "SEA", "NE", 13, 10, "2026_01_NE_SEA")
+    # SEA: highly efficient, never pressured. NE: inefficient, pressured every dropback.
+    _play(db, "2026_01_NE_SEA", "SEA", "NE", "pass", 1, epa=2.5, was_pressure=False, receiver_player_id="00-1")
+    _play(db, "2026_01_NE_SEA", "SEA", "NE", "run", 2, epa=1.0)
+    _play(db, "2026_01_NE_SEA", "NE", "SEA", "pass", 3, epa=-2.5, was_pressure=True, receiver_player_id="00-2")
+    _play(db, "2026_01_NE_SEA", "NE", "SEA", "run", 4, epa=-1.0)
+    db.commit()
+
+    sea_delta, sea_note = efficiency_adjustment(db, "SEA", 2026, 2)
+    ne_delta, _ = efficiency_adjustment(db, "NE", 2026, 2)
+
+    assert sea_delta == pytest.approx(settings.efficiency_max_adjustment)
+    assert ne_delta == pytest.approx(-settings.efficiency_max_adjustment)
+    assert "SEA ranks" in sea_note
+
+
+def test_league_efficiency_averages_skips_games_with_no_ingested_plays(db):
+    _seed_teams(db, "SEA", "NE")
+    _seed_game(db, 1, "SEA", "NE", 13, 10, "2026_01_NE_SEA")
+
+    averages = league_efficiency_averages(db, 2026, 2)
+
+    assert averages == {}
+
+
+def test_league_efficiency_averages_omits_categories_with_no_qualifying_plays(db):
+    """A game with rushes but zero pass plays must not give epa_per_dropback
+    a guessed value for either team."""
+    _seed_teams(db, "SEA", "NE")
+    _seed_game(db, 1, "SEA", "NE", 13, 10, "2026_01_NE_SEA")
+    _play(db, "2026_01_NE_SEA", "SEA", "NE", "run", 1, epa=1.0)
+    db.commit()
+
+    averages = league_efficiency_averages(db, 2026, 2)
+
+    assert "epa_per_dropback" not in averages["SEA"]
+    assert averages["SEA"]["epa_per_rush"] == pytest.approx(1.0)
