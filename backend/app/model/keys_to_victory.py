@@ -15,9 +15,15 @@ import datetime as dt
 
 from sqlalchemy.orm import Session
 
+from app.model.efficiency_stats import team_efficiency_stats
 from app.model.man_zone_stats import team_man_zone_stats
 from app.model.pass_defense_stats import team_pass_defense_stats
-from app.model.play_lookups import advanced_stats_by_play_key, coverage_stats_by_play_key, drive_by_play_key
+from app.model.play_lookups import (
+    advanced_stats_by_play_key,
+    coverage_stats_by_play_key,
+    drive_by_play_key,
+    scramble_play_keys,
+)
 from app.model.red_zone_stats import team_red_zone_stats
 from app.models import Game, Play, PlayAdvancedStat, Prediction
 
@@ -42,6 +48,13 @@ def team_stats(plays: list[Play], team: str, advanced: dict[str, PlayAdvancedSta
         p.yards_gained or 0 for p in plays if p.posteam == team and p.play_type == "pass" and not p.sack
     )
     turnovers = sum(1 for p in plays if p.posteam == team and (p.interception or p.fumble_lost))
+
+    # First downs gained on any down, same "reached the sticks" convention
+    # already used for third_conversions/fourth_conversions below, just not
+    # restricted to 3rd/4th down.
+    first_downs = sum(
+        1 for p in plays if p.posteam == team and (p.yards_gained or 0) >= (p.ydstogo or 999)
+    )
 
     third_downs = [p for p in plays if p.posteam == team and p.down == 3]
     third_conversions = sum(1 for p in third_downs if (p.yards_gained or 0) >= (p.ydstogo or 999))
@@ -75,6 +88,7 @@ def team_stats(plays: list[Play], team: str, advanced: dict[str, PlayAdvancedSta
         "rushing_yards": rushing_yards,
         "passing_yards": passing_yards,
         "turnovers": turnovers,
+        "first_downs": first_downs,
         "third_down_attempts": len(third_downs),
         "third_down_conversions": third_conversions,
         "third_down_pct": (third_conversions / len(third_downs)) if third_downs else None,
@@ -245,6 +259,7 @@ def build_game_breakdown(db: Session, game: Game) -> dict:
     advanced = advanced_stats_by_play_key(db, game.game_id)
     coverage = coverage_stats_by_play_key(db, game.game_id)
     drives = drive_by_play_key(db, game.game_id)
+    scrambles = scramble_play_keys(db, game.game_id)
     home_stats = team_stats(plays, game.home_team, advanced)
     away_stats = team_stats(plays, game.away_team, advanced)
     keys = build_keys(home_stats, away_stats)
@@ -256,14 +271,17 @@ def build_game_breakdown(db: Session, game: Game) -> dict:
         "correct_winner": correct_winner,
         "home_stats": home_stats,
         "away_stats": away_stats,
-        # home_pass_defense/home_red_zone/home_man_zone are what HOME's
-        # defense allowed / HOME's own red-zone and coverage tendencies
-        # (i.e. against AWAY's offense), and vice versa -- matches the
+        # home_pass_defense/home_red_zone/home_man_zone/home_offense are
+        # what HOME's defense allowed / HOME's own red-zone, coverage, and
+        # offensive-efficiency tendencies (i.e. against AWAY's offense, or
+        # AWAY's defense for home_offense), and vice versa -- matches the
         # same home/away framing as home_stats/away_stats above.
         "home_pass_defense": team_pass_defense_stats(plays, game.home_team, advanced, coverage),
         "away_pass_defense": team_pass_defense_stats(plays, game.away_team, advanced, coverage),
         "home_red_zone": team_red_zone_stats(plays, game.home_team, drives),
         "away_red_zone": team_red_zone_stats(plays, game.away_team, drives),
+        "home_offense": team_efficiency_stats(plays, game.home_team, advanced, scrambles),
+        "away_offense": team_efficiency_stats(plays, game.away_team, advanced, scrambles),
         # man_zone data is historical-only -- see man_zone_stats.py's
         # docstring. Every field here will be None for the in-progress
         # season until nflverse's participation feed catches up.

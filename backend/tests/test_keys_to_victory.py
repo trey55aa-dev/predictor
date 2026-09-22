@@ -214,6 +214,31 @@ def test_breakdown_includes_red_zone_and_man_zone_stats(db):
     assert result["away_man_zone"]["man_rate_played"] is None
 
 
+def test_breakdown_includes_home_and_away_offense_efficiency(db):
+    game = _game(db)  # SEA (home) 13, NE (away) 10
+    _play(db, "g1", "SEA", "NE", "pass", yards_gained=15, play_id=1, receiver_player_id="00-1")
+    db.commit()
+
+    result = build_game_breakdown(db, game)
+
+    assert "epa_per_play" in result["home_offense"]
+    assert result["home_offense"]["pass_yards"] == 15
+    assert "epa_per_play" in result["away_offense"]
+
+
+def test_first_downs_counted_on_any_down():
+    stats = team_stats(
+        [
+            Play(play_key="p1", game_id="g", season=2026, week=1, posteam="SEA", defteam="NE",
+                 play_type="run", down=1, ydstogo=10, yards_gained=12),  # 1st down conversion
+            Play(play_key="p2", game_id="g", season=2026, week=1, posteam="SEA", defteam="NE",
+                 play_type="run", down=2, ydstogo=8, yards_gained=3),  # not a first down
+        ],
+        "SEA",
+    )
+    assert stats["first_downs"] == 1
+
+
 def test_sack_yardage_excluded_from_passing_yards(db):
     """A sack's negative yardage counts against total offense but not
     passing yards in a real box score -- this guards that distinction."""

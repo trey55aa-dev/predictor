@@ -112,6 +112,80 @@ def test_team_efficiency_stats_excludes_missing_participation_data_from_pressure
     assert stats["pressure_rate_allowed"] is None
 
 
+def test_scramble_excluded_from_epa_per_rush_but_included_in_box_score_rush_stats():
+    """A scramble is recorded as play_type == 'run' in nflverse's own
+    convention. epa_per_rush should exclude it (standard analytics
+    convention: scrambles have a very different EPA distribution than
+    designed runs), but rush_yards/rush_touchdowns -- real box-score
+    counting stats -- must still include it, matching how the NFL's own
+    box score credits a scramble as a rush attempt."""
+    plays = [
+        Play(play_key="p1", game_id="g", season=2026, week=1, posteam="SEA", defteam="NE",
+             play_type="run", epa=0.5, yards_gained=4),  # designed run
+        Play(play_key="p2", game_id="g", season=2026, week=1, posteam="SEA", defteam="NE",
+             play_type="run", epa=3.0, yards_gained=25, rush_touchdown=True),  # scramble TD
+    ]
+    scrambles = {"p2"}
+
+    stats = team_efficiency_stats(plays, "SEA", scrambles=scrambles)
+
+    assert stats["epa_per_rush"] == pytest.approx(0.5)  # only the designed run
+    assert stats["rush_yards"] == 29  # both plays
+    assert stats["rush_touchdowns"] == 1  # the scramble TD still counts
+
+
+def test_scramble_rate_uses_true_dropback_denominator():
+    plays = [
+        Play(play_key="p1", game_id="g", season=2026, week=1, posteam="SEA", defteam="NE",
+             play_type="pass", receiver_player_id="00-1"),  # real dropback
+        Play(play_key="p2", game_id="g", season=2026, week=1, posteam="SEA", defteam="NE",
+             play_type="run"),  # scramble
+        Play(play_key="p3", game_id="g", season=2026, week=1, posteam="SEA", defteam="NE",
+             play_type="run"),  # designed run -- not a dropback at all
+    ]
+    scrambles = {"p2"}
+
+    stats = team_efficiency_stats(plays, "SEA", scrambles=scrambles)
+
+    # denominator is 1 dropback + 1 scramble = 2, NOT 3 (designed run excluded)
+    assert stats["scramble_rate"] == pytest.approx(0.5)
+
+
+def test_pass_touchdowns_interception_rate_and_average_depth_of_target():
+    plays = [
+        Play(play_key="p1", game_id="g", season=2026, week=1, posteam="SEA", defteam="NE",
+             play_type="pass", receiver_player_id="00-1", pass_touchdown=True),
+        Play(play_key="p2", game_id="g", season=2026, week=1, posteam="SEA", defteam="NE",
+             play_type="pass", receiver_player_id="00-2", interception=True),
+    ]
+    advanced = {
+        "p1": PlayAdvancedStat(play_key="p1", game_id="g", season=2026, air_yards=15.0),
+        "p2": PlayAdvancedStat(play_key="p2", game_id="g", season=2026, air_yards=5.0),
+    }
+
+    stats = team_efficiency_stats(plays, "SEA", advanced=advanced)
+
+    assert stats["pass_touchdowns"] == 1
+    assert stats["interception_rate"] == pytest.approx(0.5)
+    assert stats["average_depth_of_target"] == pytest.approx(10.0)
+
+
+def test_epa_per_play_and_success_rate_span_dropbacks_and_all_runs():
+    plays = [
+        Play(play_key="p1", game_id="g", season=2026, week=1, posteam="SEA", defteam="NE",
+             play_type="pass", receiver_player_id="00-1", epa=2.0, success=True),
+        Play(play_key="p2", game_id="g", season=2026, week=1, posteam="SEA", defteam="NE",
+             play_type="run", epa=-2.0, success=False),  # scramble, still a "play"
+    ]
+    scrambles = {"p2"}
+
+    stats = team_efficiency_stats(plays, "SEA", scrambles=scrambles)
+
+    assert stats["epa_per_play"] == pytest.approx(0.0)  # (2.0 + -2.0) / 2
+    assert stats["total_epa"] == pytest.approx(0.0)
+    assert stats["success_rate"] == pytest.approx(0.5)
+
+
 def test_team_efficiency_stats_returns_none_for_categories_with_no_plays():
     stats = team_efficiency_stats([], "SEA")
 
@@ -121,6 +195,16 @@ def test_team_efficiency_stats_returns_none_for_categories_with_no_plays():
         "epa_per_target": None,
         "cpoe": None,
         "pressure_rate_allowed": None,
+        "epa_per_play": None,
+        "total_epa": None,
+        "success_rate": None,
+        "pass_yards": 0,
+        "pass_touchdowns": 0,
+        "rush_yards": 0,
+        "rush_touchdowns": 0,
+        "average_depth_of_target": None,
+        "interception_rate": None,
+        "scramble_rate": None,
     }
 
 

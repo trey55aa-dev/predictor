@@ -4,7 +4,17 @@ from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker
 
 from app.ingestion import current_plays
-from app.models import Base, Game, Play, PlayAdvancedStat, PlayCoverageStat, PlayDriveContext, Stadium, Team
+from app.models import (
+    Base,
+    Game,
+    Play,
+    PlayAdvancedStat,
+    PlayCoverageStat,
+    PlayDriveContext,
+    PlayQbStat,
+    Stadium,
+    Team,
+)
 
 
 @pytest.fixture()
@@ -156,6 +166,25 @@ def test_writes_drive_to_drive_context_table(db, monkeypatch):
     assert ctx.drive == 5
 
 
+def test_writes_qb_scramble_to_qb_stats_table(db, monkeypatch):
+    _game(db, "2026_01_NE_SEA", status="final")
+    db.commit()
+
+    row = {
+        "game_id": "2026_01_NE_SEA", "play_id": 1.0, "week": 1, "posteam": "SEA", "defteam": "NE",
+        "play_type": "run", "down": 1, "ydstogo": 10, "yardline_100": 75, "desc": "scramble",
+        "yards_gained": 8.0, "epa": 0.1, "success": True, "touchdown": False,
+        "interception": False, "fumble_lost": False, "sack": False,
+        "qb_scramble": True,
+    }
+    monkeypatch.setattr(current_plays.nfl, "load_pbp", lambda seasons: _fake_pbp([row]))
+
+    current_plays.ingest_current_season_plays(db, 2026)
+
+    stat = db.query(PlayQbStat).filter(PlayQbStat.game_id == "2026_01_NE_SEA").one()
+    assert stat.qb_scramble is True
+
+
 def test_rerunning_replaces_advanced_stats_without_a_foreign_key_violation(monkeypatch):
     """play_advanced_stats.play_key references plays.play_key with no
     DB-level cascade -- deleting Play rows before PlayAdvancedStat rows on
@@ -196,5 +225,6 @@ def test_rerunning_replaces_advanced_stats_without_a_foreign_key_violation(monke
         assert session.query(PlayAdvancedStat).filter(PlayAdvancedStat.game_id == "2026_01_NE_SEA").count() == 1
         assert session.query(PlayCoverageStat).filter(PlayCoverageStat.game_id == "2026_01_NE_SEA").count() == 1
         assert session.query(PlayDriveContext).filter(PlayDriveContext.game_id == "2026_01_NE_SEA").count() == 1
+        assert session.query(PlayQbStat).filter(PlayQbStat.game_id == "2026_01_NE_SEA").count() == 1
     finally:
         session.close()

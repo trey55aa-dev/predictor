@@ -359,6 +359,28 @@ class PlayDriveContext(Base):
     drive: Mapped[int | None] = mapped_column(Integer, nullable=True)
 
 
+class PlayQbStat(Base):
+    """qb_scramble, one row per play -- whether a play recorded as a run
+    (play_type == "run") was actually the passer scrambling rather than a
+    designed hand-off, needed for a real scramble rate (scrambles /
+    (dropbacks + scrambles), not just "run plays by the QB" which would
+    also catch designed QB runs). A fifth new table, same reason as the
+    four before it: `plays`, `play_advanced_stats`, `play_coverage_stats`,
+    and `play_drive_contexts` are all already live in production, and this
+    project has no migration tooling, so a new column on any of them would
+    crash the app on deploy. qb_scramble is in the base pbp feed (not
+    participation-dependent), so this is available for the in-progress
+    season too.
+    """
+
+    __tablename__ = "play_qb_stats"
+
+    play_key: Mapped[str] = mapped_column(ForeignKey("plays.play_key"), primary_key=True)
+    game_id: Mapped[str] = mapped_column(String)
+    season: Mapped[int] = mapped_column(Integer)
+    qb_scramble: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
+
+
 class ParlayPick(Base):
     __tablename__ = "parlay_picks"
 

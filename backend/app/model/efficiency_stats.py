@@ -33,7 +33,7 @@ from sqlalchemy.orm import Session
 
 from app.config import settings
 from app.model.percentile import percentile
-from app.model.play_lookups import advanced_stats_by_play_key
+from app.model.play_lookups import advanced_stats_by_play_key, scramble_play_keys
 from app.models import Game, Play, PlayAdvancedStat
 
 # pressure_rate_allowed: lower is better for the offense being pressured.
@@ -65,7 +65,10 @@ def _final_games_before(db: Session, season: int, before_week: int) -> list[Game
 
 
 def team_efficiency_stats(
-    plays: list[Play], team: str, advanced: dict[str, PlayAdvancedStat] | None = None
+    plays: list[Play],
+    team: str,
+    advanced: dict[str, PlayAdvancedStat] | None = None,
+    scrambles: set[str] | None = None,
 ) -> dict:
     """Per-game efficiency splits for `team`'s own offensive plays.
     pressure_rate_allowed is scoped to `team`'s own dropbacks (was it
@@ -76,10 +79,31 @@ def team_efficiency_stats(
     that have a PlayAdvancedStat row with a non-null cpoe (sacks and any
     play missing advanced data are excluded); `advanced` defaults to empty,
     which just means cpoe comes back None for every team, the same as any
-    other category with no qualifying data."""
+    other category with no qualifying data.
+
+    epa_per_dropback/epa_per_rush/epa_per_target/cpoe/pressure_rate_allowed
+    are the only categories ranked into efficiency_adjustment's win-prob
+    nudge (see EFFICIENCY_CATEGORIES) -- everything else returned here
+    (epa_per_play, total_epa, success_rate, pass/rush yards and TDs, aDOT,
+    int_rate, scramble_rate) is informational only, deliberately not added
+    to the ranked signal: most of it is a near-restatement of the EPA
+    categories already ranked (epa_per_play is just a blend of
+    epa_per_dropback/epa_per_rush), and this codebase already stacks
+    several independently-capped signals in predict.py -- adding more
+    highly-correlated EPA-flavored categories would just double-count the
+    same underlying signal rather than add new information.
+
+    `scrambles` (play_keys where qb_scramble was true) separates a
+    designed pass attempt that became a scramble (recorded as
+    play_type == "run" in nflverse's own convention) from an ordinary
+    called run -- scramble_rate is scrambles / (dropbacks + scrambles),
+    the real "true dropback" denominator, not just pass attempts."""
     advanced = advanced or {}
+    scrambles = scrambles or set()
     dropbacks = [p for p in plays if p.posteam == team and p.play_type == "pass"]
-    rushes = [p for p in plays if p.posteam == team and p.play_type == "run"]
+    all_run_plays = [p for p in plays if p.posteam == team and p.play_type == "run"]
+    scramble_plays = [p for p in all_run_plays if p.play_key in scrambles]
+    rushes = [p for p in all_run_plays if p.play_key not in scrambles]
     targets = [p for p in dropbacks if p.receiver_player_id is not None]
     dropbacks_with_pressure_data = [p for p in dropbacks if p.was_pressure is not None]
     pressured = [p for p in dropbacks_with_pressure_data if p.was_pressure]
@@ -88,10 +112,29 @@ def team_efficiency_stats(
         for p in dropbacks
         if p.play_key in advanced and advanced[p.play_key].cpoe is not None
     ]
+    dropback_air_yards = [
+        advanced[p.play_key].air_yards
+        for p in targets
+        if p.play_key in advanced and advanced[p.play_key].air_yards is not None
+    ]
+    all_offensive_plays = dropbacks + all_run_plays
+    interceptions = [p for p in dropbacks if p.interception]
+    pass_touchdowns = [p for p in dropbacks if p.pass_touchdown]
+    rush_touchdowns = [p for p in all_run_plays if p.rush_touchdown]
 
     def _avg_epa(rows: list[Play]) -> float | None:
         values = [p.epa for p in rows if p.epa is not None]
         return (sum(values) / len(values)) if values else None
+
+    def _sum_epa(rows: list[Play]) -> float | None:
+        values = [p.epa for p in rows if p.epa is not None]
+        return sum(values) if values else None
+
+    def _success_rate(rows: list[Play]) -> float | None:
+        values = [p.success for p in rows if p.success is not None]
+        return (sum(1 for v in values if v) / len(values)) if values else None
+
+    n_true_dropbacks = len(dropbacks) + len(scramble_plays)
 
     return {
         "epa_per_dropback": _avg_epa(dropbacks),
@@ -101,6 +144,21 @@ def team_efficiency_stats(
         "pressure_rate_allowed": (
             (len(pressured) / len(dropbacks_with_pressure_data)) if dropbacks_with_pressure_data else None
         ),
+        # Informational only -- see docstring above.
+        "epa_per_play": _avg_epa(all_offensive_plays),
+        "total_epa": _sum_epa(all_offensive_plays),
+        "success_rate": _success_rate(all_offensive_plays),
+        "pass_yards": sum(p.yards_gained or 0 for p in dropbacks if not p.sack),
+        "pass_touchdowns": len(pass_touchdowns),
+        # Real box-score rushing yards/TDs include scrambles (a scramble is
+        # a credited rush attempt in the real box score) -- all_run_plays,
+        # not the scramble-excluded `rushes` used for epa_per_rush above,
+        # matching keys_to_victory.py's team_stats()'s own rushing_yards.
+        "rush_yards": sum(p.yards_gained or 0 for p in all_run_plays),
+        "rush_touchdowns": len(rush_touchdowns),
+        "average_depth_of_target": (sum(dropback_air_yards) / len(dropback_air_yards)) if dropback_air_yards else None,
+        "interception_rate": (len(interceptions) / len(dropbacks)) if dropbacks else None,
+        "scramble_rate": (len(scramble_plays) / n_true_dropbacks) if n_true_dropbacks else None,
     }
 
 
@@ -129,8 +187,9 @@ def league_efficiency_averages(db: Session, season: int, before_week: int) -> di
             continue  # play-by-play not ingested yet for this game -- skip, don't guess
 
         advanced = advanced_stats_by_play_key(db, game.game_id)
+        scrambles = scramble_play_keys(db, game.game_id)
         for team in (game.home_team, game.away_team):
-            stats = team_efficiency_stats(plays, team, advanced)
+            stats = team_efficiency_stats(plays, team, advanced, scrambles)
             for category in EFFICIENCY_CATEGORIES:
                 _add(team, category, stats[category])
 

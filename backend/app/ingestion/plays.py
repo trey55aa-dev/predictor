@@ -14,7 +14,7 @@ import nflreadpy as nfl
 import polars as pl
 from sqlalchemy.orm import Session
 
-from app.models import Play, PlayAdvancedStat, PlayCoverageStat, PlayDriveContext, TeamSeasonScheme
+from app.models import Play, PlayAdvancedStat, PlayCoverageStat, PlayDriveContext, PlayQbStat, TeamSeasonScheme
 
 FTN_MIN_SEASON = 2022
 
@@ -51,7 +51,7 @@ def _load_season_frame(season: int) -> pl.DataFrame:
         "passer_player_id", "passer_player_name", "pass_touchdown", "rush_touchdown",
         "cpoe", "air_yards",
         "complete_pass", "yards_after_catch", "pass_defense_1_player_id", "pass_defense_1_player_name",
-        "drive",
+        "drive", "qb_scramble",
     ]
     pbp = pbp.select([c for c in pbp_cols if c in pbp.columns])
 
@@ -93,19 +93,22 @@ def ingest_plays(db: Session, seasons: list[int]) -> int:
     for season in seasons:
         frame = _load_season_frame(season)
         # Children before parents: none of play_advanced_stats.play_key,
-        # play_coverage_stats.play_key, or play_drive_contexts.play_key has
-        # a DB-level cascade, so deleting `plays` first would either orphan
-        # these rows or hit a real FK violation -- the same mistake already
-        # fixed once in this codebase (see the parlay-pick-leg bugfix).
+        # play_coverage_stats.play_key, play_drive_contexts.play_key, or
+        # play_qb_stats.play_key has a DB-level cascade, so deleting `plays`
+        # first would either orphan these rows or hit a real FK violation
+        # -- the same mistake already fixed once in this codebase (see the
+        # parlay-pick-leg bugfix).
         db.query(PlayAdvancedStat).filter(PlayAdvancedStat.season == season).delete(synchronize_session=False)
         db.query(PlayCoverageStat).filter(PlayCoverageStat.season == season).delete(synchronize_session=False)
         db.query(PlayDriveContext).filter(PlayDriveContext.season == season).delete(synchronize_session=False)
+        db.query(PlayQbStat).filter(PlayQbStat.season == season).delete(synchronize_session=False)
         db.query(Play).filter(Play.season == season).delete(synchronize_session=False)
 
         rows_to_insert = []
         advanced_rows_to_insert = []
         coverage_rows_to_insert = []
         drive_rows_to_insert = []
+        qb_rows_to_insert = []
         for row in frame.iter_rows(named=True):
             posteam = row.get("posteam")
             defteam = row.get("defteam")
@@ -197,11 +200,20 @@ def ingest_plays(db: Session, seasons: list[int]) -> int:
                     "drive": int(row["drive"]) if row.get("drive") is not None else None,
                 }
             )
+            qb_rows_to_insert.append(
+                {
+                    "play_key": play_key,
+                    "game_id": row["game_id"],
+                    "season": season,
+                    "qb_scramble": bool(row["qb_scramble"]) if row.get("qb_scramble") is not None else None,
+                }
+            )
 
         db.bulk_insert_mappings(Play, rows_to_insert)
         db.bulk_insert_mappings(PlayAdvancedStat, advanced_rows_to_insert)
         db.bulk_insert_mappings(PlayCoverageStat, coverage_rows_to_insert)
         db.bulk_insert_mappings(PlayDriveContext, drive_rows_to_insert)
+        db.bulk_insert_mappings(PlayQbStat, qb_rows_to_insert)
         db.commit()
         total += len(rows_to_insert)
 
