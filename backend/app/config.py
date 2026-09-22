@@ -26,6 +26,11 @@ class Settings(BaseSettings):
     efficiency_max_adjustment: float = 0.03  # +/- cap on the season-to-date EPA/pressure efficiency nudge
     pass_defense_max_adjustment: float = 0.03  # +/- cap on the season-to-date pass-defense-allowed nudge
     red_zone_max_adjustment: float = 0.03  # +/- cap on the season-to-date red-zone-execution nudge
+    qb_elo_max_adjustment: float = 0.05  # +/- cap on the current-starter-vs-normal-starter QB nudge
+    qb_elo_epa_scale: float = 0.3  # EPA/dropback gap that maps to the full qb_elo_max_adjustment cap
+    qb_elo_min_attempts: int = 50  # minimum career pass attempts before trusting a QB's own EPA rating
+    team_hfa_max_adjustment: float = 0.05  # +/- cap on a team's own deviation from the league-average home boost
+    team_hfa_min_home_games: int = 8  # minimum true home games before trusting a team-specific HFA deviation
     coaching_change_uncertainty_per_change: float = 2.0  # points of extra margin/total range width per recent logged change
     coaching_change_uncertainty_cap: float = 4.0  # max extra width regardless of how many changes are logged
 

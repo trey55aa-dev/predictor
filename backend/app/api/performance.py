@@ -4,6 +4,8 @@ from sqlalchemy.orm import Session
 from app.db import get_db
 from app.model.grade import model_vs_market_comparison, over_under_summary, performance_summary
 from app.model.league_context import league_pass_rate_by_week
+from app.model.strength_of_schedule import strength_of_schedule
+from app.model.team_home_field_advantage import team_hfa_excess
 from app.models import CalibrationAdjustment
 from app.schemas import PerformanceOut
 
@@ -41,6 +43,27 @@ def league_pass_rate(season: int, db: Session = Depends(get_db)) -> dict:
     """League-wide pass rate per week for `season`, across every team's
     ingested run/pass plays combined. See model/league_context.py."""
     return league_pass_rate_by_week(db, season)
+
+
+@router.get("/model/strength-of-schedule")
+def team_strength_of_schedule(
+    team: str, season: int, week: int, db: Session = Depends(get_db)
+) -> dict:
+    """Average Elo rating of `team`'s opponents already played this season
+    and of those still remaining, as of `week`. See
+    model/strength_of_schedule.py."""
+    return strength_of_schedule(db, team, season, week)
+
+
+@router.get("/model/home-field-advantage")
+def team_home_field_advantage(
+    team: str, season: int, week: int, db: Session = Depends(get_db)
+) -> dict:
+    """`team`'s own historical deviation from the league-average home-field
+    boost, as of `week` (anti-leakage: only games strictly before it). See
+    model/team_home_field_advantage.py."""
+    excess, sample_size = team_hfa_excess(db, team, season, week)
+    return {"team": team, "excess_win_prob": excess, "sample_size": sample_size}
 
 
 @router.get("/model/calibration-history")

@@ -11,11 +11,13 @@ from app.model.elo import expected_win_prob, latest_rating
 from app.model.injury_signal import injury_adjustment
 from app.model.market import blend_line, blend_win_prob, market_home_win_prob
 from app.model.pass_defense_stats import pass_defense_adjustment
+from app.model.qb_elo import qb_elo_adjustment
 from app.model.recalibration import get_tuned_value
 from app.model.recent_form import recent_form_adjustment
 from app.model.red_zone_stats import red_zone_adjustment
 from app.model.scoring import ELO_POINTS_PER_ELO, matchup_expected_total
 from app.model.stat_rankings import stat_ranking_adjustment
+from app.model.team_home_field_advantage import team_hfa_adjustment
 from app.model.venue import is_true_home_game
 from app.model.weather_adjust import total_points_adjustment
 from app.models import Game, OddsSnapshot, Prediction, WeatherSnapshot
@@ -43,7 +45,8 @@ def predict_game(db: Session, game: Game) -> Prediction:
     home_elo = latest_rating(db, game.home_team, game.season, game.week)
     away_elo = latest_rating(db, game.away_team, game.season, game.week)
 
-    home_field_bonus = settings.elo_home_field_advantage if is_true_home_game(db, game) else 0.0
+    true_home_game = is_true_home_game(db, game)
+    home_field_bonus = settings.elo_home_field_advantage if true_home_game else 0.0
     home_elo_adj = home_elo + home_field_bonus
     elo_home_prob = expected_win_prob(home_elo_adj, away_elo)
     elo_margin = (home_elo_adj - away_elo) / ELO_POINTS_PER_ELO
@@ -117,6 +120,25 @@ def predict_game(db: Session, game: Game) -> Prediction:
     home_rz_delta, _home_rz_note = red_zone_adjustment(db, game.home_team, game.season, game.week)
     away_rz_delta, _away_rz_note = red_zone_adjustment(db, game.away_team, game.season, game.week)
 
+    # Small, capped nudge from the gap between each team's CURRENT starting
+    # QB and its own season-long primary starter (by career EPA/dropback)
+    # -- inspired by nfelo's QB-adjusted Elo. See model/qb_elo.py.
+    home_qb_delta, _home_qb_note = qb_elo_adjustment(db, game.home_team, game.season, game.week)
+    away_qb_delta, _away_qb_note = qb_elo_adjustment(db, game.away_team, game.season, game.week)
+
+    # Small, capped nudge from the HOME team's own historical deviation
+    # from the league-average home-field boost already baked into
+    # home_field_bonus above -- inspired by nfelo's HFA Tracker. Home-side
+    # only (there's no equivalent "away-field" concept to subtract), and
+    # gated on true_home_game the same way home_field_bonus itself is: a
+    # neutral-site game gets no home boost of any kind. See
+    # model/team_home_field_advantage.py for why this is a layered
+    # adjustment rather than a change to Elo's own home_field_advantage
+    # constant.
+    home_hfa_delta, _home_hfa_note = (
+        team_hfa_adjustment(db, game.home_team, game.season, game.week) if true_home_game else (0.0, None)
+    )
+
     home_win_prob = min(
         max(
             home_win_prob
@@ -125,7 +147,9 @@ def predict_game(db: Session, game: Game) -> Prediction:
             + home_injury_delta - away_injury_delta
             + home_efficiency_delta - away_efficiency_delta
             + home_pass_d_delta - away_pass_d_delta
-            + home_rz_delta - away_rz_delta,
+            + home_rz_delta - away_rz_delta
+            + home_qb_delta - away_qb_delta
+            + home_hfa_delta,
             0.02,
         ),
         0.98,
