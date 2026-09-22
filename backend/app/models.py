@@ -313,6 +313,30 @@ class PlayAdvancedStat(Base):
     air_yards: Mapped[float | None] = mapped_column(Float, nullable=True)
 
 
+class PlayCoverageStat(Base):
+    """complete_pass, yards_after_catch, and pass-defensed player
+    attribution, one row per pass play -- the fields needed for
+    team-level pass-defense "Allowed" stats (receptions/catch rate/YAC/
+    pass break-ups allowed). A third new table, same reason as
+    PlayAdvancedStat: `plays` and `play_advanced_stats` are both already
+    live in production, and this project has no migration tooling, so a
+    new column on either would crash the app on deploy. A new table is
+    always safe -- create_all only ever creates tables that don't exist
+    yet, which is exactly why this data gets its own table instead of
+    joining PlayAdvancedStat's.
+    """
+
+    __tablename__ = "play_coverage_stats"
+
+    play_key: Mapped[str] = mapped_column(ForeignKey("plays.play_key"), primary_key=True)
+    game_id: Mapped[str] = mapped_column(String)
+    season: Mapped[int] = mapped_column(Integer)
+    complete_pass: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
+    yards_after_catch: Mapped[float | None] = mapped_column(Float, nullable=True)
+    pass_defense_1_player_id: Mapped[str | None] = mapped_column(String, nullable=True)
+    pass_defense_1_player_name: Mapped[str | None] = mapped_column(String, nullable=True)
+
+
 class ParlayPick(Base):
     __tablename__ = "parlay_picks"
 

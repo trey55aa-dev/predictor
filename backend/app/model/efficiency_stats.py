@@ -32,8 +32,8 @@ human-readable note.
 from sqlalchemy.orm import Session
 
 from app.config import settings
-from app.model.keys_to_victory import advanced_stats_by_play_key
-from app.model.stat_rankings import percentile
+from app.model.percentile import percentile
+from app.model.play_lookups import advanced_stats_by_play_key
 from app.models import Game, Play, PlayAdvancedStat
 
 # pressure_rate_allowed: lower is better for the offense being pressured.

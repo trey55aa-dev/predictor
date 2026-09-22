@@ -15,6 +15,8 @@ import datetime as dt
 
 from sqlalchemy.orm import Session
 
+from app.model.pass_defense_stats import team_pass_defense_stats
+from app.model.play_lookups import advanced_stats_by_play_key, coverage_stats_by_play_key
 from app.models import Game, Play, PlayAdvancedStat, Prediction
 
 # Keys that showed real signal in validation (see module docstring). 4th
@@ -30,15 +32,6 @@ def _latest_prediction(db: Session, game_id: str) -> Prediction | None:
         .order_by(Prediction.created_at.desc())
         .first()
     )
-
-
-def advanced_stats_by_play_key(db: Session, game_id: str) -> dict[str, PlayAdvancedStat]:
-    """CPOE/air-yards rows for `game_id`, keyed by play_key -- a separate
-    table from `plays` (see PlayAdvancedStat's docstring for why), fetched
-    once per game and passed into team_stats/efficiency_stats.py's
-    team_efficiency_stats rather than joined per-play."""
-    rows = db.query(PlayAdvancedStat).filter(PlayAdvancedStat.game_id == game_id).all()
-    return {row.play_key: row for row in rows}
 
 
 def team_stats(plays: list[Play], team: str, advanced: dict[str, PlayAdvancedStat] | None = None) -> dict:
@@ -248,6 +241,7 @@ def build_game_breakdown(db: Session, game: Game) -> dict:
         }
 
     advanced = advanced_stats_by_play_key(db, game.game_id)
+    coverage = coverage_stats_by_play_key(db, game.game_id)
     home_stats = team_stats(plays, game.home_team, advanced)
     away_stats = team_stats(plays, game.away_team, advanced)
     keys = build_keys(home_stats, away_stats)
@@ -259,6 +253,11 @@ def build_game_breakdown(db: Session, game: Game) -> dict:
         "correct_winner": correct_winner,
         "home_stats": home_stats,
         "away_stats": away_stats,
+        # home_pass_defense is what HOME's defense allowed (i.e. against
+        # AWAY's passing game), and vice versa -- matches the same
+        # home/away framing as home_stats/away_stats above.
+        "home_pass_defense": team_pass_defense_stats(plays, game.home_team, advanced, coverage),
+        "away_pass_defense": team_pass_defense_stats(plays, game.away_team, advanced, coverage),
         "keys": keys,
         "narrative": _narrative(game, actual_winner_side, keys, prediction),
         "computed_at": dt.datetime.utcnow().isoformat(),

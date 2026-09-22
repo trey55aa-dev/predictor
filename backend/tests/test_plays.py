@@ -4,7 +4,7 @@ from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker
 
 from app.ingestion import plays
-from app.models import Base, Game, Play, PlayAdvancedStat, Stadium, Team
+from app.models import Base, Game, Play, PlayAdvancedStat, PlayCoverageStat, Stadium, Team
 
 # FTN_MIN_SEASON is 2022 -- using an earlier season here keeps this test
 # from also needing to fake nfl.load_ftn_charting.
@@ -50,6 +50,8 @@ def _pbp_row(game_id="2021_01_NE_SEA", play_id=1.0, cpoe=3.5, air_yards=9.0):
         "yards_gained": 8.0, "epa": 0.1, "success": True, "touchdown": False,
         "interception": False, "fumble_lost": False, "sack": False,
         "cpoe": cpoe, "air_yards": air_yards,
+        "complete_pass": True, "yards_after_catch": 4.0,
+        "pass_defense_1_player_id": None, "pass_defense_1_player_name": None,
     }
 
 
@@ -75,6 +77,23 @@ def test_writes_cpoe_and_air_yards_to_advanced_stats_table(db, monkeypatch):
     assert stat.play_key == "2021_01_NE_SEA_1"
 
 
+def test_writes_coverage_fields_to_coverage_stats_table(db, monkeypatch):
+    _game(db, "2021_01_NE_SEA")
+    db.commit()
+    row = _pbp_row()
+    row["pass_defense_1_player_id"] = "00-9"
+    row["pass_defense_1_player_name"] = "Some CB"
+    _patch_nflverse(monkeypatch, [row], [_participation_row()])
+
+    plays.ingest_plays(db, [SEASON])
+
+    stat = db.query(PlayCoverageStat).filter(PlayCoverageStat.game_id == "2021_01_NE_SEA").one()
+    assert stat.complete_pass is True
+    assert stat.yards_after_catch == pytest.approx(4.0)
+    assert stat.pass_defense_1_player_id == "00-9"
+    assert stat.pass_defense_1_player_name == "Some CB"
+
+
 def test_rerunning_replaces_rather_than_duplicates(db, monkeypatch):
     _game(db, "2021_01_NE_SEA")
     db.commit()
@@ -85,6 +104,7 @@ def test_rerunning_replaces_rather_than_duplicates(db, monkeypatch):
 
     assert db.query(Play).filter(Play.season == SEASON).count() == 1
     assert db.query(PlayAdvancedStat).filter(PlayAdvancedStat.season == SEASON).count() == 1
+    assert db.query(PlayCoverageStat).filter(PlayCoverageStat.season == SEASON).count() == 1
 
 
 def test_rerunning_replaces_advanced_stats_without_a_foreign_key_violation(monkeypatch):
@@ -117,5 +137,6 @@ def test_rerunning_replaces_advanced_stats_without_a_foreign_key_violation(monke
         plays.ingest_plays(session, [SEASON])  # must not raise IntegrityError
 
         assert session.query(PlayAdvancedStat).filter(PlayAdvancedStat.season == SEASON).count() == 1
+        assert session.query(PlayCoverageStat).filter(PlayCoverageStat.season == SEASON).count() == 1
     finally:
         session.close()

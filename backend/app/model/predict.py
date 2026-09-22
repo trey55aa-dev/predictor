@@ -10,6 +10,7 @@ from app.model.efficiency_stats import efficiency_adjustment
 from app.model.elo import expected_win_prob, latest_rating
 from app.model.injury_signal import injury_adjustment
 from app.model.market import blend_line, blend_win_prob, market_home_win_prob
+from app.model.pass_defense_stats import pass_defense_adjustment
 from app.model.recalibration import get_tuned_value
 from app.model.recent_form import recent_form_adjustment
 from app.model.scoring import ELO_POINTS_PER_ELO, matchup_expected_total
@@ -98,13 +99,21 @@ def predict_game(db: Session, game: Game) -> Prediction:
     home_efficiency_delta, _home_efficiency_note = efficiency_adjustment(db, game.home_team, game.season, game.week)
     away_efficiency_delta, _away_efficiency_note = efficiency_adjustment(db, game.away_team, game.season, game.week)
 
+    # Small, capped nudge from each team's own pass defense's season-to-date
+    # rank on catch rate/yards-per-target/TD-rate/passer-rating allowed --
+    # distinct from home_efficiency_delta above, which only looks at a
+    # team's own offense. See model/pass_defense_stats.py.
+    home_pass_d_delta, _home_pass_d_note = pass_defense_adjustment(db, game.home_team, game.season, game.week)
+    away_pass_d_delta, _away_pass_d_note = pass_defense_adjustment(db, game.away_team, game.season, game.week)
+
     home_win_prob = min(
         max(
             home_win_prob
             + home_form_delta - away_form_delta
             + home_rank_delta - away_rank_delta
             + home_injury_delta - away_injury_delta
-            + home_efficiency_delta - away_efficiency_delta,
+            + home_efficiency_delta - away_efficiency_delta
+            + home_pass_d_delta - away_pass_d_delta,
             0.02,
         ),
         0.98,

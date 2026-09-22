@@ -4,7 +4,7 @@ from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker
 
 from app.ingestion import current_plays
-from app.models import Base, Game, Play, PlayAdvancedStat, Stadium, Team
+from app.models import Base, Game, Play, PlayAdvancedStat, PlayCoverageStat, Stadium, Team
 
 
 @pytest.fixture()
@@ -114,6 +114,29 @@ def test_writes_cpoe_and_air_yards_to_advanced_stats_table(db, monkeypatch):
     assert stat.play_key == "2026_01_NE_SEA_1"
 
 
+def test_writes_coverage_fields_to_coverage_stats_table(db, monkeypatch):
+    _game(db, "2026_01_NE_SEA", status="final")
+    db.commit()
+
+    row = {
+        "game_id": "2026_01_NE_SEA", "play_id": 1.0, "week": 1, "posteam": "SEA", "defteam": "NE",
+        "play_type": "pass", "down": 1, "ydstogo": 10, "yardline_100": 75, "desc": "pass play",
+        "yards_gained": 8.0, "epa": 0.1, "success": True, "touchdown": False,
+        "interception": False, "fumble_lost": False, "sack": False,
+        "complete_pass": True, "yards_after_catch": 4.0,
+        "pass_defense_1_player_id": "00-9", "pass_defense_1_player_name": "Some CB",
+    }
+    monkeypatch.setattr(current_plays.nfl, "load_pbp", lambda seasons: _fake_pbp([row]))
+
+    current_plays.ingest_current_season_plays(db, 2026)
+
+    stat = db.query(PlayCoverageStat).filter(PlayCoverageStat.game_id == "2026_01_NE_SEA").one()
+    assert stat.complete_pass is True
+    assert stat.yards_after_catch == pytest.approx(4.0)
+    assert stat.pass_defense_1_player_id == "00-9"
+    assert stat.pass_defense_1_player_name == "Some CB"
+
+
 def test_rerunning_replaces_advanced_stats_without_a_foreign_key_violation(monkeypatch):
     """play_advanced_stats.play_key references plays.play_key with no
     DB-level cascade -- deleting Play rows before PlayAdvancedStat rows on
@@ -152,5 +175,6 @@ def test_rerunning_replaces_advanced_stats_without_a_foreign_key_violation(monke
         current_plays.ingest_current_season_plays(session, 2026)  # must not raise IntegrityError
 
         assert session.query(PlayAdvancedStat).filter(PlayAdvancedStat.game_id == "2026_01_NE_SEA").count() == 1
+        assert session.query(PlayCoverageStat).filter(PlayCoverageStat.game_id == "2026_01_NE_SEA").count() == 1
     finally:
         session.close()

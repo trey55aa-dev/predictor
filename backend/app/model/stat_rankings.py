@@ -20,6 +20,7 @@ from sqlalchemy.orm import Session
 
 from app.config import settings
 from app.model.keys_to_victory import team_stats
+from app.model.percentile import percentile
 from app.models import Game, Play
 
 # higher is better for every category except points_allowed.
@@ -98,16 +99,6 @@ def league_stat_averages(db: Session, season: int, before_week: int) -> dict[str
         }
         for team in sums
     }
-
-
-def percentile(value: float, all_values: list[float], higher_is_better: bool) -> float:
-    """0.0 (worst in the league) .. 1.0 (best), ties split evenly. Needs at
-    least 2 values to mean anything; callers guard the n<2 case."""
-    n = len(all_values)
-    better = sum(1 for v in all_values if (v > value if higher_is_better else v < value))
-    tied = sum(1 for v in all_values if v == value) - 1  # exclude self
-    rank = better + tied / 2 + 1  # 1-indexed, 1 = best
-    return (n - rank) / (n - 1)
 
 
 def stat_ranking_adjustment(db: Session, team: str, season: int, before_week: int) -> tuple[float, str | None]:

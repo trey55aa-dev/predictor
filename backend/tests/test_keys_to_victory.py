@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from app.model.keys_to_victory import build_game_breakdown, team_stats
-from app.models import Base, Game, Play, PlayAdvancedStat, Prediction
+from app.models import Base, Game, Play, PlayAdvancedStat, PlayCoverageStat, Prediction
 
 
 @pytest.fixture()
@@ -180,6 +180,21 @@ def test_air_yards_per_target_none_when_no_advanced_data():
     stats = team_stats([Play(play_key="p1", game_id="g", season=2026, week=1, posteam="SEA",
                               defteam="NE", play_type="pass", receiver_player_id="00-1")], "SEA")
     assert stats["air_yards_per_target"] is None
+
+
+def test_breakdown_includes_pass_defense_allowed_stats(db):
+    game = _game(db)  # SEA (home) 13, NE (away) 10
+    _play(db, "g1", "NE", "SEA", "pass", yards_gained=12, play_id=1, receiver_player_id="00-1")
+    db.add(PlayCoverageStat(play_key="g1_1", game_id="g1", season=2026, complete_pass=True))
+    db.commit()
+
+    result = build_game_breakdown(db, game)
+
+    # home_pass_defense = what SEA's (home) defense allowed against NE's passing game.
+    assert result["home_pass_defense"]["targets_allowed"] == 1
+    assert result["home_pass_defense"]["receptions_allowed"] == 1
+    assert result["home_pass_defense"]["yards_allowed"] == 12
+    assert result["away_pass_defense"]["targets_allowed"] == 0
 
 
 def test_sack_yardage_excluded_from_passing_yards(db):
