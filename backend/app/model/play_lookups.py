@@ -10,7 +10,7 @@ pass_defense_stats.py, which itself needs these lookups.
 
 from sqlalchemy.orm import Session
 
-from app.models import PlayAdvancedStat, PlayCoverageStat
+from app.models import PlayAdvancedStat, PlayCoverageStat, PlayDriveContext
 
 
 def advanced_stats_by_play_key(db: Session, game_id: str) -> dict[str, PlayAdvancedStat]:
@@ -27,3 +27,11 @@ def coverage_stats_by_play_key(db: Session, game_id: str) -> dict[str, PlayCover
     above, for the separate play_coverage_stats table."""
     rows = db.query(PlayCoverageStat).filter(PlayCoverageStat.game_id == game_id).all()
     return {row.play_key: row for row in rows}
+
+
+def drive_by_play_key(db: Session, game_id: str) -> dict[str, int]:
+    """drive number for `game_id`, keyed by play_key, skipping rows with no
+    drive recorded -- see PlayDriveContext's docstring for why this is a
+    separate table from `plays`."""
+    rows = db.query(PlayDriveContext).filter(PlayDriveContext.game_id == game_id).all()
+    return {row.play_key: row.drive for row in rows if row.drive is not None}

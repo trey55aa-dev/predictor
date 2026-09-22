@@ -337,6 +337,28 @@ class PlayCoverageStat(Base):
     pass_defense_1_player_name: Mapped[str | None] = mapped_column(String, nullable=True)
 
 
+class PlayDriveContext(Base):
+    """nflverse's own per-game drive number, one row per play -- needed to
+    group plays into real possessions for red-zone "trips" (a red zone
+    stat means per-possession, not per-play: 4 plays inside the 20 on one
+    drive is one trip, not four). A fourth new table, same reason as the
+    three before it: `plays`, `play_advanced_stats`, and
+    `play_coverage_stats` are all already live in production, and this
+    project has no migration tooling, so a new column on any of them
+    would crash the app on deploy. A new table is always safe -- create_all
+    only ever creates tables that don't exist yet. `drive` is in the base
+    pbp feed (not participation-dependent), so this is available for the
+    in-progress season too, unlike man_zone/coverage_type below.
+    """
+
+    __tablename__ = "play_drive_contexts"
+
+    play_key: Mapped[str] = mapped_column(ForeignKey("plays.play_key"), primary_key=True)
+    game_id: Mapped[str] = mapped_column(String)
+    season: Mapped[int] = mapped_column(Integer)
+    drive: Mapped[int | None] = mapped_column(Integer, nullable=True)
+
+
 class ParlayPick(Base):
     __tablename__ = "parlay_picks"
 

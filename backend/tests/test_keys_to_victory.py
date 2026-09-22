@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from app.model.keys_to_victory import build_game_breakdown, team_stats
-from app.models import Base, Game, Play, PlayAdvancedStat, PlayCoverageStat, Prediction
+from app.models import Base, Game, Play, PlayAdvancedStat, PlayCoverageStat, PlayDriveContext, Prediction
 
 
 @pytest.fixture()
@@ -195,6 +195,23 @@ def test_breakdown_includes_pass_defense_allowed_stats(db):
     assert result["home_pass_defense"]["receptions_allowed"] == 1
     assert result["home_pass_defense"]["yards_allowed"] == 12
     assert result["away_pass_defense"]["targets_allowed"] == 0
+
+
+def test_breakdown_includes_red_zone_and_man_zone_stats(db):
+    game = _game(db)  # SEA (home) 13, NE (away) 10
+    _play(db, "g1", "SEA", "NE", "run", yards_gained=5, play_id=1)
+    db.add(PlayDriveContext(play_key="g1_1", game_id="g1", season=2026, drive=1))
+    db.commit()
+
+    result = build_game_breakdown(db, game)
+
+    assert "red_zone_trips" in result["home_red_zone"]
+    assert "red_zone_trips" in result["away_red_zone"]
+    # man_zone data is historical-only -- see man_zone_stats.py. No
+    # coverage data was seeded here, so every field must read None, not a
+    # fabricated 0.
+    assert result["home_man_zone"]["man_rate_faced"] is None
+    assert result["away_man_zone"]["man_rate_played"] is None
 
 
 def test_sack_yardage_excluded_from_passing_yards(db):

@@ -15,8 +15,10 @@ import datetime as dt
 
 from sqlalchemy.orm import Session
 
+from app.model.man_zone_stats import team_man_zone_stats
 from app.model.pass_defense_stats import team_pass_defense_stats
-from app.model.play_lookups import advanced_stats_by_play_key, coverage_stats_by_play_key
+from app.model.play_lookups import advanced_stats_by_play_key, coverage_stats_by_play_key, drive_by_play_key
+from app.model.red_zone_stats import team_red_zone_stats
 from app.models import Game, Play, PlayAdvancedStat, Prediction
 
 # Keys that showed real signal in validation (see module docstring). 4th
@@ -242,6 +244,7 @@ def build_game_breakdown(db: Session, game: Game) -> dict:
 
     advanced = advanced_stats_by_play_key(db, game.game_id)
     coverage = coverage_stats_by_play_key(db, game.game_id)
+    drives = drive_by_play_key(db, game.game_id)
     home_stats = team_stats(plays, game.home_team, advanced)
     away_stats = team_stats(plays, game.away_team, advanced)
     keys = build_keys(home_stats, away_stats)
@@ -253,11 +256,19 @@ def build_game_breakdown(db: Session, game: Game) -> dict:
         "correct_winner": correct_winner,
         "home_stats": home_stats,
         "away_stats": away_stats,
-        # home_pass_defense is what HOME's defense allowed (i.e. against
-        # AWAY's passing game), and vice versa -- matches the same
-        # home/away framing as home_stats/away_stats above.
+        # home_pass_defense/home_red_zone/home_man_zone are what HOME's
+        # defense allowed / HOME's own red-zone and coverage tendencies
+        # (i.e. against AWAY's offense), and vice versa -- matches the
+        # same home/away framing as home_stats/away_stats above.
         "home_pass_defense": team_pass_defense_stats(plays, game.home_team, advanced, coverage),
         "away_pass_defense": team_pass_defense_stats(plays, game.away_team, advanced, coverage),
+        "home_red_zone": team_red_zone_stats(plays, game.home_team, drives),
+        "away_red_zone": team_red_zone_stats(plays, game.away_team, drives),
+        # man_zone data is historical-only -- see man_zone_stats.py's
+        # docstring. Every field here will be None for the in-progress
+        # season until nflverse's participation feed catches up.
+        "home_man_zone": team_man_zone_stats(plays, game.home_team),
+        "away_man_zone": team_man_zone_stats(plays, game.away_team),
         "keys": keys,
         "narrative": _narrative(game, actual_winner_side, keys, prediction),
         "computed_at": dt.datetime.utcnow().isoformat(),

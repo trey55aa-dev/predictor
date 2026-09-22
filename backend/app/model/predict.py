@@ -13,6 +13,7 @@ from app.model.market import blend_line, blend_win_prob, market_home_win_prob
 from app.model.pass_defense_stats import pass_defense_adjustment
 from app.model.recalibration import get_tuned_value
 from app.model.recent_form import recent_form_adjustment
+from app.model.red_zone_stats import red_zone_adjustment
 from app.model.scoring import ELO_POINTS_PER_ELO, matchup_expected_total
 from app.model.stat_rankings import stat_ranking_adjustment
 from app.model.venue import is_true_home_game
@@ -106,6 +107,16 @@ def predict_game(db: Session, game: Game) -> Prediction:
     home_pass_d_delta, _home_pass_d_note = pass_defense_adjustment(db, game.home_team, game.season, game.week)
     away_pass_d_delta, _away_pass_d_note = pass_defense_adjustment(db, game.away_team, game.season, game.week)
 
+    # Small, capped nudge from each team's season-to-date red-zone TD rate
+    # (offense) and red-zone TD rate allowed (defense), ranked against the
+    # rest of the league. See model/red_zone_stats.py. (Man/zone coverage
+    # rate was also requested alongside this, but it's informational only
+    # -- see model/man_zone_stats.py's docstring for why it isn't wired in
+    # here: nflverse's participation feed doesn't cover the in-progress
+    # season at all yet, so it would be a guaranteed 0.0 no-op right now.)
+    home_rz_delta, _home_rz_note = red_zone_adjustment(db, game.home_team, game.season, game.week)
+    away_rz_delta, _away_rz_note = red_zone_adjustment(db, game.away_team, game.season, game.week)
+
     home_win_prob = min(
         max(
             home_win_prob
@@ -113,7 +124,8 @@ def predict_game(db: Session, game: Game) -> Prediction:
             + home_rank_delta - away_rank_delta
             + home_injury_delta - away_injury_delta
             + home_efficiency_delta - away_efficiency_delta
-            + home_pass_d_delta - away_pass_d_delta,
+            + home_pass_d_delta - away_pass_d_delta
+            + home_rz_delta - away_rz_delta,
             0.02,
         ),
         0.98,

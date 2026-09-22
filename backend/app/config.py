@@ -25,6 +25,7 @@ class Settings(BaseSettings):
     injury_max_adjustment: float = 0.03  # +/- cap on the current-week starter-injury-burden nudge
     efficiency_max_adjustment: float = 0.03  # +/- cap on the season-to-date EPA/pressure efficiency nudge
     pass_defense_max_adjustment: float = 0.03  # +/- cap on the season-to-date pass-defense-allowed nudge
+    red_zone_max_adjustment: float = 0.03  # +/- cap on the season-to-date red-zone-execution nudge
     coaching_change_uncertainty_per_change: float = 2.0  # points of extra margin/total range width per recent logged change
     coaching_change_uncertainty_cap: float = 4.0  # max extra width regardless of how many changes are logged
 

@@ -4,7 +4,7 @@ from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker
 
 from app.ingestion import plays
-from app.models import Base, Game, Play, PlayAdvancedStat, PlayCoverageStat, Stadium, Team
+from app.models import Base, Game, Play, PlayAdvancedStat, PlayCoverageStat, PlayDriveContext, Stadium, Team
 
 # FTN_MIN_SEASON is 2022 -- using an earlier season here keeps this test
 # from also needing to fake nfl.load_ftn_charting.
@@ -52,6 +52,7 @@ def _pbp_row(game_id="2021_01_NE_SEA", play_id=1.0, cpoe=3.5, air_yards=9.0):
         "cpoe": cpoe, "air_yards": air_yards,
         "complete_pass": True, "yards_after_catch": 4.0,
         "pass_defense_1_player_id": None, "pass_defense_1_player_name": None,
+        "drive": 3,
     }
 
 
@@ -94,6 +95,17 @@ def test_writes_coverage_fields_to_coverage_stats_table(db, monkeypatch):
     assert stat.pass_defense_1_player_name == "Some CB"
 
 
+def test_writes_drive_to_drive_context_table(db, monkeypatch):
+    _game(db, "2021_01_NE_SEA")
+    db.commit()
+    _patch_nflverse(monkeypatch, [_pbp_row()], [_participation_row()])
+
+    plays.ingest_plays(db, [SEASON])
+
+    ctx = db.query(PlayDriveContext).filter(PlayDriveContext.game_id == "2021_01_NE_SEA").one()
+    assert ctx.drive == 3
+
+
 def test_rerunning_replaces_rather_than_duplicates(db, monkeypatch):
     _game(db, "2021_01_NE_SEA")
     db.commit()
@@ -105,6 +117,7 @@ def test_rerunning_replaces_rather_than_duplicates(db, monkeypatch):
     assert db.query(Play).filter(Play.season == SEASON).count() == 1
     assert db.query(PlayAdvancedStat).filter(PlayAdvancedStat.season == SEASON).count() == 1
     assert db.query(PlayCoverageStat).filter(PlayCoverageStat.season == SEASON).count() == 1
+    assert db.query(PlayDriveContext).filter(PlayDriveContext.season == SEASON).count() == 1
 
 
 def test_rerunning_replaces_advanced_stats_without_a_foreign_key_violation(monkeypatch):
@@ -138,5 +151,6 @@ def test_rerunning_replaces_advanced_stats_without_a_foreign_key_violation(monke
 
         assert session.query(PlayAdvancedStat).filter(PlayAdvancedStat.season == SEASON).count() == 1
         assert session.query(PlayCoverageStat).filter(PlayCoverageStat.season == SEASON).count() == 1
+        assert session.query(PlayDriveContext).filter(PlayDriveContext.season == SEASON).count() == 1
     finally:
         session.close()

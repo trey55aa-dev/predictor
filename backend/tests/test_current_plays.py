@@ -4,7 +4,7 @@ from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker
 
 from app.ingestion import current_plays
-from app.models import Base, Game, Play, PlayAdvancedStat, PlayCoverageStat, Stadium, Team
+from app.models import Base, Game, Play, PlayAdvancedStat, PlayCoverageStat, PlayDriveContext, Stadium, Team
 
 
 @pytest.fixture()
@@ -137,6 +137,25 @@ def test_writes_coverage_fields_to_coverage_stats_table(db, monkeypatch):
     assert stat.pass_defense_1_player_name == "Some CB"
 
 
+def test_writes_drive_to_drive_context_table(db, monkeypatch):
+    _game(db, "2026_01_NE_SEA", status="final")
+    db.commit()
+
+    row = {
+        "game_id": "2026_01_NE_SEA", "play_id": 1.0, "week": 1, "posteam": "SEA", "defteam": "NE",
+        "play_type": "pass", "down": 1, "ydstogo": 10, "yardline_100": 75, "desc": "pass play",
+        "yards_gained": 8.0, "epa": 0.1, "success": True, "touchdown": False,
+        "interception": False, "fumble_lost": False, "sack": False,
+        "drive": 5,
+    }
+    monkeypatch.setattr(current_plays.nfl, "load_pbp", lambda seasons: _fake_pbp([row]))
+
+    current_plays.ingest_current_season_plays(db, 2026)
+
+    ctx = db.query(PlayDriveContext).filter(PlayDriveContext.game_id == "2026_01_NE_SEA").one()
+    assert ctx.drive == 5
+
+
 def test_rerunning_replaces_advanced_stats_without_a_foreign_key_violation(monkeypatch):
     """play_advanced_stats.play_key references plays.play_key with no
     DB-level cascade -- deleting Play rows before PlayAdvancedStat rows on
@@ -176,5 +195,6 @@ def test_rerunning_replaces_advanced_stats_without_a_foreign_key_violation(monke
 
         assert session.query(PlayAdvancedStat).filter(PlayAdvancedStat.game_id == "2026_01_NE_SEA").count() == 1
         assert session.query(PlayCoverageStat).filter(PlayCoverageStat.game_id == "2026_01_NE_SEA").count() == 1
+        assert session.query(PlayDriveContext).filter(PlayDriveContext.game_id == "2026_01_NE_SEA").count() == 1
     finally:
         session.close()
