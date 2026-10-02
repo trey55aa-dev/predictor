@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-10-02T01:37:26.902235",
+  "generated_at": "2026-10-02T18:05:36.709889",
   "season": 2026,
   "rolling_performance": {
-    "graded_predictions": 3416,
-    "winner_accuracy": 0.6466627634660421,
-    "avg_brier_score": 0.22272879881175137,
-    "avg_abs_margin_error": 11.265140885779845,
-    "avg_abs_total_error": 10.625265608157507
+    "graded_predictions": 3417,
+    "winner_accuracy": 0.6467661691542289,
+    "avg_brier_score": 0.2227254293285938,
+    "avg_abs_margin_error": 11.262724544796312,
+    "avg_abs_total_error": 10.62392818600635
   },
   "recent_calibrations": [
     {
@@ -83,6 +83,363 @@
     }
   ],
   "recent_games": [
+    {
+      "game_id": "2026_04_PIT_CLE",
+      "status": "final",
+      "home_team": "CLE",
+      "away_team": "PIT",
+      "home_score": 27,
+      "away_score": 24,
+      "predicted_winner": "CLE",
+      "predicted_home_win_prob": 0.540418369750906,
+      "data_available": true,
+      "actual_winner": "CLE",
+      "correct_winner": true,
+      "home_stats": {
+        "rushing_yards": 114.0,
+        "passing_yards": 268.0,
+        "turnovers": 2,
+        "first_downs": 20,
+        "third_down_attempts": 10,
+        "third_down_conversions": 4,
+        "third_down_pct": 0.4,
+        "fourth_down_attempts": 0,
+        "fourth_down_conversions": 0,
+        "fourth_down_pct": null,
+        "offensive_run_pass_plays": 60,
+        "defensive_run_pass_plays": 66,
+        "total_run_pass_plays": 126,
+        "pass_rate": 0.5833333333333334,
+        "air_yards_per_target": 7.606060606060606
+      },
+      "away_stats": {
+        "rushing_yards": 94.0,
+        "passing_yards": 299.0,
+        "turnovers": 2,
+        "first_downs": 19,
+        "third_down_attempts": 13,
+        "third_down_conversions": 4,
+        "third_down_pct": 0.3076923076923077,
+        "fourth_down_attempts": 0,
+        "fourth_down_conversions": 0,
+        "fourth_down_pct": null,
+        "offensive_run_pass_plays": 66,
+        "defensive_run_pass_plays": 60,
+        "total_run_pass_plays": 126,
+        "pass_rate": 0.696969696969697,
+        "air_yards_per_target": 10.538461538461538
+      },
+      "home_pass_defense": {
+        "targets_allowed": 40,
+        "receptions_allowed": 22,
+        "yards_allowed": 299.0,
+        "touchdowns_allowed": 3,
+        "interceptions": 2,
+        "pass_break_ups": 7,
+        "catch_rate_allowed": 0.55,
+        "target_rate_allowed": 0.975609756097561,
+        "td_rate_allowed": 0.075,
+        "yards_per_target_allowed": 7.475,
+        "yards_per_reception_allowed": 13.590909090909092,
+        "yards_after_catch_allowed": 135.0,
+        "yards_after_catch_allowed_per_reception": 6.136363636363637,
+        "average_depth_of_target_allowed": 10.538461538461538,
+        "explosive_receptions_allowed": 5,
+        "explosive_reception_rate_allowed": 0.22727272727272727,
+        "passer_rating_allowed": 81.25,
+        "receptions_allowed_10plus_yards": 10,
+        "receptions_allowed_10plus_yards_rate": 0.45454545454545453,
+        "receptions_allowed_30plus_yards": 2,
+        "receptions_allowed_30plus_yards_rate": 0.09090909090909091,
+        "receptions_allowed_40plus_yards": 2,
+        "receptions_allowed_40plus_yards_rate": 0.09090909090909091,
+        "receptions_allowed_50plus_yards": 0,
+        "receptions_allowed_50plus_yards_rate": 0.0
+      },
+      "away_pass_defense": {
+        "targets_allowed": 33,
+        "receptions_allowed": 24,
+        "yards_allowed": 268.0,
+        "touchdowns_allowed": 1,
+        "interceptions": 1,
+        "pass_break_ups": 6,
+        "catch_rate_allowed": 0.7272727272727273,
+        "target_rate_allowed": 1.0,
+        "td_rate_allowed": 0.030303030303030304,
+        "yards_per_target_allowed": 8.121212121212121,
+        "yards_per_reception_allowed": 11.166666666666666,
+        "yards_after_catch_allowed": 177.0,
+        "yards_after_catch_allowed_per_reception": 7.375,
+        "average_depth_of_target_allowed": 7.606060606060606,
+        "explosive_receptions_allowed": 3,
+        "explosive_reception_rate_allowed": 0.125,
+        "passer_rating_allowed": 94.00252525252526,
+        "receptions_allowed_10plus_yards": 10,
+        "receptions_allowed_10plus_yards_rate": 0.4166666666666667,
+        "receptions_allowed_30plus_yards": 1,
+        "receptions_allowed_30plus_yards_rate": 0.041666666666666664,
+        "receptions_allowed_40plus_yards": 1,
+        "receptions_allowed_40plus_yards_rate": 0.041666666666666664,
+        "receptions_allowed_50plus_yards": 1,
+        "receptions_allowed_50plus_yards_rate": 0.041666666666666664
+      },
+      "home_red_zone": {
+        "red_zone_trips": 2,
+        "red_zone_tds": 2,
+        "red_zone_td_rate": 1.0,
+        "red_zone_trips_allowed": 4,
+        "red_zone_tds_allowed": 3,
+        "red_zone_td_rate_allowed": 0.75
+      },
+      "away_red_zone": {
+        "red_zone_trips": 4,
+        "red_zone_tds": 3,
+        "red_zone_td_rate": 0.75,
+        "red_zone_trips_allowed": 2,
+        "red_zone_tds_allowed": 2,
+        "red_zone_td_rate_allowed": 1.0
+      },
+      "home_offense": {
+        "epa_per_dropback": 0.26237273329931354,
+        "epa_per_rush": -0.22783551830165696,
+        "epa_per_target": 0.33927988651606417,
+        "cpoe": 3.771485433433995,
+        "pressure_rate_allowed": null,
+        "epa_per_play": 0.09924229971861251,
+        "total_epa": 5.954537983116751,
+        "success_rate": 0.48333333333333334,
+        "pass_yards": 268.0,
+        "pass_touchdowns": 1,
+        "rush_yards": 114.0,
+        "rush_touchdowns": 2,
+        "average_depth_of_target": 7.606060606060606,
+        "interception_rate": 0.02857142857142857,
+        "scramble_rate": 0.05405405405405406
+      },
+      "away_offense": {
+        "epa_per_dropback": 0.052680366410286304,
+        "epa_per_rush": 0.11221720051472076,
+        "epa_per_target": 0.292068699772429,
+        "cpoe": -6.398080671444918,
+        "pressure_rate_allowed": null,
+        "epa_per_play": 0.07072183129041795,
+        "total_epa": 4.667640865167585,
+        "success_rate": 0.4696969696969697,
+        "pass_yards": 299.0,
+        "pass_touchdowns": 3,
+        "rush_yards": 94.0,
+        "rush_touchdowns": 0,
+        "average_depth_of_target": 10.538461538461538,
+        "interception_rate": 0.043478260869565216,
+        "scramble_rate": 0.0
+      },
+      "home_man_zone": {
+        "man_rate_faced": null,
+        "zone_rate_faced": null,
+        "man_rate_played": null,
+        "zone_rate_played": null
+      },
+      "away_man_zone": {
+        "man_rate_faced": null,
+        "zone_rate_faced": null,
+        "man_rate_played": null,
+        "zone_rate_played": null
+      },
+      "keys": [
+        {
+          "key": "turnover_margin",
+          "label": "Turnover margin",
+          "home_value": 0,
+          "away_value": 0,
+          "winner": null
+        },
+        {
+          "key": "rushing_yards",
+          "label": "Rushing yards",
+          "home_value": 114.0,
+          "away_value": 94.0,
+          "winner": "home"
+        },
+        {
+          "key": "passing_yards",
+          "label": "Passing yards",
+          "home_value": 268.0,
+          "away_value": 299.0,
+          "winner": "away"
+        },
+        {
+          "key": "third_down_pct",
+          "label": "3rd down conversion rate",
+          "home_value": 0.4,
+          "away_value": 0.3076923076923077,
+          "winner": "home"
+        },
+        {
+          "key": "fourth_down_pct",
+          "label": "4th down conversion rate",
+          "home_value": null,
+          "away_value": null,
+          "winner": null,
+          "no_signal": true
+        }
+      ],
+      "narrative": "CLE beat PIT: CLE won rushing yards, and 3rd down conversion rate, despite losing passing yards. The model correctly favored CLE to win (54%).",
+      "computed_at": "2026-10-02T18:05:32.214303",
+      "home_injuries": [
+        {
+          "player_name": "Taylen Green",
+          "position": "QB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Tylan Wallace",
+          "position": "WR",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Mason Graham",
+          "position": "DT",
+          "report_status": "Questionable",
+          "is_starter": false
+        },
+        {
+          "player_name": "Justin Jefferson",
+          "position": "LB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Elijah Chatman",
+          "position": "DT",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Kalia Davis",
+          "position": "DT",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Dillon Gabriel",
+          "position": "QB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Damarri Mathis",
+          "position": "CB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Jeremiah Owusu-Koramoah",
+          "position": "LB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Joe Royer",
+          "position": "TE",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Dylan Sampson",
+          "position": "RB",
+          "report_status": "Injured Reserve",
+          "is_starter": true
+        },
+        {
+          "player_name": "Edefuan Ulofoshio",
+          "position": "LB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Alex Wright",
+          "position": "DE",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Nathaniel Watson",
+          "position": "LB",
+          "report_status": "Out",
+          "is_starter": false
+        }
+      ],
+      "away_injuries": [
+        {
+          "player_name": "Drew Allar",
+          "position": "QB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Rico Dowdle",
+          "position": "RB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Eli Heidenreich",
+          "position": "RB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Will Howard",
+          "position": "QB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Jamel Dean",
+          "position": "CB",
+          "report_status": "Questionable",
+          "is_starter": false
+        },
+        {
+          "player_name": "Derrick Harmon",
+          "position": "DT",
+          "report_status": "Questionable",
+          "is_starter": false
+        },
+        {
+          "player_name": "Cole Burgess",
+          "position": "WR",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "DeShon Elliott",
+          "position": "S",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Daequan Hardy",
+          "position": "CB",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        },
+        {
+          "player_name": "Donte Kent",
+          "position": "CB",
+          "report_status": "Out",
+          "is_starter": false
+        },
+        {
+          "player_name": "Logan Lee",
+          "position": "DT",
+          "report_status": "Injured Reserve",
+          "is_starter": false
+        }
+      ]
+    },
     {
       "game_id": "2026_03_PHI_CHI",
       "status": "final",
@@ -284,212 +641,7 @@
         }
       ],
       "narrative": "CHI beat PHI: CHI won turnover margin, rushing yards, passing yards, and 3rd down conversion rate. The model favored PHI (59%) and got the winner wrong here.",
-      "computed_at": "2026-10-02T01:37:24.322289",
-      "home_injuries": [],
-      "away_injuries": []
-    },
-    {
-      "game_id": "2026_03_BAL_DAL",
-      "status": "final",
-      "home_team": "DAL",
-      "away_team": "BAL",
-      "home_score": 31,
-      "away_score": 34,
-      "predicted_winner": "BAL",
-      "predicted_home_win_prob": 0.42746256961812024,
-      "data_available": true,
-      "actual_winner": "BAL",
-      "correct_winner": true,
-      "home_stats": {
-        "rushing_yards": 148.0,
-        "passing_yards": 278.0,
-        "turnovers": 1,
-        "first_downs": 24,
-        "third_down_attempts": 13,
-        "third_down_conversions": 5,
-        "third_down_pct": 0.38461538461538464,
-        "fourth_down_attempts": 2,
-        "fourth_down_conversions": 1,
-        "fourth_down_pct": 0.5,
-        "offensive_run_pass_plays": 72,
-        "defensive_run_pass_plays": 58,
-        "total_run_pass_plays": 130,
-        "pass_rate": 0.5833333333333334,
-        "air_yards_per_target": 6.8
-      },
-      "away_stats": {
-        "rushing_yards": 192.0,
-        "passing_yards": 186.0,
-        "turnovers": 0,
-        "first_downs": 20,
-        "third_down_attempts": 9,
-        "third_down_conversions": 3,
-        "third_down_pct": 0.3333333333333333,
-        "fourth_down_attempts": 2,
-        "fourth_down_conversions": 0,
-        "fourth_down_pct": 0.0,
-        "offensive_run_pass_plays": 58,
-        "defensive_run_pass_plays": 72,
-        "total_run_pass_plays": 130,
-        "pass_rate": 0.3448275862068966,
-        "air_yards_per_target": 9.05
-      },
-      "home_pass_defense": {
-        "targets_allowed": 20,
-        "receptions_allowed": 15,
-        "yards_allowed": 186.0,
-        "touchdowns_allowed": 2,
-        "interceptions": 0,
-        "pass_break_ups": 1,
-        "catch_rate_allowed": 0.75,
-        "target_rate_allowed": 1.0,
-        "td_rate_allowed": 0.1,
-        "yards_per_target_allowed": 9.3,
-        "yards_per_reception_allowed": 12.4,
-        "yards_after_catch_allowed": 91.0,
-        "yards_after_catch_allowed_per_reception": 6.066666666666666,
-        "average_depth_of_target_allowed": 9.05,
-        "explosive_receptions_allowed": 4,
-        "explosive_reception_rate_allowed": 0.26666666666666666,
-        "passer_rating_allowed": 136.66666666666666,
-        "receptions_allowed_10plus_yards": 8,
-        "receptions_allowed_10plus_yards_rate": 0.5333333333333333,
-        "receptions_allowed_30plus_yards": 1,
-        "receptions_allowed_30plus_yards_rate": 0.06666666666666667,
-        "receptions_allowed_40plus_yards": 0,
-        "receptions_allowed_40plus_yards_rate": 0.0,
-        "receptions_allowed_50plus_yards": 0,
-        "receptions_allowed_50plus_yards_rate": 0.0
-      },
-      "away_pass_defense": {
-        "targets_allowed": 41,
-        "receptions_allowed": 25,
-        "yards_allowed": 276.0,
-        "touchdowns_allowed": 1,
-        "interceptions": 0,
-        "pass_break_ups": 5,
-        "catch_rate_allowed": 0.6097560975609756,
-        "target_rate_allowed": 1.0,
-        "td_rate_allowed": 0.024390243902439025,
-        "yards_per_target_allowed": 6.7317073170731705,
-        "yards_per_reception_allowed": 11.04,
-        "yards_after_catch_allowed": 116.0,
-        "yards_after_catch_allowed_per_reception": 4.64,
-        "average_depth_of_target_allowed": 6.8,
-        "explosive_receptions_allowed": 1,
-        "explosive_reception_rate_allowed": 0.04,
-        "passer_rating_allowed": 89.07520325203251,
-        "receptions_allowed_10plus_yards": 13,
-        "receptions_allowed_10plus_yards_rate": 0.52,
-        "receptions_allowed_30plus_yards": 1,
-        "receptions_allowed_30plus_yards_rate": 0.04,
-        "receptions_allowed_40plus_yards": 1,
-        "receptions_allowed_40plus_yards_rate": 0.04,
-        "receptions_allowed_50plus_yards": 0,
-        "receptions_allowed_50plus_yards_rate": 0.0
-      },
-      "home_red_zone": {
-        "red_zone_trips": 6,
-        "red_zone_tds": 3,
-        "red_zone_td_rate": 0.5,
-        "red_zone_trips_allowed": 6,
-        "red_zone_tds_allowed": 4,
-        "red_zone_td_rate_allowed": 0.6666666666666666
-      },
-      "away_red_zone": {
-        "red_zone_trips": 6,
-        "red_zone_tds": 4,
-        "red_zone_td_rate": 0.6666666666666666,
-        "red_zone_trips_allowed": 6,
-        "red_zone_tds_allowed": 3,
-        "red_zone_td_rate_allowed": 0.5
-      },
-      "home_offense": {
-        "epa_per_dropback": 0.20032061798057055,
-        "epa_per_rush": -0.006846259343616951,
-        "epa_per_target": 0.2791210601054292,
-        "cpoe": -3.8378017395734787,
-        "pressure_rate_allowed": null,
-        "epa_per_play": 0.10382705413786371,
-        "total_epa": 7.475547897926187,
-        "success_rate": 0.4722222222222222,
-        "pass_yards": 278.0,
-        "pass_touchdowns": 1,
-        "rush_yards": 148.0,
-        "rush_touchdowns": 2,
-        "average_depth_of_target": 6.8,
-        "interception_rate": 0.0,
-        "scramble_rate": 0.08695652173913043
-      },
-      "away_offense": {
-        "epa_per_dropback": 0.5963989197922434,
-        "epa_per_rush": -0.134646851591242,
-        "epa_per_target": 0.5963989197922434,
-        "cpoe": 9.19438585639,
-        "pressure_rate_allowed": null,
-        "epa_per_play": 0.13381693865631503,
-        "total_epa": 7.761382442066271,
-        "success_rate": 0.5,
-        "pass_yards": 186.0,
-        "pass_touchdowns": 2,
-        "rush_yards": 192.0,
-        "rush_touchdowns": 2,
-        "average_depth_of_target": 9.05,
-        "interception_rate": 0.0,
-        "scramble_rate": 0.09090909090909091
-      },
-      "home_man_zone": {
-        "man_rate_faced": null,
-        "zone_rate_faced": null,
-        "man_rate_played": null,
-        "zone_rate_played": null
-      },
-      "away_man_zone": {
-        "man_rate_faced": null,
-        "zone_rate_faced": null,
-        "man_rate_played": null,
-        "zone_rate_played": null
-      },
-      "keys": [
-        {
-          "key": "turnover_margin",
-          "label": "Turnover margin",
-          "home_value": -1,
-          "away_value": 1,
-          "winner": "away"
-        },
-        {
-          "key": "rushing_yards",
-          "label": "Rushing yards",
-          "home_value": 148.0,
-          "away_value": 192.0,
-          "winner": "away"
-        },
-        {
-          "key": "passing_yards",
-          "label": "Passing yards",
-          "home_value": 278.0,
-          "away_value": 186.0,
-          "winner": "home"
-        },
-        {
-          "key": "third_down_pct",
-          "label": "3rd down conversion rate",
-          "home_value": 0.38461538461538464,
-          "away_value": 0.3333333333333333,
-          "winner": "home"
-        },
-        {
-          "key": "fourth_down_pct",
-          "label": "4th down conversion rate",
-          "home_value": 0.5,
-          "away_value": 0.0,
-          "winner": "home",
-          "no_signal": true
-        }
-      ],
-      "narrative": "BAL beat DAL: BAL won turnover margin, and rushing yards, despite losing passing yards, and 3rd down conversion rate. The model correctly favored BAL to win (57%).",
-      "computed_at": "2026-10-02T01:37:24.495040",
+      "computed_at": "2026-10-02T18:05:32.484087",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -694,7 +846,7 @@
         }
       ],
       "narrative": "NYG beat TEN: NYG won turnover margin, and rushing yards, despite losing passing yards, and 3rd down conversion rate. The model correctly favored NYG to win (53%).",
-      "computed_at": "2026-10-02T01:37:24.662800",
+      "computed_at": "2026-10-02T18:05:32.756135",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -899,7 +1051,7 @@
         }
       ],
       "narrative": "CLE beat CAR: CLE won turnover margin, rushing yards, and 3rd down conversion rate, despite losing passing yards. The model favored CAR (59%) and got the winner wrong here.",
-      "computed_at": "2026-10-02T01:37:24.846960",
+      "computed_at": "2026-10-02T18:05:33.053383",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -1104,7 +1256,7 @@
         }
       ],
       "narrative": "PIT beat CIN: PIT won rushing yards, passing yards, and 3rd down conversion rate. The model favored CIN (62%) and got the winner wrong here.",
-      "computed_at": "2026-10-02T01:37:25.016840",
+      "computed_at": "2026-10-02T18:05:33.318573",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -1309,7 +1461,7 @@
         }
       ],
       "narrative": "KC beat MIA: KC won turnover margin, and passing yards, despite losing rushing yards, and 3rd down conversion rate. The model correctly favored KC to win (88%).",
-      "computed_at": "2026-10-02T01:37:25.183151",
+      "computed_at": "2026-10-02T18:05:33.611838",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -1432,7 +1584,7 @@
       "home_offense": {
         "epa_per_dropback": -0.17917778918300703,
         "epa_per_rush": 0.06973059627794541,
-        "epa_per_target": 0.14432868127909979,
+        "epa_per_target": 0.1443286812790998,
         "cpoe": -0.8816129313065455,
         "pressure_rate_allowed": null,
         "epa_per_play": -0.020912468055754856,
@@ -1447,13 +1599,13 @@
         "scramble_rate": 0.03225806451612903
       },
       "away_offense": {
-        "epa_per_dropback": -0.17693360138932682,
+        "epa_per_dropback": -0.1769336013893268,
         "epa_per_rush": 0.06781832437157738,
         "epa_per_target": -0.08544075146926876,
         "cpoe": -0.9744671258059415,
         "pressure_rate_allowed": null,
-        "epa_per_play": -0.07138336558354116,
-        "total_epa": -4.5685353973466345,
+        "epa_per_play": -0.07138336558354114,
+        "total_epa": -4.568535397346633,
         "success_rate": 0.46875,
         "pass_yards": 226.0,
         "pass_touchdowns": 1,
@@ -1514,7 +1666,7 @@
         }
       ],
       "narrative": "BUF beat LAC: BUF won rushing yards, and 3rd down conversion rate, despite losing turnover margin, and passing yards. The model correctly favored BUF to win (87%).",
-      "computed_at": "2026-10-02T01:37:25.350017",
+      "computed_at": "2026-10-02T18:05:33.886097",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -1719,7 +1871,7 @@
         }
       ],
       "narrative": "MIN beat TB: MIN won turnover margin, rushing yards, and 3rd down conversion rate, despite losing passing yards. The model correctly favored MIN to win (63%).",
-      "computed_at": "2026-10-02T01:37:25.516601",
+      "computed_at": "2026-10-02T18:05:34.152910",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -1924,7 +2076,7 @@
         }
       ],
       "narrative": "JAX beat NE: JAX won turnover margin, rushing yards, and 3rd down conversion rate, despite losing passing yards. The model correctly favored JAX to win (56%).",
-      "computed_at": "2026-10-02T01:37:25.681868",
+      "computed_at": "2026-10-02T18:05:34.423221",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -2129,7 +2281,7 @@
         }
       ],
       "narrative": "DEN beat LA: DEN won turnover margin, and 3rd down conversion rate, despite losing rushing yards, and passing yards. The model correctly favored DEN to win (50%).",
-      "computed_at": "2026-10-02T01:37:25.848737",
+      "computed_at": "2026-10-02T18:05:34.697823",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -2334,7 +2486,7 @@
         }
       ],
       "narrative": "LV beat NO: LV won turnover margin, despite losing rushing yards, passing yards, and 3rd down conversion rate. The model favored NO (59%) and got the winner wrong here.",
-      "computed_at": "2026-10-02T01:37:26.012994",
+      "computed_at": "2026-10-02T18:05:34.969481",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -2539,7 +2691,7 @@
         }
       ],
       "narrative": "SF beat ARI: SF won rushing yards, passing yards, and 3rd down conversion rate. The model correctly favored SF to win (89%).",
-      "computed_at": "2026-10-02T01:37:26.190918",
+      "computed_at": "2026-10-02T18:05:35.242509",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -2744,7 +2896,212 @@
         }
       ],
       "narrative": "WAS beat SEA: WAS won turnover margin, and rushing yards, despite losing passing yards, and 3rd down conversion rate. The model favored SEA (86%) and got the winner wrong here.",
-      "computed_at": "2026-10-02T01:37:26.356761",
+      "computed_at": "2026-10-02T18:05:35.511999",
+      "home_injuries": [],
+      "away_injuries": []
+    },
+    {
+      "game_id": "2026_03_BAL_DAL",
+      "status": "final",
+      "home_team": "DAL",
+      "away_team": "BAL",
+      "home_score": 31,
+      "away_score": 34,
+      "predicted_winner": "BAL",
+      "predicted_home_win_prob": 0.42746256961812024,
+      "data_available": true,
+      "actual_winner": "BAL",
+      "correct_winner": true,
+      "home_stats": {
+        "rushing_yards": 148.0,
+        "passing_yards": 278.0,
+        "turnovers": 1,
+        "first_downs": 24,
+        "third_down_attempts": 13,
+        "third_down_conversions": 5,
+        "third_down_pct": 0.38461538461538464,
+        "fourth_down_attempts": 2,
+        "fourth_down_conversions": 1,
+        "fourth_down_pct": 0.5,
+        "offensive_run_pass_plays": 72,
+        "defensive_run_pass_plays": 58,
+        "total_run_pass_plays": 130,
+        "pass_rate": 0.5833333333333334,
+        "air_yards_per_target": 6.8
+      },
+      "away_stats": {
+        "rushing_yards": 192.0,
+        "passing_yards": 186.0,
+        "turnovers": 0,
+        "first_downs": 20,
+        "third_down_attempts": 9,
+        "third_down_conversions": 3,
+        "third_down_pct": 0.3333333333333333,
+        "fourth_down_attempts": 2,
+        "fourth_down_conversions": 0,
+        "fourth_down_pct": 0.0,
+        "offensive_run_pass_plays": 58,
+        "defensive_run_pass_plays": 72,
+        "total_run_pass_plays": 130,
+        "pass_rate": 0.3448275862068966,
+        "air_yards_per_target": 9.05
+      },
+      "home_pass_defense": {
+        "targets_allowed": 20,
+        "receptions_allowed": 15,
+        "yards_allowed": 186.0,
+        "touchdowns_allowed": 2,
+        "interceptions": 0,
+        "pass_break_ups": 1,
+        "catch_rate_allowed": 0.75,
+        "target_rate_allowed": 1.0,
+        "td_rate_allowed": 0.1,
+        "yards_per_target_allowed": 9.3,
+        "yards_per_reception_allowed": 12.4,
+        "yards_after_catch_allowed": 91.0,
+        "yards_after_catch_allowed_per_reception": 6.066666666666666,
+        "average_depth_of_target_allowed": 9.05,
+        "explosive_receptions_allowed": 4,
+        "explosive_reception_rate_allowed": 0.26666666666666666,
+        "passer_rating_allowed": 136.66666666666666,
+        "receptions_allowed_10plus_yards": 8,
+        "receptions_allowed_10plus_yards_rate": 0.5333333333333333,
+        "receptions_allowed_30plus_yards": 1,
+        "receptions_allowed_30plus_yards_rate": 0.06666666666666667,
+        "receptions_allowed_40plus_yards": 0,
+        "receptions_allowed_40plus_yards_rate": 0.0,
+        "receptions_allowed_50plus_yards": 0,
+        "receptions_allowed_50plus_yards_rate": 0.0
+      },
+      "away_pass_defense": {
+        "targets_allowed": 41,
+        "receptions_allowed": 25,
+        "yards_allowed": 276.0,
+        "touchdowns_allowed": 1,
+        "interceptions": 0,
+        "pass_break_ups": 5,
+        "catch_rate_allowed": 0.6097560975609756,
+        "target_rate_allowed": 1.0,
+        "td_rate_allowed": 0.024390243902439025,
+        "yards_per_target_allowed": 6.7317073170731705,
+        "yards_per_reception_allowed": 11.04,
+        "yards_after_catch_allowed": 116.0,
+        "yards_after_catch_allowed_per_reception": 4.64,
+        "average_depth_of_target_allowed": 6.8,
+        "explosive_receptions_allowed": 1,
+        "explosive_reception_rate_allowed": 0.04,
+        "passer_rating_allowed": 89.07520325203251,
+        "receptions_allowed_10plus_yards": 13,
+        "receptions_allowed_10plus_yards_rate": 0.52,
+        "receptions_allowed_30plus_yards": 1,
+        "receptions_allowed_30plus_yards_rate": 0.04,
+        "receptions_allowed_40plus_yards": 1,
+        "receptions_allowed_40plus_yards_rate": 0.04,
+        "receptions_allowed_50plus_yards": 0,
+        "receptions_allowed_50plus_yards_rate": 0.0
+      },
+      "home_red_zone": {
+        "red_zone_trips": 6,
+        "red_zone_tds": 3,
+        "red_zone_td_rate": 0.5,
+        "red_zone_trips_allowed": 6,
+        "red_zone_tds_allowed": 4,
+        "red_zone_td_rate_allowed": 0.6666666666666666
+      },
+      "away_red_zone": {
+        "red_zone_trips": 6,
+        "red_zone_tds": 4,
+        "red_zone_td_rate": 0.6666666666666666,
+        "red_zone_trips_allowed": 6,
+        "red_zone_tds_allowed": 3,
+        "red_zone_td_rate_allowed": 0.5
+      },
+      "home_offense": {
+        "epa_per_dropback": 0.20032061798057055,
+        "epa_per_rush": -0.006846259343616951,
+        "epa_per_target": 0.2791210601054292,
+        "cpoe": -3.8378017395734787,
+        "pressure_rate_allowed": null,
+        "epa_per_play": 0.10382705413786371,
+        "total_epa": 7.475547897926187,
+        "success_rate": 0.4722222222222222,
+        "pass_yards": 278.0,
+        "pass_touchdowns": 1,
+        "rush_yards": 148.0,
+        "rush_touchdowns": 2,
+        "average_depth_of_target": 6.8,
+        "interception_rate": 0.0,
+        "scramble_rate": 0.08695652173913043
+      },
+      "away_offense": {
+        "epa_per_dropback": 0.5963989197922434,
+        "epa_per_rush": -0.134646851591242,
+        "epa_per_target": 0.5963989197922434,
+        "cpoe": 9.19438585639,
+        "pressure_rate_allowed": null,
+        "epa_per_play": 0.13381693865631503,
+        "total_epa": 7.761382442066271,
+        "success_rate": 0.5,
+        "pass_yards": 186.0,
+        "pass_touchdowns": 2,
+        "rush_yards": 192.0,
+        "rush_touchdowns": 2,
+        "average_depth_of_target": 9.05,
+        "interception_rate": 0.0,
+        "scramble_rate": 0.09090909090909091
+      },
+      "home_man_zone": {
+        "man_rate_faced": null,
+        "zone_rate_faced": null,
+        "man_rate_played": null,
+        "zone_rate_played": null
+      },
+      "away_man_zone": {
+        "man_rate_faced": null,
+        "zone_rate_faced": null,
+        "man_rate_played": null,
+        "zone_rate_played": null
+      },
+      "keys": [
+        {
+          "key": "turnover_margin",
+          "label": "Turnover margin",
+          "home_value": -1,
+          "away_value": 1,
+          "winner": "away"
+        },
+        {
+          "key": "rushing_yards",
+          "label": "Rushing yards",
+          "home_value": 148.0,
+          "away_value": 192.0,
+          "winner": "away"
+        },
+        {
+          "key": "passing_yards",
+          "label": "Passing yards",
+          "home_value": 278.0,
+          "away_value": 186.0,
+          "winner": "home"
+        },
+        {
+          "key": "third_down_pct",
+          "label": "3rd down conversion rate",
+          "home_value": 0.38461538461538464,
+          "away_value": 0.3333333333333333,
+          "winner": "home"
+        },
+        {
+          "key": "fourth_down_pct",
+          "label": "4th down conversion rate",
+          "home_value": 0.5,
+          "away_value": 0.0,
+          "winner": "home",
+          "no_signal": true
+        }
+      ],
+      "narrative": "BAL beat DAL: BAL won turnover margin, and rushing yards, despite losing passing yards, and 3rd down conversion rate. The model correctly favored BAL to win (57%).",
+      "computed_at": "2026-10-02T18:05:35.785320",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -2949,7 +3306,7 @@
         }
       ],
       "narrative": "DET beat NYJ: DET won turnover margin, and rushing yards, despite losing passing yards. The model correctly favored DET to win (70%).",
-      "computed_at": "2026-10-02T01:37:26.524775",
+      "computed_at": "2026-10-02T18:05:36.062415",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -3070,7 +3427,7 @@
         "red_zone_td_rate_allowed": 0.3333333333333333
       },
       "home_offense": {
-        "epa_per_dropback": -0.17178856503454393,
+        "epa_per_dropback": -0.17178856503454398,
         "epa_per_rush": -0.09163117595793059,
         "epa_per_target": 0.29207088775046,
         "cpoe": -0.7597086259296962,
@@ -3154,7 +3511,7 @@
         }
       ],
       "narrative": "IND beat HOU: IND won rushing yards, passing yards, and 3rd down conversion rate, despite losing turnover margin. The model favored HOU (61%) and got the winner wrong here.",
-      "computed_at": "2026-10-02T01:37:26.690648",
+      "computed_at": "2026-10-02T18:05:36.344949",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -3359,7 +3716,7 @@
         }
       ],
       "narrative": "ATL beat GB: ATL won rushing yards, and 3rd down conversion rate, despite losing passing yards. The model favored GB (74%) and got the winner wrong here.",
-      "computed_at": "2026-10-02T01:37:26.855204",
+      "computed_at": "2026-10-02T18:05:36.624349",
       "home_injuries": [],
       "away_injuries": []
     }
