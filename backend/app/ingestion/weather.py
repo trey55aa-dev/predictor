@@ -36,22 +36,31 @@ def ingest_weather_for_games(db: Session, games: list[Game]) -> int:
         if game.gametime_utc is None:
             continue
 
-        response = httpx.get(
-            OPEN_METEO_URL,
-            params={
-                "latitude": stadium.lat,
-                "longitude": stadium.lon,
-                "hourly": "temperature_2m,wind_speed_10m,precipitation",
-                "temperature_unit": "fahrenheit",
-                "wind_speed_unit": "mph",
-                "precipitation_unit": "mm",
-                "forecast_days": 16,
-                "timezone": "UTC",
-            },
-            timeout=30,
-        )
-        response.raise_for_status()
-        data = response.json()
+        try:
+            response = httpx.get(
+                OPEN_METEO_URL,
+                params={
+                    "latitude": stadium.lat,
+                    "longitude": stadium.lon,
+                    "hourly": "temperature_2m,wind_speed_10m,precipitation",
+                    "temperature_unit": "fahrenheit",
+                    "wind_speed_unit": "mph",
+                    "precipitation_unit": "mm",
+                    "forecast_days": 16,
+                    "timezone": "UTC",
+                },
+                timeout=30,
+            )
+            response.raise_for_status()
+            data = response.json()
+        except httpx.HTTPError:
+            # Open-Meteo being slow/unreachable for one game (or the whole
+            # call) used to propagate all the way out of run-routine and
+            # crash the entire pipeline before it ever reached predictions,
+            # grading, or injury ingestion for every other game in the
+            # week -- this is best-effort data, like odds and injuries, not
+            # something worth failing the whole routine over.
+            continue
 
         hourly = data.get("hourly", {})
         times = hourly.get("time", [])

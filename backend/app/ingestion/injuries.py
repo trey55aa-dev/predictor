@@ -41,7 +41,16 @@ def ingest_injuries(db: Session, season: int, week: int) -> int:
             (pl.col("week") == week) & pl.col("report_status").is_in(list(REPORTABLE_STATUSES))
         )
         if week_injuries.height == 0:
-            return 0
+            # A real NFL week always has reportable (Out/Doubtful/Questionable)
+            # injuries somewhere across 32 teams -- zero matching rows means
+            # nflverse's feed doesn't actually cover this week yet (e.g. it
+            # lags behind the season's current week), not that the week is
+            # genuinely injury-free. Treat it the same as any other "data not
+            # usable" failure so the caller's ESPN fallback runs instead of
+            # this week silently ending up with zero injury rows.
+            raise NoInjuryDataError(
+                f"nflverse returned no reportable injuries for season {season} week {week}"
+            )
 
         starters = (
             depth_charts.filter(pl.col("week") == week)
