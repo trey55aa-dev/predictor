@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-03T01:29:57.144546",
+  "generated_at": "2026-10-03T09:32:24.343798",
   "season": 2026,
   "rolling_performance": {
     "graded_predictions": 3417,
@@ -284,7 +284,7 @@
         }
       ],
       "narrative": "CLE beat PIT: CLE won rushing yards, and 3rd down conversion rate, despite losing passing yards. The model correctly favored CLE to win (54%).",
-      "computed_at": "2026-10-03T01:29:52.000318",
+      "computed_at": "2026-10-03T09:32:19.415889",
       "home_injuries": [
         {
           "player_name": "Taylen Green",
@@ -641,7 +641,7 @@
         }
       ],
       "narrative": "CHI beat PHI: CHI won turnover margin, rushing yards, passing yards, and 3rd down conversion rate. The model favored PHI (59%) and got the winner wrong here.",
-      "computed_at": "2026-10-03T01:29:52.310231",
+      "computed_at": "2026-10-03T09:32:19.716226",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -846,7 +846,7 @@
         }
       ],
       "narrative": "NYG beat TEN: NYG won turnover margin, and rushing yards, despite losing passing yards, and 3rd down conversion rate. The model correctly favored NYG to win (53%).",
-      "computed_at": "2026-10-03T01:29:52.625513",
+      "computed_at": "2026-10-03T09:32:20.014248",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -1051,7 +1051,7 @@
         }
       ],
       "narrative": "CLE beat CAR: CLE won turnover margin, rushing yards, and 3rd down conversion rate, despite losing passing yards. The model favored CAR (59%) and got the winner wrong here.",
-      "computed_at": "2026-10-03T01:29:52.971509",
+      "computed_at": "2026-10-03T09:32:20.347124",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -1256,7 +1256,7 @@
         }
       ],
       "narrative": "PIT beat CIN: PIT won rushing yards, passing yards, and 3rd down conversion rate. The model favored CIN (62%) and got the winner wrong here.",
-      "computed_at": "2026-10-03T01:29:53.281888",
+      "computed_at": "2026-10-03T09:32:20.647275",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -1461,7 +1461,7 @@
         }
       ],
       "narrative": "KC beat MIA: KC won turnover margin, and passing yards, despite losing rushing yards, and 3rd down conversion rate. The model correctly favored KC to win (88%).",
-      "computed_at": "2026-10-03T01:29:53.599502",
+      "computed_at": "2026-10-03T09:32:20.945692",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -1666,7 +1666,7 @@
         }
       ],
       "narrative": "BUF beat LAC: BUF won rushing yards, and 3rd down conversion rate, despite losing turnover margin, and passing yards. The model correctly favored BUF to win (87%).",
-      "computed_at": "2026-10-03T01:29:53.911238",
+      "computed_at": "2026-10-03T09:32:21.254738",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -1871,7 +1871,7 @@
         }
       ],
       "narrative": "MIN beat TB: MIN won turnover margin, rushing yards, and 3rd down conversion rate, despite losing passing yards. The model correctly favored MIN to win (63%).",
-      "computed_at": "2026-10-03T01:29:54.223777",
+      "computed_at": "2026-10-03T09:32:21.553969",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -2076,7 +2076,7 @@
         }
       ],
       "narrative": "JAX beat NE: JAX won turnover margin, rushing yards, and 3rd down conversion rate, despite losing passing yards. The model correctly favored JAX to win (56%).",
-      "computed_at": "2026-10-03T01:29:54.535048",
+      "computed_at": "2026-10-03T09:32:21.853767",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -2281,7 +2281,7 @@
         }
       ],
       "narrative": "DEN beat LA: DEN won turnover margin, and 3rd down conversion rate, despite losing rushing yards, and passing yards. The model correctly favored DEN to win (50%).",
-      "computed_at": "2026-10-03T01:29:54.851925",
+      "computed_at": "2026-10-03T09:32:22.153724",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -2486,7 +2486,7 @@
         }
       ],
       "narrative": "LV beat NO: LV won turnover margin, despite losing rushing yards, passing yards, and 3rd down conversion rate. The model favored NO (59%) and got the winner wrong here.",
-      "computed_at": "2026-10-03T01:29:55.163415",
+      "computed_at": "2026-10-03T09:32:22.455792",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -2691,7 +2691,7 @@
         }
       ],
       "narrative": "SF beat ARI: SF won rushing yards, passing yards, and 3rd down conversion rate. The model correctly favored SF to win (89%).",
-      "computed_at": "2026-10-03T01:29:55.473471",
+      "computed_at": "2026-10-03T09:32:22.754121",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -2896,7 +2896,7 @@
         }
       ],
       "narrative": "WAS beat SEA: WAS won turnover margin, and rushing yards, despite losing passing yards, and 3rd down conversion rate. The model favored SEA (86%) and got the winner wrong here.",
-      "computed_at": "2026-10-03T01:29:55.785413",
+      "computed_at": "2026-10-03T09:32:23.049819",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -3101,7 +3101,7 @@
         }
       ],
       "narrative": "BAL beat DAL: BAL won turnover margin, and rushing yards, despite losing passing yards, and 3rd down conversion rate. The model correctly favored BAL to win (57%).",
-      "computed_at": "2026-10-03T01:29:56.096935",
+      "computed_at": "2026-10-03T09:32:23.346199",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -3306,7 +3306,7 @@
         }
       ],
       "narrative": "DET beat NYJ: DET won turnover margin, and rushing yards, despite losing passing yards. The model correctly favored DET to win (70%).",
-      "computed_at": "2026-10-03T01:29:56.407310",
+      "computed_at": "2026-10-03T09:32:23.645669",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -3427,7 +3427,7 @@
         "red_zone_td_rate_allowed": 0.3333333333333333
       },
       "home_offense": {
-        "epa_per_dropback": -0.17178856503454398,
+        "epa_per_dropback": -0.17178856503454393,
         "epa_per_rush": -0.09163117595793059,
         "epa_per_target": 0.29207088775046,
         "cpoe": -0.7597086259296962,
@@ -3511,7 +3511,7 @@
         }
       ],
       "narrative": "IND beat HOU: IND won rushing yards, passing yards, and 3rd down conversion rate, despite losing turnover margin. The model favored HOU (61%) and got the winner wrong here.",
-      "computed_at": "2026-10-03T01:29:56.725480",
+      "computed_at": "2026-10-03T09:32:23.942727",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -3716,7 +3716,7 @@
         }
       ],
       "narrative": "ATL beat GB: ATL won rushing yards, and 3rd down conversion rate, despite losing passing yards. The model favored GB (74%) and got the winner wrong here.",
-      "computed_at": "2026-10-03T01:29:57.042800",
+      "computed_at": "2026-10-03T09:32:24.247569",
       "home_injuries": [],
       "away_injuries": []
     }
