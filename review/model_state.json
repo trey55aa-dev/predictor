@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-01T18:29:57.720505",
+  "generated_at": "2026-11-01T21:37:26.057379",
   "season": 2026,
   "rolling_performance": {
     "graded_predictions": 3583,
@@ -284,7 +284,7 @@
         }
       ],
       "narrative": "GB beat CAR: GB won passing yards, and 3rd down conversion rate, despite losing rushing yards.",
-      "computed_at": "2026-11-01T18:29:53.505597",
+      "computed_at": "2026-11-01T21:37:22.306880",
       "home_injuries": [
         {
           "player_name": "Kaleb Johnson",
@@ -671,7 +671,7 @@
         }
       ],
       "narrative": "DAL beat PHI: DAL won turnover margin, rushing yards, passing yards, and 3rd down conversion rate.",
-      "computed_at": "2026-11-01T18:29:53.795272",
+      "computed_at": "2026-11-01T21:37:22.559785",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -876,7 +876,7 @@
         }
       ],
       "narrative": "DEN beat ARI: DEN won rushing yards, despite losing passing yards, and 3rd down conversion rate.",
-      "computed_at": "2026-11-01T18:29:54.090472",
+      "computed_at": "2026-11-01T21:37:22.812933",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -997,13 +997,13 @@
         "red_zone_td_rate_allowed": 0.3333333333333333
       },
       "home_offense": {
-        "epa_per_dropback": 0.27886186177846595,
+        "epa_per_dropback": 0.278861861778466,
         "epa_per_rush": -0.4152053549551056,
-        "epa_per_target": 0.3700169197233068,
+        "epa_per_target": 0.37001691972330686,
         "cpoe": -0.9746866841470042,
         "pressure_rate_allowed": null,
-        "epa_per_play": -0.06283276799806156,
-        "total_epa": -4.084129919874002,
+        "epa_per_play": -0.06283276799806153,
+        "total_epa": -4.084129919874,
         "success_rate": 0.5230769230769231,
         "pass_yards": 303.0,
         "pass_touchdowns": 2,
@@ -1081,7 +1081,7 @@
         }
       ],
       "narrative": "DET beat GB: DET won rushing yards, passing yards, and 3rd down conversion rate, despite losing turnover margin.",
-      "computed_at": "2026-11-01T18:29:54.414589",
+      "computed_at": "2026-11-01T21:37:23.091446",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -1286,7 +1286,7 @@
         }
       ],
       "narrative": "MIN beat IND: MIN won turnover margin, and passing yards, despite losing rushing yards, and 3rd down conversion rate.",
-      "computed_at": "2026-11-01T18:29:54.703173",
+      "computed_at": "2026-11-01T21:37:23.343627",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -1491,7 +1491,7 @@
         }
       ],
       "narrative": "SEA beat KC: SEA won rushing yards, passing yards, and 3rd down conversion rate.",
-      "computed_at": "2026-11-01T18:29:55.001133",
+      "computed_at": "2026-11-01T21:37:23.594529",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -1612,13 +1612,13 @@
         "red_zone_td_rate_allowed": 0.0
       },
       "home_offense": {
-        "epa_per_dropback": 0.09084096022266856,
+        "epa_per_dropback": 0.09084096022266862,
         "epa_per_rush": -0.38662377624539657,
         "epa_per_target": 0.3166034277881656,
         "cpoe": -1.8050099120420569,
         "pressure_rate_allowed": null,
-        "epa_per_play": -0.09190929750407996,
-        "total_epa": -5.974104337765198,
+        "epa_per_play": -0.09190929750407993,
+        "total_epa": -5.974104337765196,
         "success_rate": 0.4153846153846154,
         "pass_yards": 298.0,
         "pass_touchdowns": 1,
@@ -1696,7 +1696,7 @@
         }
       ],
       "narrative": "CIN beat BAL: CIN won turnover margin, despite losing rushing yards, passing yards, and 3rd down conversion rate.",
-      "computed_at": "2026-11-01T18:29:55.318773",
+      "computed_at": "2026-11-01T21:37:23.846373",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -1901,7 +1901,7 @@
         }
       ],
       "narrative": "TB beat CAR: TB won turnover margin, rushing yards, and 3rd down conversion rate, despite losing passing yards.",
-      "computed_at": "2026-11-01T18:29:55.605778",
+      "computed_at": "2026-11-01T21:37:24.097341",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -2106,7 +2106,7 @@
         }
       ],
       "narrative": "ATL beat SF: ATL won turnover margin, despite losing rushing yards, passing yards, and 3rd down conversion rate.",
-      "computed_at": "2026-11-01T18:29:55.894940",
+      "computed_at": "2026-11-01T21:37:24.362067",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -2311,7 +2311,7 @@
         }
       ],
       "narrative": "LA beat LV: LA won rushing yards, and 3rd down conversion rate, despite losing turnover margin, and passing yards.",
-      "computed_at": "2026-11-01T18:29:56.185667",
+      "computed_at": "2026-11-01T21:37:24.718033",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -2516,7 +2516,7 @@
         }
       ],
       "narrative": "MIA beat NYJ: MIA won turnover margin, and rushing yards, despite losing passing yards, and 3rd down conversion rate.",
-      "computed_at": "2026-11-01T18:29:56.477097",
+      "computed_at": "2026-11-01T21:37:24.970454",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -2721,7 +2721,7 @@
         }
       ],
       "narrative": "NYG beat HOU: NYG won rushing yards, passing yards, and 3rd down conversion rate.",
-      "computed_at": "2026-11-01T18:29:56.763273",
+      "computed_at": "2026-11-01T21:37:25.221807",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -2926,7 +2926,7 @@
         }
       ],
       "narrative": "PIT beat NO: PIT won turnover margin, rushing yards, and 3rd down conversion rate, despite losing passing yards.",
-      "computed_at": "2026-11-01T18:29:57.050720",
+      "computed_at": "2026-11-01T21:37:25.473509",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -3131,7 +3131,7 @@
         }
       ],
       "narrative": "CLE beat TEN: CLE won rushing yards, and passing yards, despite losing 3rd down conversion rate.",
-      "computed_at": "2026-11-01T18:29:57.337719",
+      "computed_at": "2026-11-01T21:37:25.725045",
       "home_injuries": [],
       "away_injuries": []
     },
@@ -3252,13 +3252,13 @@
         "red_zone_td_rate_allowed": 0.75
       },
       "home_offense": {
-        "epa_per_dropback": 0.376594277489295,
+        "epa_per_dropback": 0.37659427748929497,
         "epa_per_rush": -0.10590803712861649,
         "epa_per_target": 0.6373377460310309,
         "cpoe": 6.72935535510381,
         "pressure_rate_allowed": null,
-        "epa_per_play": 0.19508912606041864,
-        "total_epa": 12.680793193927212,
+        "epa_per_play": 0.1950891260604186,
+        "total_epa": 12.680793193927208,
         "success_rate": 0.46153846153846156,
         "pass_yards": 308.0,
         "pass_touchdowns": 2,
@@ -3336,7 +3336,7 @@
         }
       ],
       "narrative": "CHI beat NE: CHI won turnover margin, rushing yards, and 3rd down conversion rate, despite losing passing yards.",
-      "computed_at": "2026-11-01T18:29:57.624379",
+      "computed_at": "2026-11-01T21:37:25.974624",
       "home_injuries": [],
       "away_injuries": []
     }
